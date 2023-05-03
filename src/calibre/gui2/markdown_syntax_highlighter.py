@@ -47,12 +47,12 @@ class MarkdownHighlighter(QSyntaxHighlighter):
         'LinkRef': "link",
         'Header': "header",
         'HeaderLine': "header",
-        'CodeBlock': "codeblock",
         'UnorderedList': "unorderedlist",
         'UnorderedListStar': "unorderedlist",
         'OrderedList': "orderedlist",
         'BlockQuote': "blockquote",
-        'CodeSpan': "codespan",
+        'CodeBlock': "code",
+        'CodeSpan': "code",
         'HR': "line",
         'Html': "html",
     }
@@ -67,8 +67,7 @@ class MarkdownHighlighter(QSyntaxHighlighter):
         "unorderedlist": {"color":"red", "font-weight":"normal", "font-style":"normal"},
         "orderedlist": {"color":"red", "font-weight":"normal", "font-style":"normal"},
         "blockquote": {"color":"red", "font-weight":"bold", "font-style":"normal"},
-        "codespan": {"color":"#ff5800", "font-weight":"normal", "font-style":"normal"},
-        "codeblock": {"color":"#ff5800", "font-weight":"normal", "font-style":"normal"},
+        "code": {"background-color":"#dfdfdf", "font-weight":"normal", "font-style":"normal", },
         "line": {"color":"#2aa198", "font-weight":"normal", "font-style":"normal"},
         "html": {"color":"#c000c0", "font-weight":"normal", "font-style":"normal"}
     }
@@ -83,8 +82,7 @@ class MarkdownHighlighter(QSyntaxHighlighter):
         "unorderedlist": {"color":"yellow", "font-weight":"normal", "font-style":"normal"},
         "orderedlist": {"color":"yellow", "font-weight":"normal", "font-style":"normal"},
         "blockquote": {"color":"yellow", "font-weight":"bold", "font-style":"normal"},
-        "codespan": {"color":"#90ee90", "font-weight":"normal", "font-style":"normal"},
-        "codeblock": {"color":"#ff9900", "font-weight":"normal", "font-style":"normal"},
+        "code": {"background-color":"#545454", "font-weight":"normal", "font-style":"normal"},
         "line": {"color":"#2aa198", "font-weight":"normal", "font-style":"normal"},
         "html": {"color":"#F653A6", "font-weight":"normal", "font-style":"normal"}
     }
@@ -103,6 +101,8 @@ class MarkdownHighlighter(QSyntaxHighlighter):
             format = QTextCharFormat()
             if 'color' in subtheme:
                 format.setForeground(QBrush(QColor(subtheme['color'])))
+            if 'background-color' in subtheme:
+                format.setBackground(QBrush(QColor(subtheme['background-color'])))
             format.setFontWeight(QFont.Weight.Bold if subtheme.get('font-weight') == 'bold' else QFont.Weight.Normal)
             format.setFontItalic(subtheme.get('font-style') == 'italic')
             self.MARKDOWN_KWS_FORMAT[k] = format
