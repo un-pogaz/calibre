@@ -67,8 +67,9 @@ def css(reset=False):
     if reset:
         del css.ans
     if not hasattr(css, 'ans'):
-        val = P('templates/book_details.css', data=True).decode('utf-8')
-        css.ans = re.sub(r'/\*.*?\*/', '', val, flags=re.DOTALL)
+        default = P('templates/book_details.css', data=True, allow_user_override=False).decode('utf-8')
+        user = P('templates/book_details.css', data=True, allow_user_override=True).decode('utf-8')
+        css.ans = re.sub(r'/\*.*?\*/', '', default+'\n'+user, flags=re.DOTALL)
         if iswindows:
             # On Windows the default monospace font family is Courier which is ugly
             css.ans = 'pre { font-family: "Segoe UI Mono", "Consolas", monospace; }\n\n' + css.ans
