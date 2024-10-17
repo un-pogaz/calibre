@@ -127,7 +127,11 @@ def setup_iframe(iframe):
         a.setAttribute('target', '_parent')
 
     def forward_touch_events(ev):
-        container = window.top.document.getElementById(render_book.container_id)
+        try:
+            container = window.top.document.getElementById(render_book.container_id)
+        except:  # some browsers block this for cross origin reasons, sigh
+            print('forwarding of touch events in book_details iframe disallowed by browser security policy')
+            container = None
         if container:
             dup = v'new ev.constructor(ev.type, ev)'
             container.dispatchEvent(dup)
