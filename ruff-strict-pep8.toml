@@ -18,7 +18,7 @@ quote-style = 'single'
 
 [lint]
 ignore = ['E402', 'E722', 'E741', 'UP012', 'UP030', 'UP031', 'UP032']
-select = ['E', 'F', 'I', 'W', 'INT', 'UP', 'YTT']
+select = ['E', 'F', 'I', 'W', 'INT', 'UP', 'YTT', 'TID']
 
 [lint.per-file-ignores]
 "recipes/*" = ['UP']
