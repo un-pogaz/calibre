@@ -228,10 +228,10 @@ per_language_title_sort_articles = {
         # Polish
         'pol': (),
         # Italian
-        'ita': ('Lo\\s+', 'Il\\s+', "L'", 'L´', 'La\\s+', 'Gli\\s+',
-                'I\\s+', 'Le\\s+', 'Uno\\s+', 'Un\\s+', 'Una\\s+', "Un'",
-                'Un´', 'Dei\\s+', 'Degli\\s+', 'Delle\\s+', 'Del\\s+',
-                'Della\\s+', 'Dello\\s+', "Dell'", 'Dell´'),
+        'ita': (r'Lo\s+', r'Il\s+', r"L'", r'L´', r'La\s+', r'Gli\s+',
+                r'I\s+', r'Le\s+', r'Uno\s+', r'Un\s+', r'Una\s+', "rUn'",
+                r'Un´', r'Dei\s+', r'Degli\s+', r'Delle\s+', r'Del\s+',
+                r'Della\s+', r'Dello\s+', r"Dell'", r'Dell´'),
         # Portuguese
         'por': (r'A\s+', r'O\s+', r'Os\s+', r'As\s+', r'Um\s+', r'Uns\s+',
                   r'Uma\s+', r'Umas\s+', ),
