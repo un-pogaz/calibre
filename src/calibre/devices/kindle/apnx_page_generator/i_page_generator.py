@@ -29,7 +29,7 @@ class IPageGenerator(metaclass=ABCMeta):
                 return result
             return self._generate_fallback(mobi_file_path, real_count)
         except Exception as e:
-            if self.__class__.__name__ == "FastPageGenerator":
+            if self.__class__.__name__ == 'FastPageGenerator':
                 raise e
             return self._generate_fallback(mobi_file_path, real_count)
 
@@ -42,7 +42,7 @@ def mobi_html(mobi_file_path: str) -> bytes:
     from calibre.ebooks.mobi.reader.mobi6 import MobiReader
     mr = MobiReader(mobi_file_path, default_log)
     if mr.book_header.encryption_type != 0:
-        raise Exception("DRMed book")
+        raise Exception('DRMed book')
     mr.extract_text()
     return as_bytes(mr.mobi_html.lower())
 

@@ -8,7 +8,7 @@ from calibre.devices.kindle.apnx_page_generator.page_number_type import PageNumb
 
 
 class PageGroup:
-    """Simulate constructor overloading"""
+    '''Simulate constructor overloading'''
     def __init__(self, page_locations: Union[int, List[int]], page_number_type: PageNumberTypes, first_value: int,
                  page_labels: Union[str, List[str], None] = None):
         if page_locations.__class__ is int:
@@ -53,5 +53,5 @@ class PageGroup:
         if self.__page_number_type != PageNumberTypes.Custom:
             values = str(self.__first_value)
         else:
-            values = "|".join(self.__page_number_labels)
-        return "({},{},{})".format(starting_location, self.__page_number_type.value, values)
+            values = '|'.join(self.__page_number_labels)
+        return '({},{},{})'.format(starting_location, self.__page_number_type.value, values)

@@ -61,11 +61,11 @@ class Bookmark:  # {{{
                 bpl = bpar_offset + 4
                 bpar_len, = unpack('>I', data[bpl:bpl+4])
                 bpar_len += 8
-                # print("bpar_len: 0x%x" % bpar_len)
+                # print('bpar_len: 0x%x' % bpar_len)
                 eo = bpar_offset + bpar_len
 
                 # Walk bookmark entries
-                # print(" --- %s --- " % self.path)
+                # print(' --- %s --- ' % self.path)
                 current_entry = 1
                 sig = data[eo:eo+4]
                 previous_block = None
@@ -75,14 +75,14 @@ class Bookmark:  # {{{
                     entry_type = None
                     rec_len, = unpack('>I', data[eo+4:eo+8])
                     if rec_len == 0:
-                        current_block = "empty_data"
-                    elif data[eo+8:eo+12] == b"EBAR":
-                        current_block = "data_header"
+                        current_block = 'empty_data'
+                    elif data[eo+8:eo+12] == b'EBAR':
+                        current_block = 'data_header'
                         # entry_type = "data_header"
                         location, = unpack('>I', data[eo+0x34:eo+0x38])
-                        # print("data_header location: %d" % location)
+                        # print('data_header location: %d' % location)
                     else:
-                        current_block = "text_block"
+                        current_block = 'text_block'
                         if previous_block == 'empty_data':
                             entry_type = 'Note'
                         elif previous_block == 'data_header':
@@ -125,7 +125,7 @@ class Bookmark:  # {{{
                         # be the same - cheat by nudging -1
                         # Skip bookmark for last_read_location
                         if end_loc != self.last_read:
-                            # print(" adding Bookmark at 0x%x (%d)" % (end_loc, end_loc/MAGIC_MOBI_CONSTANT + 1))
+                            # print(' adding Bookmark at 0x%x (%d)' % (end_loc, end_loc/MAGIC_MOBI_CONSTANT + 1))
                             displayed_location = end_loc // MAGIC_MOBI_CONSTANT + 1
                             user_notes[end_loc - 1] = dict(id=self.id,
                                                            displayed_location=displayed_location,
@@ -149,7 +149,7 @@ class Bookmark:  # {{{
                     mi = get_topaz_metadata(stream)
                 my_clippings = self.path
                 split = my_clippings.find('documents') + len('documents/')
-                my_clippings = my_clippings[:split] + "My Clippings.txt"
+                my_clippings = my_clippings[:split] + 'My Clippings.txt'
                 try:
                     with open(my_clippings, encoding='utf-8', errors='replace') as f2:
                         marker_found = 0
@@ -274,7 +274,7 @@ class Bookmark:  # {{{
                 self.last_read_location = self.last_read - self.pdf_page_offset
 
         else:
-            print("unsupported bookmark_extension: %s" % self.bookmark_extension)
+            print('unsupported bookmark_extension: %s' % self.bookmark_extension)
         self.user_notes = user_notes
 
     def get_book_length(self):
@@ -303,6 +303,6 @@ class Bookmark:  # {{{
             except:
                 pass
         else:
-            print("unsupported bookmark_extension: %s" % self.bookmark_extension)
+            print('unsupported bookmark_extension: %s' % self.bookmark_extension)
 
 # }}}

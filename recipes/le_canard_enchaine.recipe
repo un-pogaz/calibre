@@ -58,7 +58,7 @@ class LeCanardEnchaine(BasicNewsRecipe):
         feeds = []
 
         for section_title, section_url in self.SECTIONS.items():
-            print(f"Exploration de la rubrique : {section_title}")
+            print(f'Exploration de la rubrique : {section_title}')
             articles = []
             try:
                 url = 'https://www.lecanardenchaine.fr' + section_url
@@ -87,10 +87,10 @@ class LeCanardEnchaine(BasicNewsRecipe):
 
                 if unique_articles:
                     feeds.append((section_title, unique_articles))
-                    print(f"  {len(unique_articles)} articles trouvés")
+                    print(f'  {len(unique_articles)} articles trouvés')
 
             except Exception as e:
-                print(f"Erreur sur {section_title}: {str(e)}")
+                print(f'Erreur sur {section_title}: {str(e)}')
 
         return feeds
 
