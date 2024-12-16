@@ -198,7 +198,7 @@ details and examples.
         lines += ['.. _calibredb-%s-%s:' % (language, cmd), '']
         lines += [cmd, '~'*20, '']
         usage = parser.usage.strip()
-        usage = [i for i in usage.replace('%prog', 'calibredb').splitlines()]
+        usage = usage.replace('%prog', 'calibredb').splitlines()
         cmdline = '    '+usage[0]
         usage = usage[1:]
         usage = [re.sub(r'(%s)([^a-zA-Z0-9])'%cmd, r':command:`\1`\2', i) for i in usage]

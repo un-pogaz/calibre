@@ -3138,7 +3138,7 @@ values in ``field_name``. Example:
             return '1' if note is not None else ''
         try:
             notes_for_book = db.items_with_notes_in_book(mi.id)
-            values = [v for v in notes_for_book.get(field_name, {}).values()]
+            values = list(notes_for_book.get(field_name, {}).values())
             return db.field_metadata[field_name]['is_multiple'].get('list_to_ui', ', ').join(values)
         except Exception as e:
             traceback.print_exc()
