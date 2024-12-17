@@ -1690,7 +1690,7 @@ def elided_text(text, font=None, width=300, pos='middle'):
         font = QApplication.instance().font()
     fm = (font if isinstance(font, QFontMetrics) else QFontMetrics(font))
     delta = 4
-    ellipsis = '\u2026'
+    ellipsis = '…'
 
     def remove_middle(x):
         mid = len(x) // 2
