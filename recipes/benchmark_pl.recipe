@@ -18,7 +18,7 @@ class BenchmarkPl(BasicNewsRecipe):
     no_stylesheets = True
     use_embedded_content = False
     preprocess_regexps = [(re.compile(u'<h3><span style="font-size: small;">&nbsp;Zobacz poprzednie <a href="http://www.benchmark.pl/news/zestawienie/grupa_id/135">Opinie dnia:</a></span>.*</body>',  # noqa: E501
-        re.DOTALL | re.IGNORECASE), lambda match: '</body>'), (re.compile(u'Więcej o .*?</ul>', re.DOTALL | re.IGNORECASE), lambda match: '')]  # noqa
+        re.DOTALL | re.IGNORECASE), lambda match: '</body>'), (re.compile(u'Więcej o .*?</ul>', re.DOTALL | re.IGNORECASE), lambda match: '')]
 
     keep_only_tags = [dict(id=['articleHeader', 'articleGallery']), dict(
         name='div', attrs={'class': ['m_zwykly', 'gallery']}), dict(id='article')]

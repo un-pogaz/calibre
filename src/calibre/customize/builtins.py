@@ -1975,10 +1975,10 @@ if __name__ == '__main__':
     try:
         subprocess.check_call(['python', '-c', textwrap.dedent(
         '''
-        import init_calibre  # noqa
+        import init_calibre  # noqa: F401
 
         def doit():
-            import calibre.customize.builtins as b  # noqa
+            import calibre.customize.builtins as b  # noqa: F401
 
         def show_stats():
             from pstats import Stats
@@ -1997,7 +1997,7 @@ if __name__ == '__main__':
     try:
         subprocess.check_call(['python', '-c', textwrap.dedent(
         '''
-        import time, sys, init_calibre
+        import time, sys, init_calibre  # noqa: F401
         st = time.time()
         import calibre.customize.builtins
         t = time.time() - st

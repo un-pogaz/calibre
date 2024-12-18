@@ -300,7 +300,7 @@ def main(args):
 
 if __name__ == '__main__':
     try:
-        import init_calibre
+        import init_calibre  # noqa: F401
         init_calibre
     except ImportError:
         pass
