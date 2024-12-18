@@ -29,7 +29,7 @@ select = [
 [lint.per-file-ignores]
 "recipes/*" = ['UP']
 "manual/plugin_examples/*" = ['UP']
-"src/calibre/ebooks/unihandecode/*codepoints.py" = ['E501', 'W191']
+"src/calibre/ebooks/unihandecode/*codepoints.py" = ['E501']
 "src/calibre/ebooks/metadata/sources/*" = ['UP']
 "src/calibre/gui2/store/stores/*" = ['UP']
 "src/calibre/utils/copy_files.py" = ['UP037']
