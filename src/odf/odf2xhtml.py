@@ -161,7 +161,7 @@ class StyleToCSS:
             this should really be implemented as an absolutely position <img>
             with a width and a height
         '''
-        sdict['background-image'] = "url('%s')" % self.fillimages[val]
+        sdict['background-image'] = "url('{}')".format(self.fillimages[val])
 
     def c_fo(self, ruleset, sdict, rule, val):
         ''' XSL formatting attributes '''
@@ -203,7 +203,7 @@ class StyleToCSS:
         if generic is not None:
             self.save_font(fontstyle, fontstyle, generic)
         family, htmlgeneric = self.fontdict.get(fontstyle, (fontstyle, 'serif'))
-        sdict['font-family'] = '%s, %s'  % (family, htmlgeneric)
+        sdict['font-family'] = f'{family}, {htmlgeneric}'
 
     def c_text_position(self, ruleset, sdict, rule, tp):
         ''' Text position. This is used e.g. to make superscript and subscript
@@ -510,7 +510,7 @@ class ODF2XHTML(handler.ContentHandler):
         if media:
             self.metatags.append(f'<link rel="stylesheet" type="text/css" href="{stylefilename}" media="{media}"/>\n')
         else:
-            self.metatags.append('<link rel="stylesheet" type="text/css" href="%s"/>\n' % (stylefilename))
+            self.metatags.append(f'<link rel="stylesheet" type="text/css" href="{stylefilename}"/>\n')
 
     def _resetfootnotes(self):
         # Footnotes and endnotes
@@ -564,7 +564,7 @@ class ODF2XHTML(handler.ContentHandler):
         for key,val in attrs.items():
             a.append(f'''{key}={quoteattr(val)}''')
         if len(a) == 0:
-            self.writeout('<%s>' % tag)
+            self.writeout(f'<{tag}>')
         else:
             self.writeout('<{} {}>'.format(tag, ' '.join(a)))
         if block:
@@ -573,7 +573,7 @@ class ODF2XHTML(handler.ContentHandler):
     def closetag(self, tag, block=True):
         ''' Close an open HTML tag '''
         self.htmlstack.pop()
-        self.writeout('</%s>' % tag)
+        self.writeout(f'</{tag}>')
         if block:
             self.writeout('\n')
 
@@ -647,7 +647,7 @@ class ODF2XHTML(handler.ContentHandler):
         ''' Create a unique anchor id for a href name '''
         if name not in self.anchors:
             # Changed by Kovid
-            self.anchors[name] = 'anchor%d' % (len(self.anchors) + 1)
+            self.anchors[name] = 'anchor{}'.format(len(self.anchors) + 1)
         return self.anchors.get(name)
 
     def purgedata(self):
@@ -662,7 +662,7 @@ class ODF2XHTML(handler.ContentHandler):
         ''' Get the title from the meta data and create a HTML <title>
         '''
         self.title = ''.join(self.data)
-        # self.metatags.append('<title>%s</title>\n' % escape(self.title))
+        # self.metatags.append('<title>{}</title>\n'.format(escape(self.title)))
         self.data = []
 
     def e_dc_metatag(self, tag, attrs):
@@ -675,14 +675,14 @@ class ODF2XHTML(handler.ContentHandler):
         ''' Set the content language. Identifies the targeted audience
         '''
         self.language = ''.join(self.data)
-        self.metatags.append('<meta http-equiv="content-language" content="%s"/>\n' % escape(self.language))
+        self.metatags.append('<meta http-equiv="content-language" content="{}"/>\n'.format(escape(self.language)))
         self.data = []
 
     def e_dc_creator(self, tag, attrs):
         ''' Set the content creator. Identifies the targeted audience
         '''
         self.creator = ''.join(self.data)
-        self.metatags.append('<meta http-equiv="creator" content="%s"/>\n' % escape(self.creator))
+        self.metatags.append('<meta http-equiv="creator" content="{}"/>\n'.format(escape(self.creator)))
         self.data = []
 
     def s_custom_shape(self, tag, attrs):
@@ -923,7 +923,7 @@ dl.notes dd:last-of-type { page-break-after: avoid }
                     yield k, v
 
         for css2, names in css_styles.items():
-            self.writeout('%s {\n' % ', '.join(names))
+            self.writeout('{} {{\n'.format(', '.join(names)))
             for style, val in filter_margins(css2):
                 self.writeout(f'\t{style}: {val};\n')
             self.writeout('}\n')
@@ -940,13 +940,13 @@ dl.notes dd:last-of-type { page-break-after: avoid }
         for key in range(1,self.currentnote+1):
             note = self.notedict[key]
 #       for key,note in self.notedict.items():
-            self.opentag('dt', {'id':'footnote-%d' % key})
+            self.opentag('dt', {'id':f'footnote-{key}'})
 #           self.opentag('sup')
 #           self.writeout(escape(note['citation']))
 #           self.closetag('sup', False)
             self.writeout('[')
-            self.opentag('a', {'href': '#citation-%d' % key})
-            self.writeout('←%d' % key)
+            self.opentag('a', {'href': f'#citation-{key}'})
+            self.writeout(f'←{key}')
             self.closetag('a')
             self.writeout(']\xa0')
             self.closetag('dt')
@@ -970,7 +970,7 @@ dl.notes dd:last-of-type { page-break-after: avoid }
         self.emptytag('meta', {'http-equiv':'Content-Type', 'content':'text/html;charset=UTF-8'})
         for metaline in self.metatags:
             self.writeout(metaline)
-        self.writeout('<title>%s</title>\n' % escape(self.title))
+        self.writeout('<title>{}</title>\n'.format(escape(self.title)))
 
     def e_office_document_content(self, tag, attrs):
         ''' Last tag '''
@@ -1172,7 +1172,7 @@ dl.notes dd:last-of-type { page-break-after: avoid }
         c = attrs.get((TABLENS,'style-name'), None)
         if c and self.generate_css:
             c = c.replace('.','_')
-            self.opentag('table',{'class': 'T-%s' % c})
+            self.opentag('table',{'class': f'T-{c}'})
         else:
             self.opentag('table')
         self.purgedata()
@@ -1198,7 +1198,7 @@ dl.notes dd:last-of-type { page-break-after: avoid }
 
         c = attrs.get((TABLENS,'style-name'))
         if c:
-            htmlattrs['class'] = 'TD-%s' % c.replace('.','_')
+            htmlattrs['class'] = 'TD-{}'.format(c.replace('.','_'))
         self.opentag('td', htmlattrs)
         self.purgedata()
 
@@ -1214,7 +1214,7 @@ dl.notes dd:last-of-type { page-break-after: avoid }
         repeated = int(attrs.get((TABLENS,'number-columns-repeated'), 1))
         htmlattrs = {}
         if c:
-            htmlattrs['class'] = 'TC-%s' % c.replace('.','_')
+            htmlattrs['class'] = 'TC-{}'.format(c.replace('.','_'))
         for x in range(repeated):
             self.emptytag('col', htmlattrs)
         self.purgedata()
@@ -1225,7 +1225,7 @@ dl.notes dd:last-of-type { page-break-after: avoid }
         c = attrs.get((TABLENS,'style-name'), None)
         htmlattrs = {}
         if c:
-            htmlattrs['class'] = 'TR-%s' % c.replace('.','_')
+            htmlattrs['class'] = 'TR-{}'.format(c.replace('.','_'))
         self.opentag('tr', htmlattrs)
         self.purgedata()
 
@@ -1280,9 +1280,9 @@ dl.notes dd:last-of-type { page-break-after: avoid }
             self.headinglevels[x] = 0
         special = special_styles.get('P-'+name)
         if special or not self.generate_css:
-            self.opentag('h%s' % level)
+            self.opentag(f'h{level}')
         else:
-            self.opentag('h%s' % level, {'class':'P-%s' % name})
+            self.opentag(f'h{level}', {'class':f'P-{name}'})
         self.purgedata()
 
     def e_text_h(self, tag, attrs):
@@ -1309,7 +1309,7 @@ dl.notes dd:last-of-type { page-break-after: avoid }
         self.closetag('a', False)
         self.opentag('a', {'id': anchor2})
         self.closetag('a', False)
-        self.closetag('h%s' % level)
+        self.closetag(f'h{level}')
         self.purgedata()
 
     def s_text_line_break(self, tag, attrs):
@@ -1335,7 +1335,7 @@ dl.notes dd:last-of-type { page-break-after: avoid }
             # the list level must return to 1, even though the table or
             # textbox itself may be nested within another list.
             name = self.tagstack.rfindattr((TEXTNS,'style-name'))
-        list_class = '%s_%d' % (name, level)
+        list_class = f'{name}_{level}'
         tag_name = self.listtypes.get(list_class,'ul')
         number_class = tag_name + list_class
         if list_id:
@@ -1355,7 +1355,7 @@ dl.notes dd:last-of-type { page-break-after: avoid }
             attrs = {'start': unicode_type(self.list_number_map[number_class])}
         if self.generate_css:
             attrs['class'] = list_class
-        self.opentag('%s' % tag_name, attrs)
+        self.opentag(str(tag_name), attrs)
         self.purgedata()
 
     def e_text_list(self, tag, attrs):
@@ -1372,7 +1372,7 @@ dl.notes dd:last-of-type { page-break-after: avoid }
             # the list level must return to 1, even though the table or
             # textbox itself may be nested within another list.
             name = self.tagstack.rfindattr((TEXTNS,'style-name'))
-        list_class = '%s_%d' % (name, level)
+        list_class = f'{name}_{level}'
         self.closetag(self.listtypes.get(list_class,'ul'))
         self.purgedata()
 
@@ -1473,9 +1473,9 @@ dl.notes dd:last-of-type { page-break-after: avoid }
         self.notedict[self.currentnote]['citation'] = mark
         self.opentag('sup')
         self.opentag('a', {
-            'href': '#footnote-%s' % self.currentnote,
+            'href': f'#footnote-{self.currentnote}',
             'class': 'citation',
-            'id':'citation-%s' % self.currentnote
+            'id':f'citation-{self.currentnote}'
         })
 #        self.writeout( escape(mark) )
         # Since HTML only knows about endnotes, there is too much risk that the
@@ -1496,7 +1496,7 @@ dl.notes dd:last-of-type { page-break-after: avoid }
             if specialtag is None:
                 specialtag = 'p'
                 if self.generate_css:
-                    htmlattrs['class'] = 'P-%s' % c
+                    htmlattrs['class'] = f'P-{c}'
         self.opentag(specialtag, htmlattrs)
         self.purgedata()
 
@@ -1548,7 +1548,7 @@ dl.notes dd:last-of-type { page-break-after: avoid }
             if special is None:
                 special = 'span'
                 if self.generate_css:
-                    htmlattrs['class'] = 'S-%s' % c
+                    htmlattrs['class'] = f'S-{c}'
 
         self.opentag(special, htmlattrs)
         self.purgedata()

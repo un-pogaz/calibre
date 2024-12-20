@@ -21,7 +21,7 @@ from setup import SRC, Command, isbsd, isfreebsd, ishaiku, islinux, ismacos, isw
 
 isunix = islinux or ismacos or isbsd or ishaiku
 
-py_lib = os.path.join(sys.prefix, 'libs', 'python%d%d.lib' % sys.version_info[:2])
+py_lib = os.path.join(sys.prefix, 'libs', 'python{}{}.lib'.format(*sys.version_info[:2]))
 
 class CompileCommand(NamedTuple):
     cmd: List[str]
@@ -83,7 +83,7 @@ def lazy_load(name):
     try:
         return getattr(build_environment, name)
     except AttributeError:
-        raise ImportError('The setup.build_environment module has no symbol named: %s' % name)
+        raise ImportError(f'The setup.build_environment module has no symbol named: {name}')
 
 
 def expand_file_list(items, is_paths=True, cross_compile_for='native'):
@@ -617,8 +617,8 @@ class Build(Command):
         try:
             subprocess.check_call(*args, **kwargs)
         except:
-            cmdline = ' '.join(['"%s"' % (arg) if ' ' in arg else arg for arg in args[0]])
-            print('Error while executing: %s\n' % (cmdline))
+            cmdline = ' '.join([f'"{arg}"' if ' ' in arg else arg for arg in args[0]])
+            print(f'Error while executing: {cmdline}\n')
             raise
 
     def build_headless(self):
@@ -657,7 +657,7 @@ class Build(Command):
         os.chdir(bdir)
         try:
             self.check_call(cmd + ['-S', os.path.dirname(sources[0])])
-            self.check_call([self.env.make] + ['-j%d'%(cpu_count or 1)])
+            self.check_call([self.env.make] + ['-j{}'.format(cpu_count or 1)])
         finally:
             os.chdir(cwd)
         os.rename(self.j(bdir, 'libheadless.so'), target)
@@ -734,7 +734,7 @@ sip-file = {os.path.basename(sipf)!r}
             env = os.environ.copy()
             if is_macos_universal_build:
                 env['ARCHS'] = 'x86_64 arm64'
-            self.check_call([self.env.make] + ([] if iswindows else ['-j%d'%(os.cpu_count() or 1)]), env=env)
+            self.check_call([self.env.make] + ([] if iswindows else ['-j{}'.format(os.cpu_count() or 1)]), env=env)
             e = 'pyd' if iswindows else 'so'
             m = glob.glob(f'{ext.name}/{ext.name}.*{e}')
             if not m:

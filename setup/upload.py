@@ -72,9 +72,9 @@ def upload_signatures():
                 f.write(fingerprint)
             scp.append(sha512)
         for srv in 'code main'.split():
-            check_call(scp + ['{0}:/srv/{0}/signatures/'.format(srv)])
+            check_call(scp + [f'{srv}:/srv/{srv}/signatures/'])
             check_call(
-                ['ssh', srv, 'chown', '-R', 'http:http', '/srv/%s/signatures' % srv]
+                ['ssh', srv, 'chown', '-R', 'http:http', f'/srv/{srv}/signatures']
             )
     finally:
         shutil.rmtree(tdir)
@@ -367,18 +367,18 @@ class UploadDemo(Command):  # {{{
 
     def run(self, opts):
         check_call(
-            '''ebook-convert %s/demo.html /tmp/html2lrf.lrf '''
+            '''ebook-convert {}/demo.html /tmp/html2lrf.lrf '''
             '''--title='Demonstration of html2lrf' --authors='Kovid Goyal' '''
             '''--header '''
             '''--serif-family "/usr/share/fonts/corefonts, Times New Roman" '''
             '''--mono-family  "/usr/share/fonts/corefonts, Andale Mono" '''
-            '''''' % self.j(self.SRC, HTML2LRF),
+            ''''''.format(self.j(self.SRC, HTML2LRF)),
             shell=True
         )
 
         lrf = self.j(self.SRC, 'calibre', 'ebooks', 'lrf', 'html', 'demo')
         check_call(
-            'cd %s && zip -j /tmp/html-demo.zip * /tmp/html2lrf.lrf' % lrf,
+            f'cd {lrf} && zip -j /tmp/html-demo.zip * /tmp/html2lrf.lrf',
             shell=True
         )
 
@@ -409,8 +409,7 @@ class UploadToServer(Command):  # {{{
             ('ssh code /apps/update-calibre-version.py ' + __version__).split()
         )
         check_call((
-            'ssh main /usr/local/bin/update-calibre-version.py %s && /usr/local/bin/update-calibre-code.py && /apps/static/generate.py'
-            % __version__
+            f'ssh main /usr/local/bin/update-calibre-version.py {__version__} && /usr/local/bin/update-calibre-code.py && /apps/static/generate.py'
         ).split())
 
 

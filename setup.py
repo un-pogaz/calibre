@@ -75,7 +75,7 @@ def main(args=sys.argv):
         print('\nWhere command is one of:')
         print()
         for x in sorted(commands.__all__):
-            print('{:20} -'.format(x), end=' ')
+            print(f'{x:20} -', end=' ')
             c = getattr(commands, x)
             desc = getattr(c, 'short_description', c.description)
             print(desc)

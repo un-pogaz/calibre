@@ -385,10 +385,10 @@ class OpenDocument:
         '''
         self.childobjects.append(document)
         if objectname is None:
-            document.folder = '%s/Object %d' % (self.folder, len(self.childobjects))
+            document.folder = f'{self.folder}/Object {len(self.childobjects)}'
         else:
             document.folder = objectname
-        return '.%s' % document.folder
+        return f'.{document.folder}'
 
     def _savePictures(self, object, folder):
         for arcname, picturerec in object.Pictures.items():
@@ -403,11 +403,11 @@ class OpenDocument:
                 self._z.writestr(zi, fileobj)
         # According to section 17.7.3 in ODF 1.1, the pictures folder should not have a manifest entry
 #       if hasPictures:
-#           self.manifest.addElement(manifest.FileEntry(fullpath="%sPictures/" % folder, mediatype=""))
+#           self.manifest.addElement(manifest.FileEntry(fullpath=f"{folder}Pictures/", mediatype=""))
         # Look in subobjects
         subobjectnum = 1
         for subobject in object.childobjects:
-            self._savePictures(subobject,'%sObject %d/' % (folder, subobjectnum))
+            self._savePictures(subobject,f'{folder}Object {subobjectnum}/')
             subobjectnum += 1
 
     def __replaceGenerator(self):
@@ -492,23 +492,23 @@ class OpenDocument:
         else:
             self.manifest.addElement(manifest.FileEntry(fullpath=folder, mediatype=object.mimetype))
         # Write styles
-        self.manifest.addElement(manifest.FileEntry(fullpath='%sstyles.xml' % folder, mediatype='text/xml'))
-        zi = zipfile.ZipInfo('%sstyles.xml' % folder, self._now)
+        self.manifest.addElement(manifest.FileEntry(fullpath=f'{folder}styles.xml', mediatype='text/xml'))
+        zi = zipfile.ZipInfo(f'{folder}styles.xml', self._now)
         zi.compress_type = zipfile.ZIP_DEFLATED
         zi.external_attr = UNIXPERMS
         self._z.writestr(zi, object.stylesxml())
 
         # Write content
-        self.manifest.addElement(manifest.FileEntry(fullpath='%scontent.xml' % folder, mediatype='text/xml'))
-        zi = zipfile.ZipInfo('%scontent.xml' % folder, self._now)
+        self.manifest.addElement(manifest.FileEntry(fullpath=f'{folder}content.xml', mediatype='text/xml'))
+        zi = zipfile.ZipInfo(f'{folder}content.xml', self._now)
         zi.compress_type = zipfile.ZIP_DEFLATED
         zi.external_attr = UNIXPERMS
         self._z.writestr(zi, object.contentxml())
 
         # Write settings
         if object.settings.hasChildNodes():
-            self.manifest.addElement(manifest.FileEntry(fullpath='%ssettings.xml' % folder, mediatype='text/xml'))
-            zi = zipfile.ZipInfo('%ssettings.xml' % folder, self._now)
+            self.manifest.addElement(manifest.FileEntry(fullpath=f'{folder}settings.xml', mediatype='text/xml'))
+            zi = zipfile.ZipInfo(f'{folder}settings.xml', self._now)
             zi.compress_type = zipfile.ZIP_DEFLATED
             zi.external_attr = UNIXPERMS
             self._z.writestr(zi, object.settingsxml())
@@ -524,7 +524,7 @@ class OpenDocument:
         # Write subobjects
         subobjectnum = 1
         for subobject in object.childobjects:
-            self._saveXmlObjects(subobject, '%sObject %d/' % (folder, subobjectnum))
+            self._saveXmlObjects(subobject, f'{folder}Object {subobjectnum}/')
             subobjectnum += 1
 
 # Document's DOM methods
