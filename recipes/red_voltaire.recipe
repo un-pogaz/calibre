@@ -4,9 +4,9 @@ from calibre.web.feeds.news import BasicNewsRecipe
 
 
 class RedVoltaireRecipe(BasicNewsRecipe):
-    title = u'Red Voltaire'
+    title = 'Red Voltaire'
     __author__ = 'atordo'
-    description = u'Red de prensa no alineada, especializada en el an\u00e1lisis de las relaciones internacionales'
+    description = 'Red de prensa no alineada, especializada en el análisis de las relaciones internacionales'
     oldest_article = 7
     max_articles_per_feed = 30
     auto_cleanup = False
@@ -14,8 +14,8 @@ class RedVoltaireRecipe(BasicNewsRecipe):
     language = 'es'
     use_embedded_content = False
     remove_javascript = True
-    cover_url = u'http://www.voltairenet.org/squelettes/elements/images/logo-voltairenet-org.png'
-    masthead_url = u'http://www.voltairenet.org/squelettes/elements/images/logo-voltairenet-org.png'
+    cover_url = 'http://www.voltairenet.org/squelettes/elements/images/logo-voltairenet-org.png'
+    masthead_url = 'http://www.voltairenet.org/squelettes/elements/images/logo-voltairenet-org.png'
 
     preprocess_regexps = [
         (re.compile(r'<title>(?P<titulo>.+)</title>.+<span class="updated" title=".+"><time', re.IGNORECASE | re.DOTALL), lambda match:'</title></head><body><h1>' + match.group('titulo') + '</h1><time'),   # noqa
@@ -28,4 +28,4 @@ class RedVoltaireRecipe(BasicNewsRecipe):
     '''
 
     feeds = [
-        u'http://www.voltairenet.org/spip.php?page=backend&id_secteur=1110&lang=es']
+        'http://www.voltairenet.org/spip.php?page=backend&id_secteur=1110&lang=es']

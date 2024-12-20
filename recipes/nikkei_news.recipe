@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
-from __future__ import print_function
 
 import re
 import unicodedata
@@ -12,9 +10,9 @@ from calibre.web.feeds.recipes import BasicNewsRecipe
 
 
 class NikkeiNet_paper_subscription(BasicNewsRecipe):
-    title = u'\u65E5\u672C\u7D4C\u6E08\u65B0\u805E\uFF08\u671D\u520A\u30FB\u5915\u520A\uFF09'
+    title = '日本経済新聞（朝刊・夕刊）'
     __author__ = 'Ado Nishimura'
-    description = u'\u65E5\u7D4C\u96FB\u5B50\u7248\u306B\u3088\u308B\u65E5\u672C\u7D4C\u6E08\u65B0\u805E\u3002\u671D\u520A\u30FB\u5915\u520A\u306F\u53D6\u5F97\u6642\u9593\u306B\u3088\u308A\u5207\u308A\u66FF\u308F\u308A\u307E\u3059\u3002\u8981\u8CFC\u8AAD'  # noqa
+    description = '日経電子版による日本経済新聞。朝刊・夕刊は取得時間により切り替わります。要購読'  # noqa
     needs_subscription = True
     oldest_article = 1
     max_articles_per_feed = 30
@@ -96,7 +94,7 @@ class NikkeiNet_paper_subscription(BasicNewsRecipe):
         try:
             elms = soup.findAll(
                 'div', {"class": "cmn-article_text JSID_key_fonttxt"})
-            elm_text = u'◆'.join(
+            elm_text = '◆'.join(
                 [self.tag_to_string(elm).strip() for elm in elms])
             elm_text = unicodedata.normalize('NFKC', elm_text)
             article.summary = article.text_summary = elm_text

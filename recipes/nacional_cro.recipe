@@ -43,11 +43,11 @@ class NacionalCro(BasicNewsRecipe):
         'comment': description, 'tags': category, 'publisher': publisher, 'language': lang, 'pretty_print': True
     }
 
-    preprocess_regexps = [(re.compile(u'\u0110'), lambda match: u'\u00D0')]
+    preprocess_regexps = [(re.compile('Đ'), lambda match: 'Ð')]
 
     remove_tags = [dict(name=['object', 'link', 'embed'])]
 
-    feeds = [(u'Najnovije Vijesti', u'http://www.nacional.hr/rss')]
+    feeds = [('Najnovije Vijesti', 'http://www.nacional.hr/rss')]
 
     def preprocess_html(self, soup):
         soup.html['lang'] = self.lang

@@ -12,7 +12,7 @@ class News(BasicNewsRecipe):
     description = 'Независимое российское онлайн-издание, посвященное цифровым технологиям'
     publisher = '3DNews'
     category = 'news'
-    cover_url = u'http://www.3dnews.ru/assets/images/logo.png'
+    cover_url = 'http://www.3dnews.ru/assets/images/logo.png'
     language = 'ru'
     auto_cleanup = True
 
@@ -21,108 +21,108 @@ class News(BasicNewsRecipe):
 
     feeds = [
         (
-            '\u0412\u0430\u0436\u043D\u044B\u0435 \u043D\u043E\u0432\u043E\u0441\u0442\u0438',
+            'Важные новости',
             'https://3dnews.ru/breaking/rss/'
         ),
         (
-            '\u0412\u0441\u0435 \u043D\u043E\u0432\u043E\u0441\u0442\u0438',
+            'Все новости',
             'https://3dnews.ru/news/rss/'
         ),
         (
-            '\u041D\u043E\u0432\u043E\u0441\u0442\u0438 - \u0445\u0430\u0440\u0434',
+            'Новости - хард',
             'https://3dnews.ru/hardware-news/rss'
         ),
         (
-            '\u041D\u043E\u0432\u043E\u0441\u0442\u0438 - \u0433\u0430\u0434\u0436\u0435\u0442\u044B',
+            'Новости - гаджеты',
             'https://3dnews.ru/gadgets/rss/'
         ),
         (
-            '\u041D\u043E\u0432\u043E\u0441\u0442\u0438 - \u0441\u043E\u0444\u0442',
+            'Новости - софт',
             'https://3dnews.ru/software-news/rss/'
         ),
         (
-            '\u041D\u043E\u0432\u043E\u0441\u0442\u0438 - \u0438\u0433\u0440\u044B',
+            'Новости - игры',
             'https://3dnews.ru/games/rss/'
         ),
         (
-            '\u0423\u043C\u043D\u044B\u0435 \u0412\u0435\u0449\u0438',
+            'Умные Вещи',
             'https://3dnews.ru/smart-things/rss/'
         ),
         (
-            '\u0410\u043D\u0430\u043B\u0438\u0442\u0438\u043A\u0430',
+            'Аналитика',
             'https://3dnews.ru/editorial/rss/'
         ),
         (
-            '\u041F\u0440\u043E\u0446\u0435\u0441\u0441\u043E\u0440\u044B \u0438 \u043F\u0430\u043C\u044F\u0442\u044C',
+            'Процессоры и память',
             'https://3dnews.ru/cpu/rss/'
         ),
         (
-            '\u041C\u0430\u0442\u0435\u0440\u0438\u043D\u0441\u043A\u0438\u0435 \u043F\u043B\u0430\u0442\u044B',
+            'Материнские платы',
             'https://3dnews.ru/motherboard/rss/'
         ),
         (
-            '\u041A\u043E\u0440\u043F\u0443\u0441\u0430, \u0411\u041F \u0438 \u043E\u0445\u043B\u0430\u0436\u0434\u0435\u043D\u0438\u0435',
+            'Корпуса, БП и охлаждение',
             'https://3dnews.ru/cooling/rss/'
         ),
         (
-            '\u0412\u0438\u0434\u0435\u043E\u043A\u0430\u0440\u0442\u044B',
+            'Видеокарты',
             'https://3dnews.ru/video/rss/'
         ),
         (
-            '\u041C\u043E\u043D\u0438\u0442\u043E\u0440\u044B \u0438 \u043F\u0440\u043E\u0435\u043A\u0442\u043E\u0440\u044B',
+            'Мониторы и проекторы',
             'https://3dnews.ru/display/rss/'
         ),
         (
-            '\u041D\u0430\u043A\u043E\u043F\u0438\u0442\u0435\u043B\u0438',
+            'Накопители',
             'https://3dnews.ru/storage/rss/'
         ),
         (
-            '\u0426\u0438\u0444\u0440\u043E\u0432\u043E\u0439 \u0430\u0432\u0442\u043E\u043C\u043E\u0431\u0438\u043B\u044C',
+            'Цифровой автомобиль',
             'https://3dnews.ru/auto/rss/'
         ),
         (
-            '\u0421\u043E\u0442\u043E\u0432\u0430\u044F \u0441\u0432\u044F\u0437\u044C',
+            'Сотовая связь',
             'https://3dnews.ru/phone/rss/'
         ),
         (
-            '\u041F\u0435\u0440\u0438\u0444\u0435\u0440\u0438\u044F',
+            'Периферия',
             'https://3dnews.ru/peripheral/rss/'
         ),
         (
-            '\u041D\u043E\u0443\u0442\u0431\u0443\u043A\u0438 \u0438 \u041F\u041A',
+            'Ноутбуки и ПК',
             'https://3dnews.ru/mobile/rss/'
         ),
         (
-            '\u041F\u043B\u0430\u043D\u0448\u0435\u0442\u044B',
+            'Планшеты',
             'https://3dnews.ru/tablets/rss/'
         ),
         (
-            '\u0417\u0432\u0443\u043A \u0438 \u0430\u043A\u0443\u0441\u0442\u0438\u043A\u0430',
+            'Звук и акустика',
             'https://3dnews.ru/multimedia/rss/'
         ),
         (
-            '\u0426\u0438\u0444\u0440\u043E\u0432\u043E\u0435 \u0444\u043E\u0442\u043E \u0438 \u0432\u0438\u0434\u0435\u043E',
+            'Цифровое фото и видео',
             'https://3dnews.ru/digital/rss/'
         ),
         (
-            '\u0421\u0435\u0442\u0438 \u0438 \u043A\u043E\u043C\u043C\u0443\u043D\u0438\u043A\u0430\u0446\u0438\u0438',
+            'Сети и коммуникации',
             'https://3dnews.ru/communication/rss/'
         ),
         (
-            '\u041F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u043D\u043E\u0435 \u043E\u0431\u0435\u0441\u043F\u0435\u0447\u0435\u043D\u0438\u0435',
+            'Программное обеспечение',
             'https://3dnews.ru/software/rss/'
         ),
-        ('Off-\u0441\u044F\u043D\u043A\u0430', 'https://3dnews.ru/offsyanka/rss/'),
+        ('Off-сянка', 'https://3dnews.ru/offsyanka/rss/'),
         (
-            '\u041C\u0430\u0441\u0442\u0435\u0440\u0441\u043A\u0430\u044F',
+            'Мастерская',
             'https://3dnews.ru/workshop/rss/'
         ),
         (
-            'ServerNews - \u0441\u0442\u0430\u0442\u044C\u0438',
+            'ServerNews - статьи',
             'https://servernews.ru/rss'
         ),
         (
-            'ServerNews - \u043D\u043E\u0432\u043E\u0441\u0442\u0438',
+            'ServerNews - новости',
             'https://servernews.ru/news/rss'
         )
     ]

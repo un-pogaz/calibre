@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 __license__ = 'GPL v3'
 __copyright__ = '2008-2012, Darko Miletic <darko.miletic at gmail.com>'
 '''
@@ -11,10 +10,10 @@ from calibre.web.feeds.news import BasicNewsRecipe
 
 
 class Pescanik(BasicNewsRecipe):
-    title = u'Peščanik'
+    title = 'Peščanik'
     __author__ = 'Darko Miletic'
-    description = u'Peščanik je udruženje građana osnovano 2006. godine. Glavni proizvod Peščanika je radio emisija koja je emitovana na Radiju B92 od 02.02.2000. do 16.06.2011, a od septembra 2011. se emituje na osam radio stanica u Srbiji, Crnoj Gori i BiH'  # noqa
-    publisher = u'Peščanik'
+    description = 'Peščanik je udruženje građana osnovano 2006. godine. Glavni proizvod Peščanika je radio emisija koja je emitovana na Radiju B92 od 02.02.2000. do 16.06.2011, a od septembra 2011. se emituje na osam radio stanica u Srbiji, Crnoj Gori i BiH'  # noqa
+    publisher = 'Peščanik'
     category = 'news, politics, Serbia'
     oldest_article = 10
     max_articles_per_feed = 100
@@ -34,14 +33,14 @@ class Pescanik(BasicNewsRecipe):
         'comment': description, 'tags': category, 'publisher': publisher, 'language': language
     }
 
-    preprocess_regexps = [(re.compile(u'\u0110'), lambda match: u'\u00D0')]
+    preprocess_regexps = [(re.compile('Đ'), lambda match: 'Ð')]
     remove_tags = [
         dict(name=['object', 'link', 'meta', 'script', 'iframe', 'embed'])]
     keep_only_tags = [
         dict(attrs={'id': ['BlogTitle', 'BlogDate', 'BlogContent']})]
     feeds = [
-        (u'Autori', u'http://pescanik.net/category/autori/feed/'),
-        (u'Prevodi', u'http://pescanik.net/category/prevodi/feed/')
+        ('Autori', 'http://pescanik.net/category/autori/feed/'),
+        ('Prevodi', 'http://pescanik.net/category/prevodi/feed/')
     ]
 
     def print_version(self, url):

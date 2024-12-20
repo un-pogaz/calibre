@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 __license__ = 'GPL v3'
-__copyright__ = u'2011, Silviu Cotoar\u0103'
+__copyright__ = '2011, Silviu Cotoară'
 '''
 csid.ro
 '''
@@ -11,9 +10,9 @@ from calibre.web.feeds.news import BasicNewsRecipe
 
 
 class CSID(BasicNewsRecipe):
-    title = u'Ce se \u00eent\u00e2mpl\u0103 doctore?'
-    __author__ = u'Silviu Cotoar\u0103'
-    description = u'Ce se \u00eent\u00e2mpl\u0103 doctore?'
+    title = 'Ce se întâmplă doctore?'
+    __author__ = 'Silviu Cotoară'
+    description = 'Ce se întâmplă doctore?'
     publisher = 'CSID'
     oldest_article = 5
     language = 'ro'
@@ -42,7 +41,7 @@ class CSID(BasicNewsRecipe):
     ]
 
     feeds = [
-        (u'Feeds', u'http://www.csid.ro/rss/')
+        ('Feeds', 'http://www.csid.ro/rss/')
     ]
 
     def preprocess_html(self, soup):

@@ -9,7 +9,7 @@ class VitaliaCZ(BasicNewsRecipe):
     __author__ = 'Tomas Latal'
     __version__ = '1.0'
     __date__ = '30 April 2011'
-    description = u'Aktuality a \u010dl\xe1nky z Vitalia.cz'
+    description = 'Aktuality a čl\xe1nky z Vitalia.cz'
     oldest_article = 1
     max_articles_per_feed = 10
     encoding = 'utf8'
@@ -26,8 +26,8 @@ class VitaliaCZ(BasicNewsRecipe):
                                .urs p {margin: 0 0 0.8em 0;}'
 
     feeds = [
-        (u'Aktuality', 'http://www.vitalia.cz/rss/aktuality/'),
-        (u'\u010cl\xe1nky', u'http://www.vitalia.cz/rss/clanky/'),
+        ('Aktuality', 'http://www.vitalia.cz/rss/aktuality/'),
+        ('Čl\xe1nky', 'http://www.vitalia.cz/rss/clanky/'),
     ]
 
     remove_tags_before = dict(id='main')

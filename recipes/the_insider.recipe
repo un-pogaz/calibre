@@ -1,6 +1,4 @@
 #!/usr/bin/env python2
-# vim:fileencoding=utf-8
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 from calibre.web.feeds.news import BasicNewsRecipe
 
@@ -31,5 +29,5 @@ class TheInsider(BasicNewsRecipe):
     ]
 
     feeds = [
-        (u'\u041D\u043E\u0432\u043E\u0441\u0442\u0438', u'https://theins.ru/feed')
+        ('Новости', 'https://theins.ru/feed')
     ]

@@ -1,5 +1,4 @@
 # vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
-from __future__ import unicode_literals
 
 import re
 
@@ -8,14 +7,14 @@ from calibre.web.feeds.recipes import BasicNewsRecipe
 
 class plRecipe(BasicNewsRecipe):
     __author__ = 'bubak'
-    title = u'Parlamentn\u00ed Listy'
-    publisher = u''
+    title = 'Parlamentní Listy'
+    publisher = ''
     description = ''
     oldest_article = 1
     max_articles_per_feed = 20
 
     feeds = [
-        (u'Parlamentní listy.cz', u'http://www.parlamentnilisty.cz/export/rss.aspx')
+        ('Parlamentní listy.cz', 'http://www.parlamentnilisty.cz/export/rss.aspx')
     ]
 
     language = 'cs'

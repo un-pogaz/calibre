@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 __license__ = 'GPL v3'
 __copyright__ = '2010, Darko Miletic <darko.miletic at gmail.com>'
@@ -14,7 +13,7 @@ class RIANovosti(BasicNewsRecipe):
     title = 'RIA Novosti - Russian'
     __author__ = 'Darko Miletic (with fixes by bugmen00t)'
     description = 'News from Russia'
-    publisher = '\u041C\u0418\u0410 \u00AB\u0420\u043E\u0441\u0441\u0438\u044F \u0441\u0435\u0433\u043E\u0434\u043D\u044F\u00BB\u2028 (MIA Russia Today)'
+    publisher = 'МИА «Россия сегодня»  (MIA Russia Today)'
     category = 'news, politics, Russia'
     oldest_article = 7
     max_articles_per_feed = 100
@@ -37,6 +36,6 @@ class RIANovosti(BasicNewsRecipe):
     ]
 
     feeds = [(
-        u'\u041B\u0435\u043D\u0442\u0430 \u043D\u043E\u0432\u043E\u0441\u0442\u0435\u0439',
-        u'https://ria.ru/export/rss2/archive/index.xml'
+        'Лента новостей',
+        'https://ria.ru/export/rss2/archive/index.xml'
     )]

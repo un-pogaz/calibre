@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 __license__ = 'GPL v3'
-__copyright__ = u'2011, Silviu Cotoar\u0103'
+__copyright__ = '2011, Silviu Cotoară'
 '''
 adevarul.ro
 '''
@@ -11,10 +10,10 @@ from calibre.web.feeds.news import BasicNewsRecipe
 
 
 class Adevarul(BasicNewsRecipe):
-    title = u'Adev\u0103rul'
+    title = 'Adevărul'
     language = 'ro'
-    __author__ = u'Silviu Cotoar\u0103'
-    description = u'\u0218tiri din Rom\u00e2nia'
+    __author__ = 'Silviu Cotoară'
+    description = 'Știri din România'
     publisher = 'Adevarul'
     category = 'Ziare,Stiri,Romania'
     oldest_article = 5
@@ -40,7 +39,7 @@ class Adevarul(BasicNewsRecipe):
         dict(name='div', attrs={'id': 'comment_wrapper'}),
     ]
 
-    feeds = [(u'\u0218tiri', u'http://www.adevarul.ro/rss/latest')]
+    feeds = [('Știri', 'http://www.adevarul.ro/rss/latest')]
 
     def preprocess_html(self, soup):
         return self.adeify_images(soup)

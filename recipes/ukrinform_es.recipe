@@ -5,12 +5,12 @@ from calibre.web.feeds.news import BasicNewsRecipe
 
 
 class UkrInform(BasicNewsRecipe):
-    title                 = 'UkrInform (Espa\u00F1ol)'
+    title                 = 'UkrInform (Español)'
     __author__            = 'bugmen00t'
-    description           = 'Agencia de noticias nacional de Ucrania, fuente de informaci\u00F3n sobre la vida pol\u00EDtica, econ\u00F3mica, social, cient\u00EDfica, cultural y p\u00FAblica en Ucrania y en el extranjero.'  # noqa
-    publisher             = 'Ministerio de Cultura y Pol\u00EDtica de Informaci\u00F3n de Ucrania'
+    description           = 'Agencia de noticias nacional de Ucrania, fuente de información sobre la vida política, económica, social, científica, cultural y pública en Ucrania y en el extranjero.'  # noqa
+    publisher             = 'Ministerio de Cultura y Política de Información de Ucrania'
     category              = 'newspaper'
-    cover_url = u'https://static.ukrinform.com/photos/2022_05/thumb_files/630_360_1651819943-560.jpg'
+    cover_url = 'https://static.ukrinform.com/photos/2022_05/thumb_files/630_360_1651819943-560.jpg'
     language              = 'es'
     no_stylesheets        = True
     remove_javascript = False
@@ -30,10 +30,10 @@ class UkrInform(BasicNewsRecipe):
         ]
 
     feeds = [
-        ('\u00DAltimas noticias', 'https://www.ukrinform.es/rss/block-lastnews'),
+        ('Últimas noticias', 'https://www.ukrinform.es/rss/block-lastnews'),
         ('Guerra', 'https://www.ukrinform.es/rss/rubric-ato'),
-        ('Pol\u00EDtica', 'https://www.ukrinform.es/rss/rubric-polytics'),
-        ('Econom\u00EDa', 'https://www.ukrinform.es/rss/rubric-economy'),
+        ('Política', 'https://www.ukrinform.es/rss/rubric-polytics'),
+        ('Economía', 'https://www.ukrinform.es/rss/rubric-economy'),
         ('Defensa', 'https://www.ukrinform.es/rss/rubric-defense'),
         ('Sociedad y Cultura', 'https://www.ukrinform.es/rss/rubric-society'),
         ('Deportes', 'https://www.ukrinform.es/rss/rubric-sports'),

@@ -5,11 +5,11 @@ from calibre.web.feeds.news import BasicNewsRecipe
 
 
 class MesecCZ(BasicNewsRecipe):
-    title = u'M\u011b\u0161ec'
+    title = 'Měšec'
     __author__ = 'Tomas Latal'
     __version__ = '1.0'
     __date__ = '30 April 2011'
-    description = u'Zpr\xe1vi\u010dky a \u010dl\xe1nky z Mesec.cz'
+    description = 'Zpr\xe1vičky a čl\xe1nky z Mesec.cz'
     oldest_article = 1
     max_articles_per_feed = 10
     encoding = 'utf8'
@@ -24,8 +24,8 @@ class MesecCZ(BasicNewsRecipe):
                                .urs p {margin: 0 0 0.8em 0;}'
 
     feeds = [
-        (u'Aktuality', u'http://www.mesec.cz/rss/aktuality/'),
-        (u'\u010cl\xe1nky', u'http://www.mesec.cz/rss/clanky/')
+        ('Aktuality', 'http://www.mesec.cz/rss/aktuality/'),
+        ('Čl\xe1nky', 'http://www.mesec.cz/rss/clanky/')
     ]
 
     remove_tags_before = dict(id='main')

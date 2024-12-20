@@ -27,20 +27,20 @@ class Tovima(BasicNewsRecipe):
         dict(name='div', attrs={'class': ['article_cat']})
     ]
     feeds = [
-        (u'\u03C0\u03BF\u03BB\u03B9\u03C4\u03B9\u03BA\u03AE',
+        ('πολιτική',
          'http://www.tovima.gr/feed/politics/'),
-        (u'\u03BF\u03B9\u03BA\u03BF\u03BD\u03BF\u03BC\u03AF\u03B1',
+        ('οικονομία',
          'http://www.tovima.gr/feed/finance/'),
-        (u'\u03B3\u03BD\u03CE\u03BC\u03B5\u03C2',
+        ('γνώμες',
          'http://www.tovima.gr/feed/opinions/'),
-        (u'blogs', 'http://www.tovima.gr/feed/blogs/'),
-        (u'\u03BA\u03CC\u03C3\u03BC\u03BF\u03C2',
+        ('blogs', 'http://www.tovima.gr/feed/blogs/'),
+        ('κόσμος',
          'http://www.tovima.gr/feed/world/'),
-        (u'science', 'http://www.tovima.gr/feed/science/'),
-        (u'\u03BA\u03BF\u03B9\u03BD\u03C9\u03BD\u03AF\u03B1',
+        ('science', 'http://www.tovima.gr/feed/science/'),
+        ('κοινωνία',
          'http://www.tovima.gr/feed/society/'),
-        (u'\u03C0\u03BF\u03BB\u03B9\u03C4\u03B9\u03C3\u03BC\u03CC\u03C2',
+        ('πολιτισμός',
          'http://www.tovima.gr/feed/culture/'),
-        (u'\u03B1\u03B8\u03BB\u03B7\u03C4\u03B9\u03C3\u03BC\u03CC\u03C2',
+        ('αθλητισμός',
          'http://www.tovima.gr/feed/sports/')
     ]

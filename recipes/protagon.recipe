@@ -21,6 +21,6 @@ class protagon(BasicNewsRecipe):
     ]
 
     feeds = [
-        (u'\u0398\u03AD\u03BC\u03B1\u03C4\u03B1',
+        ('Θέματα',
          'http://www.protagon.gr/rss?i=protagon.el.8emata')
     ]

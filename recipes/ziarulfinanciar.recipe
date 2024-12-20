@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 __license__ = 'GPL v3'
-__copyright__ = u'2011, Silviu Cotoar\u0103'
+__copyright__ = '2011, Silviu Cotoară'
 '''
 zf.ro
 '''
@@ -12,8 +11,8 @@ from calibre.web.feeds.news import BasicNewsRecipe
 
 class ZiarulFinanciar(BasicNewsRecipe):
     title = 'Ziarul Financiar'
-    __author__ = u'Silviu Cotoar\u0103'
-    description = u'\u0218tiri din Business'
+    __author__ = 'Silviu Cotoară'
+    description = 'Știri din Business'
     publisher = 'Ziarul Financiar'
     oldest_article = 5
     language = 'ro'
@@ -33,7 +32,7 @@ class ZiarulFinanciar(BasicNewsRecipe):
     ]
 
     feeds = [
-        (u'\u0218tiri', u'http://www.zf.ro/rss/zf-24/')
+        ('Știri', 'http://www.zf.ro/rss/zf-24/')
     ]
 
     def preprocess_html(self, soup):

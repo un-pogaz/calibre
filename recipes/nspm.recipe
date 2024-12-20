@@ -45,7 +45,7 @@ class Nspm(BasicNewsRecipe):
         'comment': description, 'tags': category, 'publisher': publisher, 'language': language, 'pretty_print': True
     }
 
-    preprocess_regexps = [(re.compile(u'\u0110'), lambda match: u'\u00D0')]
+    preprocess_regexps = [(re.compile('Đ'), lambda match: 'Ð')]
     remove_tags = [dict(name=['link', 'script', 'meta', 'base', 'img'])]
     remove_attributes = ['width', 'height', 'lang', 'xmlns:fb',
                          'xmlns:og', 'vspace', 'hspace', 'type', 'start', 'size']
@@ -57,14 +57,14 @@ class Nspm(BasicNewsRecipe):
 
     feeds = [
 
-    (u'Rubrike', u'http://www.nspm.rs/rubrike/feed/rss.html'),
-    (u'Debate', u'http://www.nspm.rs/debate/feed/rss.html'),
-    (u'Reci i misli', u'http://www.nspm.rs/reci-i-misli/feed/rss.html'),
-    (u'Samo smeh srbina spasava', u'http://www.nspm.rs/samo-smeh-srbina-spasava/feed/rss.html'),
-    (u'Polemike', u'http://www.nspm.rs/polemike/feed/rss.html'),
-    (u'Prikazi', u'http://www.nspm.rs/prikazi/feed/rss.html'),
-    (u'Prenosimo', u'http://www.nspm.rs/prenosimo/feed/rss.html'),
-    (u'Hronika', u'http://www.nspm.rs/tabela/hronika/feed/rss.html')
+    ('Rubrike', 'http://www.nspm.rs/rubrike/feed/rss.html'),
+    ('Debate', 'http://www.nspm.rs/debate/feed/rss.html'),
+    ('Reci i misli', 'http://www.nspm.rs/reci-i-misli/feed/rss.html'),
+    ('Samo smeh srbina spasava', 'http://www.nspm.rs/samo-smeh-srbina-spasava/feed/rss.html'),
+    ('Polemike', 'http://www.nspm.rs/polemike/feed/rss.html'),
+    ('Prikazi', 'http://www.nspm.rs/prikazi/feed/rss.html'),
+    ('Prenosimo', 'http://www.nspm.rs/prenosimo/feed/rss.html'),
+    ('Hronika', 'http://www.nspm.rs/tabela/hronika/feed/rss.html')
     ]
 
     def preprocess_html(self, soup):

@@ -5,23 +5,23 @@ from calibre.web.feeds.news import BasicNewsRecipe
 
 
 class in4(BasicNewsRecipe):
-    title = u'IN4.pl'
+    title = 'IN4.pl'
     oldest_article = 7
     max_articles_per_feed = 100
     __author__ = 'fenuks'
-    description = u'Serwis Informacyjny - Aktualnosci, recenzje'
+    description = 'Serwis Informacyjny - Aktualnosci, recenzje'
     category = 'IT'
     language = 'pl'
     index = 'http://www.in4.pl/'
     no_stylesheets = True
     remove_empty_feeds = True
     preprocess_regexps = [
-        (re.compile(u'<a title="translate into.*?</a>', re.DOTALL), lambda match: '')]
+        (re.compile('<a title="translate into.*?</a>', re.DOTALL), lambda match: '')]
     keep_only_tags = [dict(name='div', attrs={'class': 'left_alone'})]
     remove_tags_after = dict(name='img', attrs={'title': 'komentarze'})
     remove_tags = [dict(name='img', attrs={'title': 'komentarze'})]
-    feeds = [(u'Wiadomo\u015bci', u'http://www.in4.pl/rss.php'), (u'Recenzje',
-                                                                  u'http://www.in4.pl/rss_recenzje.php'), (u'Mini recenzje', u'http://www.in4.pl/rss_mini.php')]
+    feeds = [('Wiadomości', 'http://www.in4.pl/rss.php'), ('Recenzje',
+                                                                  'http://www.in4.pl/rss_recenzje.php'), ('Mini recenzje', 'http://www.in4.pl/rss_mini.php')]
 
     def append_page(self, soup, appendtag):
         a = soup.findAll('a')
@@ -42,7 +42,7 @@ class in4(BasicNewsRecipe):
             nexturl = None
             tag = soup2.findAll('a')
             for z in tag:
-                if z.string and u'następna str' in z.string:
+                if z.string and 'następna str' in z.string:
                     nexturl = 'http://www.in4.pl/' + z['href']
                     break
 

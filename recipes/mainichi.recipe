@@ -7,7 +7,7 @@ from calibre.web.feeds.news import BasicNewsRecipe
 
 
 class MainichiDailyNews(BasicNewsRecipe):
-    title = u'\u6bce\u65e5\u65b0\u805e'
+    title = '毎日新聞'
     __author__ = 'unkn0wn'
     description = "Japanese traditional newspaper Mainichi Daily News"
     publisher = "Mainichi News"

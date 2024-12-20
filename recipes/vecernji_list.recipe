@@ -43,14 +43,14 @@ class VecernjiList(BasicNewsRecipe):
         'comment': description, 'tags': category, 'publisher': publisher, 'language': lang, 'pretty_print': True
     }
 
-    preprocess_regexps = [(re.compile(u'\u0110'), lambda match: u'\u00D0')]
+    preprocess_regexps = [(re.compile('Đ'), lambda match: 'Ð')]
 
     remove_tags = [
         dict(name=['object', 'link', 'embed']), dict(
             name='table', attrs={'class': 'enumbox'})
     ]
 
-    feeds = [(u'Vijesti', u'http://www.vecernji.hr/rss/')]
+    feeds = [('Vijesti', 'http://www.vecernji.hr/rss/')]
 
     def preprocess_html(self, soup):
         soup.html['lang'] = self.lang

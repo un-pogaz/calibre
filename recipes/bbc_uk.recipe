@@ -1,12 +1,11 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 from calibre.web.feeds.news import BasicNewsRecipe
 
 
 class BBC(BasicNewsRecipe):
-    title = u'BBC Ukrainian'
-    description = u'BBC News \u0423\u043A\u0440\u0430\u0457\u043D\u0430'
+    title = 'BBC Ukrainian'
+    description = 'BBC News Україна'
     __author__ = 'bugmen00t'
     publication_type = 'newspaper'
     oldest_article = 14
@@ -27,6 +26,6 @@ class BBC(BasicNewsRecipe):
     ]
 
     feeds = [(
-        u'\u041D\u043E\u0432\u0438\u043D\u0438 BBC',
+        'Новини BBC',
         'https://feeds.bbci.co.uk/ukrainian/rss.xml'
     )]

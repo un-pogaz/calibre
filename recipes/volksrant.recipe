@@ -78,7 +78,7 @@ class Volkskrant(BasicNewsRecipe):
                     parts.append(teaser_sublabel)
                 if teaser_title:
                     parts.append(teaser_title)
-                article_title = ' \u2022 '.join(parts)
+                article_title = ' • '.join(parts)
                 pubdate = ''
                 description = ''
                 articles.append(

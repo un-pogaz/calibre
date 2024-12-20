@@ -1,5 +1,4 @@
 # vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
-from __future__ import unicode_literals
 
 '''
 Fetch Népszabadság
@@ -8,7 +7,7 @@ from calibre.web.feeds.news import BasicNewsRecipe
 
 
 class nepszabadsag(BasicNewsRecipe):
-    title = u'N\u00e9pszabads\u00e1g'
+    title = 'Népszabadság'
     description = ''
     __author__ = 'bubak'
     use_embedded_content = False
@@ -23,7 +22,7 @@ class nepszabadsag(BasicNewsRecipe):
     cover_url = 'http://nol.hu/_design/image/logo_nol_live.jpg'
 
     feeds = [
-        (u'Belföld', u'http://nol.hu/feed/belfold.rss')
+        ('Belföld', 'http://nol.hu/feed/belfold.rss')
     ]
 
     remove_attributes = []

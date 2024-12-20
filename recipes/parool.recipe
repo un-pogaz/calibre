@@ -60,7 +60,7 @@ class Parool(BasicNewsRecipe):
                     parts.append(teaser_sublabel)
                 if teaser_title:
                     parts.append(teaser_title)
-                article_title = ' \u2022 '.join(parts)
+                article_title = ' • '.join(parts)
                 articles.append(dict(title=article_title,
                                     url=url,
                                     content=''))

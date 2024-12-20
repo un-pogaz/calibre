@@ -5,7 +5,7 @@ from calibre.web.feeds.recipes import BasicNewsRecipe
 
 
 class MediaDaumRecipe(BasicNewsRecipe):
-    title = u'\uBBF8\uB514\uC5B4 \uB2E4\uC74C \uC624\uB298\uC758 \uC8FC\uC694 \uB274\uC2A4'
+    title = '미디어 다음 오늘의 주요 뉴스'
     description = 'Articles from media.daum.net'
     __author__ = 'trustin'
     language = 'ko'
@@ -45,7 +45,7 @@ class MediaDaumRecipe(BasicNewsRecipe):
             lambda match: '</em>'),
         (re.compile(r'(<br[^>]*>[ \t\r\n]*)*</i>', re.DOTALL | re.IGNORECASE),
             lambda match: '</i>'),
-        (re.compile(r'\(\uB05D\)[ \t\r\n]*<br[^>]*>.*</div>', re.DOTALL | re.IGNORECASE),
+        (re.compile(r'\(끝\)[ \t\r\n]*<br[^>]*>.*</div>', re.DOTALL | re.IGNORECASE),
             lambda match: '</div>'),
         (re.compile(r'(<br[^>]*>[ \t\r\n]*)*<div', re.DOTALL | re.IGNORECASE),
             lambda match: '<div'),
@@ -61,7 +61,7 @@ class MediaDaumRecipe(BasicNewsRecipe):
             lambda match: '<em>'),
         (re.compile(r'<i>(<br[^>]*>[ \t\r\n]*)*', re.DOTALL | re.IGNORECASE),
             lambda match: '<i>'),
-        (re.compile(u'(<br[^>]*>[ \t\r\n]*)*(\u25B6|\u25CF|\u261E|\u24D2|\(c\))*\[[^\]]*(\u24D2|\(c\)|\uAE30\uC0AC|\uC778\uAE30[^\]]*\uB274\uC2A4)[^\]]*\].*</div>', re.DOTALL | re.IGNORECASE),  # noqa
+        (re.compile('(<br[^>]*>[ \t\r\n]*)*(▶|●|☞|ⓒ|\(c\))*\[[^\]]*(ⓒ|\(c\)|기사|인기[^\]]*뉴스)[^\]]*\].*</div>', re.DOTALL | re.IGNORECASE),  # noqa
             lambda match: '</div>'),
     ]
 
@@ -70,7 +70,7 @@ class MediaDaumRecipe(BasicNewsRecipe):
         articles = []
         articles = self.parse_list_page(articles, today)
         articles = self.parse_list_page(articles, today - timedelta(1))
-        return [('\uBBF8\uB514\uC5B4 \uB2E4\uC74C \uC624\uB298\uC758 \uC8FC\uC694 \uB274\uC2A4', articles)]
+        return [('미디어 다음 오늘의 주요 뉴스', articles)]
 
     def parse_list_page(self, articles, date):
         if len(articles) >= self.max_articles:

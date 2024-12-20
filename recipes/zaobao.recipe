@@ -10,7 +10,7 @@ from calibre.web.feeds.news import BasicNewsRecipe
 
 
 class ZAOBAO(BasicNewsRecipe):
-    title = u'\u8054\u5408\u65e9\u62a5\u7f51 zaobao.com'
+    title = '联合早报网 zaobao.com'
     __author__ = 'Pu Bo'
     description = 'News from zaobao.com'
     no_stylesheets = True
@@ -49,37 +49,37 @@ class ZAOBAO(BasicNewsRecipe):
             div#content{padding-right: 10pt}'
 
     INDEXES = [
-        (u'\u65b0\u95fb\u56fe\u7247',
-         u'http://www.zaobao.com/photoweb/photoweb_idx.shtml')
+        ('新闻图片',
+         'http://www.zaobao.com/photoweb/photoweb_idx.shtml')
     ]
     MAX_ITEMS_IN_INDEX = 10
 
-    DESC_SENSE = u'\u8054\u5408\u65e9\u62a5\u7f51'
+    DESC_SENSE = '联合早报网'
 
     feeds = [
-        (u'\u5373\u65f6\u62a5\u9053', u'http://realtime.zaobao.com/news.xml'),
-        (u'\u4e2d\u56fd\u65b0\u95fb',
-         u'http://www.zaobao.com/zg/zg.xml'),
-        (u'\u56fd\u9645\u65b0\u95fb',
-         u'http://www.zaobao.com/gj/gj.xml'),
-        (u'\u4e16\u754c\u62a5\u520a\u6587\u8403',
-         u'http://www.zaobao.com/wencui/wencui.xml'),
-        (u'\u4e1c\u5357\u4e9a\u65b0\u95fb',
-         u'http://www.zaobao.com/yx/yx.xml'),
-        (u'\u65b0\u52a0\u5761\u65b0\u95fb',
-         u'http://www.zaobao.com/sp/sp.xml'),
-        (u'\u4eca\u65e5\u89c2\u70b9',
-         u'http://www.zaobao.com/yl/yl.xml'),
-        (u'\u4e2d\u56fd\u8d22\u7ecf',
-         u'http://www.zaobao.com/cz/cz.xml'),
-        (u'\u72ee\u57ce\u8d22\u7ecf',
-         u'http://www.zaobao.com/cs/cs.xml'),
-        (u'\u5168\u7403\u8d22\u7ecf',
-         u'http://www.zaobao.com/cg/cg.xml'),
-        (u'\u65e9\u62a5\u4f53\u80b2',
-         u'http://www.zaobao.com/ty/ty.xml'),
-        (u'\u65e9\u62a5\u526f\u520a',
-         u'http://www.zaobao.com/fk/fk.xml'),
+        ('即时报道', 'http://realtime.zaobao.com/news.xml'),
+        ('中国新闻',
+         'http://www.zaobao.com/zg/zg.xml'),
+        ('国际新闻',
+         'http://www.zaobao.com/gj/gj.xml'),
+        ('世界报刊文萃',
+         'http://www.zaobao.com/wencui/wencui.xml'),
+        ('东南亚新闻',
+         'http://www.zaobao.com/yx/yx.xml'),
+        ('新加坡新闻',
+         'http://www.zaobao.com/sp/sp.xml'),
+        ('今日观点',
+         'http://www.zaobao.com/yl/yl.xml'),
+        ('中国财经',
+         'http://www.zaobao.com/cz/cz.xml'),
+        ('狮城财经',
+         'http://www.zaobao.com/cs/cs.xml'),
+        ('全球财经',
+         'http://www.zaobao.com/cg/cg.xml'),
+        ('早报体育',
+         'http://www.zaobao.com/ty/ty.xml'),
+        ('早报副刊',
+         'http://www.zaobao.com/fk/fk.xml'),
     ]
 
     def preprocess_html(self, soup):
@@ -137,7 +137,7 @@ class ZAOBAO(BasicNewsRecipe):
             # workaround a strange problem: Sometimes the xml encoding is not
             # applied correctly by parse()
             weird_encoding_detected = False
-            if not isinstance(feed.description, type(u'')) and self.encoding and feed.description:
+            if not isinstance(feed.description, str) and self.encoding and feed.description:
                 self.log(
                     _('Feed %s is not encoded correctly, manually replace it') % (feed.title))
                 feed.description = feed.description.decode(
@@ -150,14 +150,14 @@ class ZAOBAO(BasicNewsRecipe):
                 weird_encoding_detected = True
 
             for a, article in enumerate(feed):
-                if not isinstance(article.title, type(u'')) and self.encoding:
+                if not isinstance(article.title, str) and self.encoding:
                     article.title = article.title.decode(
                         self.encoding, 'replace')
-                if not isinstance(article.summary, type(u'')) and self.encoding and article.summary:
+                if not isinstance(article.summary, str) and self.encoding and article.summary:
                     article.summary = article.summary.decode(
                         self.encoding, 'replace')
                     article.text_summary = article.summary
-                if not isinstance(article.text_summary, type(u'')) and self.encoding and article.text_summary:
+                if not isinstance(article.text_summary, str) and self.encoding and article.text_summary:
                     article.text_summary = article.text_summary.decode(
                         self.encoding, 'replace')
                     article.summary = article.text_summary

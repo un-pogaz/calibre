@@ -10,7 +10,7 @@ from calibre.web.feeds.news import BasicNewsRecipe, classes
 
 class AssociatedPress(BasicNewsRecipe):
 
-    title = u'Associated Press'
+    title = 'Associated Press'
     description = 'Global news'
     __author__ = 'Kovid Goyal'
     use_embedded_content = False
@@ -68,7 +68,7 @@ class AssociatedPress(BasicNewsRecipe):
                 title = article.get('headline', article.get('flattenedFirstWords'))
                 if not title:
                     continue
-                title = title.split('\u2014')[-1]
+                title = title.split('—')[-1]
                 updated = article.get('updated')
                 if updated:
                     updated = parse_date(updated, assume_utc=True)

@@ -6,7 +6,7 @@ from calibre.web.feeds.news import AutomaticNewsRecipe
 
 
 class BasicUserRecipe1420471504(AutomaticNewsRecipe):
-    title = '\u0130ktibas'
+    title = 'İktibas'
     language = 'tr'
     __author__ = 'asalet_r'
     oldest_article = 7
@@ -14,5 +14,5 @@ class BasicUserRecipe1420471504(AutomaticNewsRecipe):
     auto_cleanup = True
 
     feeds = [
-        ('\u0130ktibas Dergisi', 'http://www.iktibasdergisi.com/feed/'),
+        ('İktibas Dergisi', 'http://www.iktibasdergisi.com/feed/'),
     ]

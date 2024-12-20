@@ -47,7 +47,7 @@ class Volkskrant(BasicNewsRecipe):
         if tag:
             title_parts.append(self.tag_to_string(tag).upper())
         title_parts.append(self.tag_to_string(article.find('div', {'class': 'abstract-article__title'})))
-        article_title = ' \u2022 '.join(title_parts)
+        article_title = ' • '.join(title_parts)
         pubdate=''
         description_parts = []
         author = article.find('div', {'class': 'abstract-article__author'})
@@ -56,7 +56,7 @@ class Volkskrant(BasicNewsRecipe):
         summary = article.find('div', {'class': 'abstract-article__content'})
         if summary:
             description_parts.append(self.tag_to_string(summary))
-        description = ' \u2022 '.join(description_parts)
+        description = ' • '.join(description_parts)
         return dict(
             title=article_title,
             url=url,

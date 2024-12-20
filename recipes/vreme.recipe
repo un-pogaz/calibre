@@ -41,7 +41,7 @@ class Vreme(BasicNewsRecipe):
         'comment': description, 'tags': category, 'publisher': publisher, 'language': language, 'linearize_tables': True
     }
 
-    preprocess_regexps = [(re.compile(u'\u0110'), lambda match: u'\u00D0')]
+    preprocess_regexps = [(re.compile('Đ'), lambda match: 'Ð')]
     remove_tags_before = dict(attrs={'class': 'toc-heading'})
     remove_tags_after = dict(attrs={'class': 'footer'})
 
@@ -62,8 +62,8 @@ class Vreme(BasicNewsRecipe):
         if cover_item:
             self.cover_url = self.INDEX + cover_item.img['src']
         for item in soup.findAll(['h3', 'h4']):
-            description = u''
-            title_prefix = u''
+            description = ''
+            title_prefix = ''
             feed_link = item.find('a', href=True)
             if feed_link and (feed_link['href'].startswith('cms/view.php') or feed_link['href'].startswith('/cms/view.php')):
                 if feed_link['href'].startswith('cms/view.php'):

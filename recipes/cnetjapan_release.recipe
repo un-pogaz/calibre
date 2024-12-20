@@ -6,22 +6,22 @@ from calibre.web.feeds.news import BasicNewsRecipe
 
 
 class CNetJapanRelease(BasicNewsRecipe):
-    title = u'CNET Japan release'
+    title = 'CNET Japan release'
     oldest_article = 3
     max_articles_per_feed = 30
     __author__ = 'Hiroshi Miura'
 
-    feeds = [(u'CNet Release', u'http://feed.japan.cnet.com/rss/release/index.rdf')]
+    feeds = [('CNet Release', 'http://feed.japan.cnet.com/rss/release/index.rdf')]
     language = 'ja'
     encoding = 'Shift_JIS'
     remove_javascript = True
 
     preprocess_regexps = [
-        (re.compile((r'<!--\u25B2contents_left END\u25B2-->.*</body>'), re.DOTALL | re.IGNORECASE | re.UNICODE),
+        (re.compile((r'<!--▲contents_left END▲-->.*</body>'), re.DOTALL | re.IGNORECASE | re.UNICODE),
          lambda match: '</body>'),
         (re.compile(r'<!--AD_ELU_HEADER-->.*</body>', re.DOTALL | re.IGNORECASE),
             lambda match: '</body>'),
-        (re.compile((r'<!-- \u25B2\u95A2\u9023\u30BF\u30B0\u25B2 -->.*<!-- \u25B2ZDNet\u25B2 -->'), re.UNICODE),
+        (re.compile((r'<!-- ▲関連タグ▲ -->.*<!-- ▲ZDNet▲ -->'), re.UNICODE),
             lambda match: '<!-- removed -->'),
     ]
 

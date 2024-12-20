@@ -7,10 +7,10 @@ from calibre.web.feeds.news import BasicNewsRecipe
 class UkrInform(BasicNewsRecipe):
     title = 'UkrInform (Deutsch)'
     __author__ = 'bugmen00t'
-    description = 'Nationale Nachrichtenagentur der Ukraine, eine Informationsquelle \u00FCber das politische, wirtschaftliche, soziale, wissenschaftliche, kulturelle und \u00F6ffentliche Leben in der Ukraine und der Welt.'  # noqa
-    publisher = 'Ministerium f\u00FCr Kultur und Informationspolitik der Ukraine'
+    description = 'Nationale Nachrichtenagentur der Ukraine, eine Informationsquelle über das politische, wirtschaftliche, soziale, wissenschaftliche, kulturelle und öffentliche Leben in der Ukraine und der Welt.'  # noqa
+    publisher = 'Ministerium für Kultur und Informationspolitik der Ukraine'
     category = 'newspaper'
-    cover_url = u'https://static.ukrinform.com/photos/2022_05/thumb_files/630_360_1651819943-560.jpg'
+    cover_url = 'https://static.ukrinform.com/photos/2022_05/thumb_files/630_360_1651819943-560.jpg'
     language = 'de'
     no_stylesheets = True
     remove_javascript = False
@@ -34,12 +34,12 @@ class UkrInform(BasicNewsRecipe):
         ('Krieg', 'https://www.ukrinform.de/rss/rubric-ato'),
         ('Politik', 'https://www.ukrinform.de/rss/rubric-polytics'),
         ('Wirtschaft', 'https://www.ukrinform.de/rss/rubric-economy'),
-        ('Milit\u00E4r', 'https://www.ukrinform.de/rss/rubric-defense'),
+        ('Militär', 'https://www.ukrinform.de/rss/rubric-defense'),
         ('Gesellschaft und Kultur', 'https://www.ukrinform.de/rss/rubric-society'),
         ('Sport', 'https://www.ukrinform.de/rss/rubric-sports'),
-        ('Kriminalit\u00E4t', 'https://www.ukrinform.de/rss/rubric-crime'),
+        ('Kriminalität', 'https://www.ukrinform.de/rss/rubric-crime'),
         (
-            'Notstand und Notf\u00E4lle',
+            'Notstand und Notfälle',
             'https://www.ukrinform.de/rss/rubric-emergencies'
         )
     ]

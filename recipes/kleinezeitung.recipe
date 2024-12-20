@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 from calibre.web.feeds.news import BasicNewsRecipe
 
@@ -11,10 +9,10 @@ class KleineZeitungRecipe(BasicNewsRecipe):
     language = 'de_AT'
     version = 1
 
-    title = u'Kleine Zeitung'
-    publisher = u'Kleine Zeitung GmbH & Co KG'
-    category = u'News, Newspaper'
-    description = u'Nachrichten aus \u00D6sterreich'
+    title = 'Kleine Zeitung'
+    publisher = 'Kleine Zeitung GmbH & Co KG'
+    category = 'News, Newspaper'
+    description = 'Nachrichten aus Österreich'
 
     use_embedded_content = False
     remove_empty_feeds = True

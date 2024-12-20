@@ -5,12 +5,12 @@ from calibre.web.feeds.news import BasicNewsRecipe
 
 
 class LigaNet(BasicNewsRecipe):
-    title = '\u041B\u0406\u0413\u0410.net'
+    title = 'ЛІГА.net'
     __author__ = 'bugmen00t'
-    description = '\u0414\u0456\u043B\u043E\u0432\u0438\u0439 \u043D\u043E\u0432\u0438\u043D\u043D\u0438\u0439 \u043F\u043E\u0440\u0442\u0430\u043B'
+    description = 'Діловий новинний портал'
     publisher = 'Ligamedia'
     category = 'blog'
-    cover_url = u'https://www.liga.net/design/images/logo_liga.png'
+    cover_url = 'https://www.liga.net/design/images/logo_liga.png'
     language = 'ru_UK'
     no_stylesheets = False
     remove_javascript = False
@@ -63,139 +63,139 @@ class LigaNet(BasicNewsRecipe):
 
     feeds = [
         (
-            '\u041D\u043E\u0432\u043E\u0441\u0442\u0438: \u0433\u043B\u0430\u0432\u043D\u044B\u0435 \u043C\u0430\u0442\u0435\u0440\u0438\u0430\u043B\u044B',
+            'Новости: главные материалы',
             'https://www.liga.net/news/top/rss.xml'
         ),
         (
-            '\u041D\u043E\u0432\u043E\u0441\u0442\u0438: \u043D\u043E\u0432\u043E\u0441\u0442\u0438',
+            'Новости: новости',
             'https://www.liga.net/news/rss.xml'
         ),
         (
-            '\u041D\u043E\u0432\u043E\u0441\u0442\u0438: \u0441\u0442\u0430\u0442\u044C\u0438',
+            'Новости: статьи',
             'https://www.liga.net/news/articles/rss.xml'
         ),
         (
-            '\u041D\u043E\u0432\u043E\u0441\u0442\u0438: \u0438\u043D\u0442\u0435\u0440\u0432\u044C\u044E',
+            'Новости: интервью',
             'https://www.liga.net/news/interview/rss.xml'
         ),
         (
-            '\u041D\u043E\u0432\u043E\u0441\u0442\u0438: \u043C\u043D\u0435\u043D\u0438\u044F',
+            'Новости: мнения',
             'https://www.liga.net/news/opinion/rss.xml'
         ),
         (
-            '\u041D\u043E\u0432\u043E\u0441\u0442\u0438: \u0444\u043E\u0442\u043E\u043C\u0430\u0442\u0435\u0440\u0438\u0430\u043B\u044B',
+            'Новости: фотоматериалы',
             'https://www.liga.net/news/photo/rss.xml'
         ),
         (
-            '\u041D\u043E\u0432\u043E\u0441\u0442\u0438: \u043F\u043E\u043B\u0438\u0442\u0438\u043A\u0430',
+            'Новости: политика',
             'https://www.liga.net/news/politics/rss.xml'
         ),
         (
-            '\u041D\u043E\u0432\u043E\u0441\u0442\u0438: \u044D\u043A\u043E\u043D\u043E\u043C\u0438\u043A\u0430',
+            'Новости: экономика',
             'https://www.liga.net/news/economics/rss.xml'
         ),
         (
-            '\u041D\u043E\u0432\u043E\u0441\u0442\u0438: \u043E\u0431\u0449\u0435\u0441\u0442\u0432\u043E',
+            'Новости: общество',
             'https://www.liga.net/news/society/rss.xml'
         ),
         (
-            '\u041D\u043E\u0432\u043E\u0441\u0442\u0438: \u043C\u0438\u0440',
+            'Новости: мир',
             'https://www.liga.net/news/world/rss.xml'
         ),
         (
-            '\u041D\u043E\u0432\u043E\u0441\u0442\u0438: \u0441\u0442\u043E\u043B\u0438\u0446\u0430',
+            'Новости: столица',
             'https://www.liga.net/news/capital/rss.xml'
         ),
         (
-            '\u041D\u043E\u0432\u043E\u0441\u0442\u0438: \u0441\u043F\u043E\u0440\u0442',
+            'Новости: спорт',
             'https://www.liga.net/news/sport/rss.xml'
         ),
         (
-            '\u041D\u043E\u0432\u043E\u0441\u0442\u0438: \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u0435',
+            'Новости: здоровье',
             'https://www.liga.net/news/health/rss.xml'
         ),
         (
-            '\u041D\u043E\u0432\u043E\u0441\u0442\u0438: \u043A\u0443\u043B\u044C\u0442\u0443\u0440\u0430',
+            'Новости: культура',
             'https://www.liga.net/news/culture/rss.xml'
         ),
         (
-            '\u0412\u0441\u0435 \u043C\u043D\u0435\u043D\u0438\u044F',
+            'Все мнения',
             'https://www.liga.net/opinion/rss.xml'
         ),
         (
-            '\u0411\u0438\u0437\u043D\u0435\u0441: \u0433\u043B\u0430\u0432\u043D\u044B\u0435 \u043C\u0430\u0442\u0435\u0440\u0438\u0430\u043B\u044B',
+            'Бизнес: главные материалы',
             'https://www.liga.net/biz/top/rss.xml'
         ),
         (
-            '\u0411\u0438\u0437\u043D\u0435\u0441: \u043D\u043E\u0432\u043E\u0441\u0442\u0438',
+            'Бизнес: новости',
             'https://www.liga.net/biz/news/rss.xml'
         ),
         (
-            '\u0411\u0438\u0437\u043D\u0435\u0441: \u0441\u0442\u0430\u0442\u044C\u0438',
+            'Бизнес: статьи',
             'https://www.liga.net/biz/articles/rss.xml'
         ),
         (
-            '\u0411\u0438\u0437\u043D\u0435\u0441: \u0438\u043D\u0442\u0435\u0440\u0432\u044C\u044E',
+            'Бизнес: интервью',
             'https://www.liga.net/biz/interview/rss.xml'
         ),
         (
-            '\u0411\u0438\u0437\u043D\u0435\u0441: \u043C\u043D\u0435\u043D\u0438\u044F',
+            'Бизнес: мнения',
             'https://www.liga.net/biz/opinion/rss.xml'
         ),
         (
-            '\u0411\u0438\u0437\u043D\u0435\u0441: \u0444\u043E\u0442\u043E\u043C\u0430\u0442\u0435\u0440\u0438\u0430\u043B\u044B',
+            'Бизнес: фотоматериалы',
             'https://www.liga.net/biz/photo/rss.xml'
         ),
         (
-            '\u0424\u0438\u043D\u0430\u043D\u0441\u044B: \u0433\u043B\u0430\u0432\u043D\u044B\u0435 \u043C\u0430\u0442\u0435\u0440\u0438\u0430\u043B\u044B',
+            'Финансы: главные материалы',
             'https://www.liga.net/fin/export/top.xml'
         ),
         (
-            '\u0424\u0438\u043D\u0430\u043D\u0441\u044B: \u043C\u043D\u0435\u043D\u0438\u044F',
+            'Финансы: мнения',
             'https://www.liga.net/fin/opinion/rss.xml'
         ),
         (
-            '\u0424\u0438\u043D\u0430\u043D\u0441\u044B: \u0431\u0430\u043D\u043A\u0438',
+            'Финансы: банки',
             'https://www.liga.net/fin/export/bank.xml'
         ),
         (
-            '\u0424\u0438\u043D\u0430\u043D\u0441\u044B: \u0441\u0442\u0440\u0430\u0445\u043E\u0432\u0430\u043D\u0438\u0435',
+            'Финансы: страхование',
             'https://www.liga.net/fin/export/insurance.xml'
         ),
         (
-            '\u0424\u0438\u043D\u0430\u043D\u0441\u044B: \u043A\u0440\u0438\u043F\u0442\u043E\u044D\u043A\u043E\u043D\u043E\u043C\u0438\u043A\u0430',
+            'Финансы: криптоэкономика',
             'https://www.liga.net/fin/crypto/rss.xml'
         ),
         (
-            '\u0424\u0438\u043D\u0430\u043D\u0441\u044B: \u0444\u043E\u043D\u0434\u044B',
+            'Финансы: фонды',
             'https://www.liga.net/fin/export/funds.xml'
         ),
         (
-            'Tech: \u0433\u043B\u0430\u0432\u043D\u044B\u0435 \u043C\u0430\u0442\u0435\u0440\u0438\u0430\u043B\u044B',
+            'Tech: главные материалы',
             'https://www.liga.net/tech/top/rss.xml'
         ),
         (
-            'Tech: \u0442\u0435\u0445\u043D\u043E\u043B\u043E\u0433\u0438\u0438',
+            'Tech: технологии',
             'https://www.liga.net/tech/technology/rss.xml'
         ),
         (
-            'Tech: \u0442\u0435\u043B\u0435\u043A\u043E\u043C',
+            'Tech: телеком',
             'https://www.liga.net/tech/telecom/rss.xml'
         ),
         (
-            'Tech: \u0433\u0430\u0434\u0436\u0435\u0442\u044B',
+            'Tech: гаджеты',
             'https://www.liga.net/tech/gadgets/rss.xml'
         ),
         (
-            'Tech: \u0441\u0432\u043E\u0439 \u0431\u0438\u0437\u043D\u0435\u0441',
+            'Tech: свой бизнес',
             'https://www.liga.net/tech/own-business/rss.xml'
         ),
         (
-            'Tech: \u0431\u0430\u0442\u0442\u043B\u044B',
+            'Tech: баттлы',
             'https://www.liga.net/tech/battles/rss.xml'
         ),
         (
-            '\u0411\u043B\u043E\u0433\u0438: \u0432\u0441\u0435 \u043C\u0430\u0442\u0435\u0440\u0438\u0430\u043B\u044B',
+            'Блоги: все материалы',
             'https://www.liga.net/rss/blog.xml'
         )
     ]

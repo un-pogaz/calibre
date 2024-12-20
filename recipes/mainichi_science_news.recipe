@@ -10,7 +10,7 @@ from calibre.web.feeds.news import BasicNewsRecipe
 
 
 class MainichiDailyScienceNews(BasicNewsRecipe):
-    title = u'\u6bce\u65e5\u65b0\u805e(Science)'
+    title = '毎日新聞(Science)'
     __author__ = 'Hiroshi Miura'
     oldest_article = 2
     max_articles_per_feed = 20
@@ -20,7 +20,7 @@ class MainichiDailyScienceNews(BasicNewsRecipe):
     language = 'ja'
     index = 'http://mainichi.jp/select/science'
     remove_javascript = True
-    masthead_title = u'MAINICHI DAILY NEWS'
+    masthead_title = 'MAINICHI DAILY NEWS'
 
     remove_tags_before = {'class': "NewsTitle"}
     remove_tags_after = {'class': "NewsBody clr"}

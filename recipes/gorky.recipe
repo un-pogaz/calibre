@@ -5,12 +5,12 @@ from calibre.web.feeds.news import BasicNewsRecipe
 
 
 class Gorky(BasicNewsRecipe):
-    title                 = '\u0413\u043E\u0440\u044C\u043A\u0438\u0439'
+    title                 = 'Горький'
     __author__            = 'bugmen00t'
-    description           = '\u041D\u0435\u043A\u043E\u043C\u043C\u0435\u0440\u0447\u0435\u0441\u043A\u0438\u0439 \u043F\u0440\u043E\u0435\u043A\u0442 \u043E \u043A\u043D\u0438\u0433\u0430\u0445 \u0438 \u0447\u0442\u0435\u043D\u0438\u0438.'  # noqa
-    publisher             = '\u0410\u041D\u041E "\u0426\u0435\u043D\u0442\u0440 \u043F\u043E \u0441\u043E\u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044E \u0440\u0430\u0437\u0432\u0438\u0442\u0438\u044F \u043A\u0443\u043B\u044C\u0442\u0443\u0440\u044B \u0447\u0442\u0435\u043D\u0438\u044F \u0438 \u043A\u043D\u0438\u0433\u043E\u0438\u0437\u0434\u0430\u043D\u0438\u044F \u00AB\u0413\u043E\u0440\u044C\u043A\u0438\u0439 \u041C\u0435\u0434\u0438\u0430\u00BB"'  # noqa
+    description           = 'Некоммерческий проект о книгах и чтении.'  # noqa
+    publisher             = 'АНО "Центр по содействию развития культуры чтения и книгоиздания «Горький Медиа»"'  # noqa
     category              = 'blog'
-    cover_url = u'https://gorky.media/wp-content/uploads/2016/09/gorky.png'
+    cover_url = 'https://gorky.media/wp-content/uploads/2016/09/gorky.png'
     language              = 'ru'
     no_stylesheets        = False
     remove_javascript = False
@@ -35,8 +35,8 @@ class Gorky(BasicNewsRecipe):
         ]
 
     feeds = [
-        ('\u0420\u0435\u0446\u0435\u043D\u0437\u0438\u0438', 'https://gorky.media/reviews/feed/'),
-        ('\u0424\u0440\u0430\u0433\u043C\u0435\u043D\u0442\u044B', 'https://gorky.media/fragments/feed/'),
-        ('\u041A\u043E\u043D\u0442\u0435\u043A\u0441\u0442', 'https://gorky.media/context/feed/'),
-        ('\u041F\u043E\u0434\u0431\u043E\u0440\u043A\u0438', 'https://gorky.media/books-collection/feed/')
+        ('Рецензии', 'https://gorky.media/reviews/feed/'),
+        ('Фрагменты', 'https://gorky.media/fragments/feed/'),
+        ('Контекст', 'https://gorky.media/context/feed/'),
+        ('Подборки', 'https://gorky.media/books-collection/feed/')
     ]

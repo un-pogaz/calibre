@@ -5,12 +5,12 @@ from calibre.web.feeds.news import BasicNewsRecipe
 
 
 class LigaNet(BasicNewsRecipe):
-    title = '\u041B\u0406\u0413\u0410.net (UA)'
+    title = 'ЛІГА.net (UA)'
     __author__ = 'bugmen00t'
-    description = '\u0414\u0456\u043B\u043E\u0432\u0438\u0439 \u043D\u043E\u0432\u0438\u043D\u043D\u0438\u0439 \u043F\u043E\u0440\u0442\u0430\u043B'
+    description = 'Діловий новинний портал'
     publisher = 'Ligamedia'
     category = 'blog'
-    cover_url = u'https://www.liga.net/design/images/logo_liga.png'
+    cover_url = 'https://www.liga.net/design/images/logo_liga.png'
     language = 'uk'
     no_stylesheets = False
     remove_javascript = False
@@ -63,11 +63,11 @@ class LigaNet(BasicNewsRecipe):
 
     feeds = [
         (
-            '\u041D\u043E\u0432\u0438\u043D\u0438: \u0433\u043E\u043B\u043E\u0432\u043D\u0456 \u043C\u0430\u0442\u0435\u0440\u0456\u0430\u043B\u0438',
+            'Новини: головні матеріали',
             'https://www.liga.net/newsua/top/rss.xml'
         ),
         (
-            '\u041D\u043E\u0432\u0438\u043D\u0438: \u0432\u0441\u0456 \u043C\u0430\u0442\u0435\u0440\u0456\u0430\u043B\u0438',
+            'Новини: всі матеріали',
             'https://www.liga.net/newsua/all/rss.xml'
         )
     ]

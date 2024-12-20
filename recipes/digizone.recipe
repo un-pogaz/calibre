@@ -9,7 +9,7 @@ class DigiZoneCZ(BasicNewsRecipe):
     __author__ = 'Tomas Latal'
     __version__ = '1.0'
     __date__ = '30 April 2011'
-    description = u'Aktuality a \u010dl\xe1nky z DigiZone.cz'
+    description = 'Aktuality a čl\xe1nky z DigiZone.cz'
     oldest_article = 1
     max_articles_per_feed = 10
     encoding = 'iso-8859-2'
@@ -24,8 +24,8 @@ class DigiZoneCZ(BasicNewsRecipe):
                                .urs p {margin: 0 0 0.8em 0;}'
 
     feeds = [
-        (u'Aktuality', u'http://rss.digizone.cz/aktuality'),
-        (u'\u010cl\xe1nky', u'http://rss.digizone.cz/clanky')
+        ('Aktuality', 'http://rss.digizone.cz/aktuality'),
+        ('Čl\xe1nky', 'http://rss.digizone.cz/clanky')
     ]
 
     remove_tags_before = dict(id=['p-article', 'p-actuality'])

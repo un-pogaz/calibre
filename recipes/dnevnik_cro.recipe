@@ -42,7 +42,7 @@ class DnevnikCro(BasicNewsRecipe):
         'comment': description, 'tags': category, 'publisher': publisher, 'language': lang, 'pretty_print': True
     }
 
-    preprocess_regexps = [(re.compile(u'\u0110'), lambda match: u'\u00D0')]
+    preprocess_regexps = [(re.compile('Đ'), lambda match: 'Ð')]
 
     keep_only_tags = [dict(name='div', attrs={'id': 'article'})]
 
@@ -53,7 +53,7 @@ class DnevnikCro(BasicNewsRecipe):
 
     remove_tags_after = dict(name='div', attrs={'id': 'content'})
 
-    feeds = [(u'Vijesti', u'http://rss.dnevnik.hr/index.rss')]
+    feeds = [('Vijesti', 'http://rss.dnevnik.hr/index.rss')]
 
     def preprocess_html(self, soup):
         soup.html['lang'] = self.lang
