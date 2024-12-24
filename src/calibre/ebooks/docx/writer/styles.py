@@ -109,12 +109,12 @@ class FloatSpec:
 
     def serialize(self, block, parent):
         if self.is_dropcaps:
-            attrs = dict(w_dropCap='drop', w_lines=str(self.dropcaps_lines), w_wrap='around', w_vAnchor='text', w_hAnchor='text')
+            attrs = {'w_dropCap': 'drop', 'w_lines': str(self.dropcaps_lines), 'w_wrap': 'around', 'w_vAnchor': 'text', 'w_hAnchor': 'text'}
         else:
-            attrs = dict(
-                w_wrap='around', w_vAnchor='text', w_hAnchor='text', w_xAlign=self.x_align, w_y='1',
-                w_hSpace=str(self.h_space), w_vSpace=str(self.v_space), w_hRule=self.h_rule
-            )
+            attrs = {
+                'w_wrap': 'around', 'w_vAnchor': 'text', 'w_hAnchor': 'text', 'w_xAlign': self.x_align, 'w_y': '1',
+                'w_hSpace': str(self.h_space), 'w_vSpace': str(self.v_space), 'w_hRule': self.h_rule
+            }
             if self.w is not None:
                 attrs['w_w'] = str(self.w)
             if self.h is not None:
@@ -125,9 +125,9 @@ class FloatSpec:
         self.makeelement(parent, 'w:ind', w_left='0', w_leftChars='0', w_right='0', w_rightChars='0')
         attrs = {}
         if block is self.blocks[0]:
-            attrs.update(dict(w_before='0', w_beforeLines='0'))
+            attrs.update({'w_before': '0', 'w_beforeLines': '0'})
         if block is self.blocks[-1]:
-            attrs.update(dict(w_after='0', w_afterLines='0'))
+            attrs.update({'w_after': '0', 'w_afterLines': '0'})
         if attrs:
             self.makeelement(parent, 'w:spacing', **attrs)
         # Similarly apply the same border and padding properties to all blocks

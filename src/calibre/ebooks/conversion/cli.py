@@ -87,8 +87,8 @@ def option_recommendation_to_cli_option(add_option, rec):
     opt = rec.option
     switches = ['-'+opt.short_switch] if opt.short_switch else []
     switches.append('--'+opt.long_switch)
-    attrs = dict(dest=opt.name, help=opt.help,
-                     choices=opt.choices, default=rec.recommended_value)
+    attrs = {'dest': opt.name, 'help': opt.help,
+             'choices': opt.choices, 'default': rec.recommended_value}
     if isinstance(rec.recommended_value, bool):
         attrs['action'] = 'store_false' if rec.recommended_value else \
                           'store_true'
