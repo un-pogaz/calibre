@@ -87,10 +87,10 @@ class NumberToText:  # {{{
             self.log('numberTranslate(): %s' % self.number)
 
         # Special case ordinals
-        if re.search('[st|nd|rd|th]',self.number):
-            self.number = re.sub(',','',self.number)
+        if re.search(r'[st|nd|rd|th]',self.number):
+            self.number = self.number.replace(',', '')
             ordinal_suffix = re.search(r'[\D]', self.number)
-            ordinal_number = re.sub(r'\D','',re.sub(',','',self.number))
+            ordinal_number = re.sub(r'\D','',self.number.replace(',', ''))
             if self.verbose:
                 self.log('Ordinal: %s' % ordinal_number)
             self.number_as_float = ordinal_number
@@ -102,24 +102,24 @@ class NumberToText:  # {{{
                 self.text = '%s' % (self.ORDINALS[int(ordinal_number)])
 
         # Test for time
-        elif re.search(':',self.number):
+        elif ':' in self.number:
             if self.verbose:
                 self.log('Time: %s' % self.number)
-            self.number_as_float = re.sub(':','.',self.number)
+            self.number_as_float = self.number.replace(':', '.')
             time_strings = self.number.split(':')
             hours = NumberToText(time_strings[0]).text
             minutes = NumberToText(time_strings[1]).text
             self.text = f'{hours.capitalize()}-{minutes}'
 
         # Test for %
-        elif re.search('%', self.number):
+        elif '%' in self.number:
             if self.verbose:
                 self.log('Percent: %s' % self.number)
             self.number_as_float = self.number.split('%')[0]
             self.text = NumberToText(self.number.replace('%',' percent')).text
 
         # Test for decimal
-        elif re.search('\\.',self.number):
+        elif '.' in self.number:
             if self.verbose:
                 self.log('Decimal: %s' % self.number)
             self.number_as_float = self.number
@@ -129,12 +129,12 @@ class NumberToText:  # {{{
             self.text = f'{left.capitalize()} point {right}'
 
         # Test for hyphenated
-        elif re.search('-', self.number):
+        elif '-' in self.number:
             if self.verbose:
                 self.log('Hyphenated: %s' % self.number)
             self.number_as_float = self.number.split('-')[0]
             strings = self.number.split('-')
-            if re.search('[0-9]+', strings[0]):
+            if re.search(r'[0-9]+', strings[0]):
                 left = NumberToText(strings[0]).text
                 right = strings[1]
             else:
@@ -143,14 +143,14 @@ class NumberToText:  # {{{
             self.text = f'{left}-{right}'
 
         # Test for only commas and numbers
-        elif re.search(',', self.number) and not re.search('[^0-9,]',self.number):
+        elif ',' in self.number and not re.search(r'[^0-9,]',self.number):
             if self.verbose:
                 self.log('Comma(s): %s' % self.number)
-            self.number_as_float = re.sub(',','',self.number)
+            self.number_as_float = self.number.replace(',', '')
             self.text = NumberToText(self.number_as_float).text
 
         # Test for hybrid e.g., 'K2, 2nd, 10@10'
-        elif re.search('[\\D]+', self.number):
+        elif re.search(r'[\D]+', self.number):
             if self.verbose:
                 self.log('Hybrid: %s' % self.number)
             # Split the token into number/text

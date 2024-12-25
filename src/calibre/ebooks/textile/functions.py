@@ -594,7 +594,7 @@ class Textile:
 
             line = self.doPBr(line)
             if self.html_type == 'xhtml':
-                line = re.sub(r'<br>', '<br />', line)
+                line = line.replace('<br>', '<br />')
 
             if ext and anon:
                 out.append(out.pop() + '\n' + line)
@@ -760,7 +760,7 @@ class Textile:
         '''
         what is this for?
         '''
-        pattern = re.compile(r'(?:(?<=^)|(?<=\s))\[(.+)\]((?:http(?:s?):\/\/|\/)\S+)(?=\s|$)', re.U)
+        pattern = re.compile(r'(?:(?<=^)|(?<=\s))\[(.+)\]((?:http(?:s?)://|/)\S+)(?=\s|$)', re.U)
         text = pattern.sub(self.refs, text)
         return text
 

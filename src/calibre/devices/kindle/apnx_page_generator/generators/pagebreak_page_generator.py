@@ -22,7 +22,7 @@ class PagebreakPageGenerator(IPageGenerator):
         ''' Determine pages based on the presence of <*pagebreak*/>. '''
         html = mobi_html(mobi_file_path)
         pages = []
-        for m in re.finditer(b'<[^>]*pagebreak[^>]*>', html):
+        for m in re.finditer(br'<[^>]*pagebreak[^>]*>', html):
             pages.append(m.end())
 
         return Pages(pages)

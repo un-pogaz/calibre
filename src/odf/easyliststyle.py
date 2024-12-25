@@ -59,8 +59,8 @@ def styleFromList(styleName, specArray, spacing, showAllLevels):
     numbered = False
     displayLevels = 0
     listStyle = ListStyle(name=styleName)
-    numFormatPattern = re.compile('([1IiAa])')
-    cssLengthPattern = re.compile('([^a-z]+)\\s*([a-z]+)?')
+    numFormatPattern = re.compile(r'([1IiAa])')
+    cssLengthPattern = re.compile(r'([^a-z]+)\s*([a-z]+)?')
     m = cssLengthPattern.search(spacing)
     if (m is not None):
         cssLengthNum = float(m.group(1))
