@@ -154,7 +154,7 @@ class MetadataUpdater:
 
     def dump_hex(self, src, length=16):
         ''' Diagnostic '''
-        FILTER=''.join([(len(repr(codepoint_to_chr(x)))==3) and codepoint_to_chr(x) or '.' for x in range(256)])
+        FILTER=''.join([((len(repr(codepoint_to_chr(x)))==3) and codepoint_to_chr(x)) or '.' for x in range(256)])
         N=0
         result=''
         while src:
@@ -168,7 +168,7 @@ class MetadataUpdater:
     def dump_metadata(self):
         ''' Diagnostic '''
         for tag in self.metadata:
-            print(f'{tag}: {repr(self.metadata[tag])}')
+            print(f'{tag}: {self.metadata[tag]!r}')
 
     def encode_vwi(self,value):
         ans = []

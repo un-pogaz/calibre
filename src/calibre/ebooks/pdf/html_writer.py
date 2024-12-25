@@ -624,7 +624,7 @@ def make_anchors_unique(container, log):
 
 class AnchorLocation:
 
-    __slots__ = ('pagenum', 'left', 'top', 'zoom')
+    __slots__ = ('left', 'pagenum', 'top', 'zoom')
 
     def __init__(self, pagenum=1, left=0, top=0, zoom=0):
         self.pagenum, self.left, self.top, self.zoom = pagenum, left, top, zoom
@@ -745,7 +745,7 @@ def get_page_number_display_map(render_manager, opts, num_pages, log):
             if not isinstance(result, dict):
                 raise ValueError('Not a dict')
         except Exception:
-            log.warn(f'Could not do page number mapping, got unexpected result: {repr(result)}')
+            log.warn(f'Could not do page number mapping, got unexpected result: {result!r}')
         else:
             default_map = {int(k): int(v) for k, v in iteritems(result)}
     return default_map

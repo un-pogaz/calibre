@@ -468,7 +468,7 @@ class OnDeviceField(OneToOneField):
 
 class LazySortMap:
 
-    __slots__ = ('default_sort_key', 'sort_key_func', 'id_map', 'cache')
+    __slots__ = ('cache', 'default_sort_key', 'id_map', 'sort_key_func')
 
     def __init__(self, default_sort_key, sort_key_func, id_map):
         self.default_sort_key = default_sort_key
@@ -698,7 +698,7 @@ class FormatsField(ManyToManyField):
 
 class LazySeriesSortMap:
 
-    __slots__ = ('default_sort_key', 'sort_key_func', 'id_map', 'cache')
+    __slots__ = ('cache', 'default_sort_key', 'id_map', 'sort_key_func')
 
     def __init__(self, default_sort_key, sort_key_func, id_map):
         self.default_sort_key = default_sort_key

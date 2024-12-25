@@ -90,7 +90,7 @@ class LeCanardEnchaine(BasicNewsRecipe):
                     print(f'  {len(unique_articles)} articles trouvés')
 
             except Exception as e:
-                print(f'Erreur sur {section_title}: {str(e)}')
+                print(f'Erreur sur {section_title}: {e}')
 
         return feeds
 

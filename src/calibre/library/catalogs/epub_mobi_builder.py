@@ -557,10 +557,10 @@ class CatalogBuilder:
                     if self.opts.fmt == 'mobi':
                         # Exit if building MOBI
                         error_msg = _('<p>Inconsistent author sort values for author<br/>' +
-                                      f"'{author[0]!s}':</p>" +
-                                      f'<p><center><b>{author[1]!s}</b> != <b>{current_author[1]!s}</b></center></p>' +
+                                      f"'{author[0]}':</p>" +
+                                      f'<p><center><b>{author[1]}</b> != <b>{current_author[1]}</b></center></p>' +
                                       '<p>Unable to build MOBI catalog.<br/>' +
-                                      f"Select all books by '{author[0]!s}', apply correct Author Sort value in Edit Metadata dialog, then rebuild the catalog.\n<p>")  # noqa: E501
+                                      f"Select all books by '{author[0]}', apply correct Author Sort value in Edit Metadata dialog, then rebuild the catalog.\n<p>")  # noqa: E501
 
                         self.opts.log.warn('\n*** Metadata error ***')
                         self.opts.log.warn(error_msg)
@@ -573,8 +573,8 @@ class CatalogBuilder:
                         if not self.error:
                             self.error.append('Author sort mismatch')
 
-                        error_msg = _(f"Warning: Inconsistent author sort values for author '{author[0]!s}':\n" +
-                                      f' {author[1]!s} != {current_author[1]!s}\n')
+                        error_msg = _(f"Warning: Inconsistent author sort values for author '{author[0]}':\n" +
+                                      f' {author[1]} != {current_author[1]}\n')
                         self.opts.log.warn('\n*** Metadata warning ***')
                         self.opts.log.warn(error_msg)
                         self.error.append(error_msg)
@@ -2734,7 +2734,7 @@ class CatalogBuilder:
         # Thumb
         _soup = BeautifulSoup('<html>', selfClosingTags=['img'])
         thumb = _soup.new_tag('img')
-        if 'cover' in book and book['cover']:
+        if book.get('cover'):
             thumb['src'] = '../images/thumbnail_%d.jpg' % int(book['id'])
         else:
             thumb['src'] = '../images/thumbnail_default.jpg'
@@ -3176,7 +3176,7 @@ class CatalogBuilder:
                 fmt_string = _('Series beginning with %s')
             else:
                 fmt_string = _("Series beginning with '%s'")
-            sec_text = fmt_string % (title_letters[i] if len(title_letters[i]) > 1 else title_letters[i])
+            sec_text = fmt_string % title_letters[i]
             if title_letters[i] == self.SYMBOLS:
                 content_src = f'content/{output}.html#{self.SYMBOLS}_series'
             else:
@@ -3260,7 +3260,7 @@ class CatalogBuilder:
                 fmt_string = _('Titles beginning with %s')
             else:
                 fmt_string = _("Titles beginning with '%s'")
-            sec_text = fmt_string % (title_letters[i] if len(title_letters[i]) > 1 else title_letters[i])
+            sec_text = fmt_string % title_letters[i]
             if title_letters[i] == self.SYMBOLS:
                 content_src = f'content/{output}.html#{self.SYMBOLS}_titles'
             else:

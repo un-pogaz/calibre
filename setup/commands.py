@@ -5,7 +5,7 @@ __license__   = 'GPL v3'
 __copyright__ = '2009, Kovid Goyal <kovid@kovidgoyal.net>'
 __docformat__ = 'restructuredtext en'
 
-__all__ = [
+__all__ = [  # noqa: RUF022
     'pot', 'translations', 'get_translations', 'iso_data', 'iso639', 'iso3166',
     'build', 'mathjax', 'man_pages',
     'gui',
