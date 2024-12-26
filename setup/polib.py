@@ -31,9 +31,8 @@ __all__ = ['pofile', 'POFile', 'POEntry', 'mofile', 'MOFile', 'MOEntry',
 # the default encoding to use when encoding cannot be detected
 default_encoding = 'utf-8'
 
+
 # python 2/3 compatibility helpers {{{
-
-
 if sys.version_info < (3,):
     PY3 = False
     text_type = unicode
@@ -54,9 +53,9 @@ else:
     def u(s):
         return s
 # }}}
+
+
 # _pofile_or_mofile {{{
-
-
 def _pofile_or_mofile(f, type, **kwargs):
     """
     Internal function used by :func:`polib.pofile` and :func:`polib.mofile` to
@@ -79,9 +78,9 @@ def _pofile_or_mofile(f, type, **kwargs):
     instance.wrapwidth = kwargs.get('wrapwidth', 78)
     return instance
 # }}}
+
+
 # _is_file {{{
-
-
 def _is_file(filename_or_contents):
     """
     Safely returns the value of os.path.exists(filename_or_contents).
@@ -97,9 +96,9 @@ def _is_file(filename_or_contents):
     except (TypeError, ValueError, UnicodeEncodeError):
         return False
 # }}}
+
+
 # function pofile() {{{
-
-
 def pofile(pofile, **kwargs):
     """
     Convenience function that parses the po or pot file ``pofile`` and returns
@@ -129,9 +128,9 @@ def pofile(pofile, **kwargs):
     """
     return _pofile_or_mofile(pofile, 'pofile', **kwargs)
 # }}}
+
+
 # function mofile() {{{
-
-
 def mofile(mofile, **kwargs):
     """
     Convenience function that parses the mo file ``mofile`` and returns a
@@ -163,9 +162,9 @@ def mofile(mofile, **kwargs):
     """
     return _pofile_or_mofile(mofile, 'mofile', **kwargs)
 # }}}
+
+
 # function detect_encoding() {{{
-
-
 def detect_encoding(file, binary_mode=False):
     """
     Try to detect the encoding used by the ``file``. The ``file`` argument can
@@ -224,9 +223,9 @@ def detect_encoding(file, binary_mode=False):
                         return enc
     return default_encoding
 # }}}
+
+
 # function escape() {{{
-
-
 def escape(st):
     """
     Escapes the characters ``\\\\``, ``\\t``, ``\\n``, ``\\r``, ``\\v``,
@@ -241,9 +240,9 @@ def escape(st):
              .replace('\f', r'\f')\
              .replace('\"', r'\"')
 # }}}
+
+
 # function unescape() {{{
-
-
 def unescape(st):
     """
     Unescapes the characters ``\\\\``, ``\\t``, ``\\n``, ``\\r``, ``\\v``,
@@ -268,9 +267,9 @@ def unescape(st):
         return m  # handles escaped double quote
     return re.sub(r'\\(\\|n|t|r|v|b|f|")', unescape_repl, st)
 # }}}
+
+
 # function natural_sort() {{{
-
-
 def natural_sort(lst):
     """
     Sort naturally the given list.
@@ -283,11 +282,10 @@ def natural_sort(lst):
         return [convert(c) for c in re.split('([0-9]+)', key)]
 
     return sorted(lst, key=alphanum_key)
-
 # }}}
+
+
 # class _BaseFile {{{
-
-
 class _BaseFile(list):
     """
     Common base class for the :class:`~polib.POFile` and :class:`~polib.MOFile`
@@ -638,9 +636,9 @@ class _BaseFile(list):
             mixed = mixed.encode(self.encoding)
         return mixed
 # }}}
+
+
 # class POFile {{{
-
-
 class POFile(_BaseFile):
     """
     Po (or Pot) file reader/writer.
@@ -746,9 +744,9 @@ class POFile(_BaseFile):
             if entry.msgid_with_context not in refpot_msgids:
                 entry.obsolete = True
 # }}}
+
+
 # class MOFile {{{
-
-
 class MOFile(_BaseFile):
     """
     Mo file reader/writer.
@@ -819,9 +817,9 @@ class MOFile(_BaseFile):
         """
         return []
 # }}}
+
+
 # class _BaseEntry {{{
-
-
 class _BaseEntry(object):
     """
     Base class for :class:`~polib.POEntry` and :class:`~polib.MOEntry` classes.
@@ -954,9 +952,9 @@ class _BaseEntry(object):
             return '%s%s%s' % (self.msgctxt, "\x04", self.msgid)
         return self.msgid
 # }}}
+
+
 # class POEntry {{{
-
-
 class POEntry(_BaseEntry):
     """
     Represents a po file entry.
@@ -1198,9 +1196,9 @@ class POEntry(_BaseEntry):
     def __hash__(self):
         return hash((self.msgid, self.msgstr))
 # }}}
+
+
 # class MOEntry {{{
-
-
 class MOEntry(_BaseEntry):
     """
     Represents a mo file entry.
@@ -1233,11 +1231,10 @@ class MOEntry(_BaseEntry):
 
     def __hash__(self):
         return hash((self.msgid, self.msgstr))
-
 # }}}
+
+
 # class _POFileParser {{{
-
-
 class _POFileParser(object):
     """
     A finite state machine to efficiently and correctly parse po
@@ -1670,9 +1667,9 @@ class _POFileParser(object):
         # don't change the current state
         return False
 # }}}
+
+
 # class _MOFileParser {{{
-
-
 class _MOFileParser(object):
     """
     A class to parse binary mo files.
