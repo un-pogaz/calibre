@@ -244,7 +244,7 @@ class TagDelegate(QStyledItemDelegate):  # {{{
             editor = EnLineEdit(parent)
         return editor
 
-    # }}}
+# }}}
 
 
 class TagsView(QTreeView):  # {{{
@@ -1492,5 +1492,4 @@ class TagsView(QTreeView):  # {{{
                 if not expansion[0]:
                     self.collapse(idx)
 
-
-    # }}}
+# }}}

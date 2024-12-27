@@ -416,8 +416,8 @@ class FilterModel(QSortFilterProxyModel):  # {{{
 
 # }}}
 
-# Jobs UI {{{
 
+# Jobs UI {{{
 
 class ProgressBarDelegate(QAbstractItemDelegate):  # {{{
 

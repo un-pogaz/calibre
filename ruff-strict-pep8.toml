@@ -34,6 +34,7 @@ select = [
     # preview rules
     'RUF051', 'RUF056',
     'RUF039', 'RUF055',  # always use raw-string for regex
+    'E302', 'E303', 'E304', 'E305', 'W391',  # blank-line standard
 ]
 
 [lint.per-file-ignores]
@@ -44,7 +45,7 @@ select = [
 "src/calibre/gui2/store/stores/*" = ['UP']
 "src/calibre/utils/copy_files.py" = ['UP037']
 "src/calibre/utils/smartypants.py" = ['RUF039', 'RUF055']
-"src/qt/*.py" = ['I']
+"src/qt/*.py" = ['I', 'E302']
 "src/qt/*.pyi" = ['I']
 
 [lint.isort]

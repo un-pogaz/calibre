@@ -42,7 +42,6 @@ class AbortInitialize(Exception):
 
 
 class ConfigWidgetInterface:
-
     '''
     This class defines the interface that all widgets displayed in the
     Preferences dialog must implement. See :class:`ConfigWidgetBase` for
@@ -260,7 +259,6 @@ class CommaSeparatedList(Setting):
 
 
 class ConfigWidgetBase(QWidget, ConfigWidgetInterface):
-
     '''
     Base class that contains code to easily add standard config widgets like
     checkboxes, combo boxes, text fields and so on. See the :meth:`register`
@@ -476,7 +474,6 @@ class TableWidgetWithMoveByKeyPress(QTableWidget):
 
 
 # Testing {{{
-
 
 def test_widget(category, name, gui=None):
     show_config_widget(category, name, gui=gui, show_restart_msg=True)

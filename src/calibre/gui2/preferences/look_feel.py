@@ -139,8 +139,8 @@ class DefaultAuthorLink(QWidget):  # {{{
         self.custom_url.setVisible(k == 'url')
 # }}}
 
-# IdLinksEditor {{{
 
+# IdLinksEditor {{{
 
 class IdLinksRuleEdit(Dialog):
 
