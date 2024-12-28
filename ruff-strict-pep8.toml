@@ -36,13 +36,16 @@ select = [
     'RUF039', 'RUF055',  # always use raw-string for regex
     'E302', 'E303', 'E304', 'E305', 'W391',  # blank-line standard
     'E111', 'E112', 'E113', 'E117',  # code indentation
+    'E114', 'E115', 'E116', 'E261', 'E262', 'E265',  # comment formating
 ]
 
 [lint.per-file-ignores]
 "recipes/*" = ['UP']
 "manual/plugin_examples/*" = ['UP']
+"src/calibre/devices/kobo/driver.py" = ['E116']
 "src/calibre/ebooks/unihandecode/*codepoints.py" = ['E501']
 "src/calibre/ebooks/metadata/sources/*" = ['UP']
+"src/calibre/ebooks/pdf/reflow.py" = ['E114']
 "src/calibre/gui2/store/stores/*" = ['UP']
 "src/calibre/utils/copy_files.py" = ['UP037']
 "src/calibre/utils/smartypants.py" = ['RUF039', 'RUF055']
