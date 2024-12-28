@@ -706,7 +706,7 @@ class TagsModel(QAbstractItemModel):  # {{{
                         cur_idx = 0
                         for interval in intervals:
                             first_chr, last_chr, length = interval
-                            for i in range(0, length):
+                            for i in range(length):
                                 if first_chr == last_chr:
                                     cl_list[cur_idx] = first_chr
                                 else:
@@ -1352,7 +1352,7 @@ class TagsModel(QAbstractItemModel):  # {{{
                 def key_func(val):
                     if order == 'display_name':
                         return icu_lower(self.db.field_metadata[val]['name'])
-                    return icu_lower(val[1:] if val.startswith('#') or val.startswith('@') else val)
+                    return icu_lower(val[1:] if val.startswith(('#', '@')) else val)
                 direction = tweaks.get('tag_browser_category_default_sort_direction', 'ascending')
                 if direction not in ('ascending', 'descending'):
                     print('Tweak tag_browser_category_default_sort_direction is not valid. Ignored')
