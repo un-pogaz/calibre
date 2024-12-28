@@ -242,7 +242,7 @@ class FazNet(BasicNewsRecipe):
 
 #         format liveblog
         if soup.find(attrs={'class':'tik4-live__container'}):
-                    format_tickaroo_liveblog(soup)
+            format_tickaroo_liveblog(soup)
 
 # remove sizes and calc attributes in images
         for tag in soup.findAll('img'):

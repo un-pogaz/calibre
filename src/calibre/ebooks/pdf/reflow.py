@@ -1269,14 +1269,11 @@ class Page:
                         if self.regions[next_region].line_count >= \
                                 self.regions[prev_region].line_count:
                             avg_column_count = sum(len(r.columns) for r in regions)/float(len(regions))
-                            if self.regions[next_region].line_count > \
-                                    self.regions[prev_region].line_count \
-                               or abs(avg_column_count -
-                                       len(self.regions[prev_region].columns)) \
-                               > abs(avg_column_count -
-                                       len(self.regions[next_region].columns)):
-                                   absorb_into = next_region
-                                   absorb_at = 'top'
+                            if self.regions[next_region].line_count > self.regions[prev_region].line_count \
+                              or abs(avg_column_count - len(self.regions[prev_region].columns)) \
+                               > abs(avg_column_count - len(self.regions[next_region].columns)):
+                                absorb_into = next_region
+                                absorb_at = 'top'
                     if absorb_into is not None:
                         self.regions[absorb_into].absorb_regions(regions, absorb_at)
                         absorbed.update(regions)
@@ -1954,7 +1951,7 @@ class PDFDocument:
                 # Do not merge if the next paragraph is indented
                 if page.texts:
                     if candidate:
-                       last_line = candidate.texts[-1]
+                        last_line = candidate.texts[-1]
                     if candidate \
                       and last_line.bottom > orphan_space \
                       and page.texts[0].indented == 0:
