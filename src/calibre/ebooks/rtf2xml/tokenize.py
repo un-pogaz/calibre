@@ -84,7 +84,7 @@ class Tokenize:
                 self.__uc_char -=1
                 self.__uc_bin = True
                 return ''
-            elif token[:1] == '\\' :
+            elif token[:1] == '\\':
                 self.__uc_char -=1
                 return ''
             else:

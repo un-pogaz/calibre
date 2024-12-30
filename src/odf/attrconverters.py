@@ -44,7 +44,7 @@ from .namespaces import (
     XLINKNS,
 )
 
-pattern_color =  re.compile(r'#[0-9a-fA-F]{6}')
+pattern_color = re.compile(r'#[0-9a-fA-F]{6}')
 pattern_vector3D = re.compile(r'\([ ]*-?([0-9]+(\.[0-9]*)?|\.[0-9]+)([ ]+-?([0-9]+(\.[0-9]*)?|\.[0-9]+)){2}[ ]*\)')
 
 

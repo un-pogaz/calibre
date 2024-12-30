@@ -119,9 +119,9 @@ class PrivateEyeRecipe(BasicNewsRecipe):
                 for h in a.findAll('h3'):
                     (title, author) = self.title_author(h.getText())
                     content_articles.append(self.article_entry(
-                        title = title,
-                        url = self.abs_url(a.get('href')),
-                        author = author,
+                        title=title,
+                        url=self.abs_url(a.get('href')),
+                        author=author,
                     ))
                     break
                 else:
@@ -157,9 +157,9 @@ class PrivateEyeRecipe(BasicNewsRecipe):
             else:
                 (title, author) = self.title_author(a.getText())
                 articles.append(self.article_entry(
-                    title = title,
-                    url = self.abs_url(a.get('href')),
-                    author = author,
+                    title=title,
+                    url=self.abs_url(a.get('href')),
+                    author=author,
                 ))
 
         if not articles:
@@ -217,7 +217,7 @@ class PrivateEyeRecipe(BasicNewsRecipe):
     ]
 
     # We remove vast swathes of HTML which is not part of the articles.
-    remove_tags_before =  [
+    remove_tags_before = [
         {'name': 'div', 'class': 'container'},
         {'name': 'div', 'class': 'content-wrapper'},
         {'name': 'div', 'class': 'only-in-the-magazine'},

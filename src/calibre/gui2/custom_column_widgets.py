@@ -847,12 +847,12 @@ def comments_factory(db, key, parent):
 
 
 widgets = {
-        'bool' : Bool,
-        'rating' : Rating,
+        'bool': Bool,
+        'rating': Rating,
         'int': Int,
         'float': Float,
         'datetime': DateTime,
-        'text' : Text,
+        'text': Text,
         'comments': comments_factory,
         'series': Series,
         'enumeration': Enumeration
@@ -1050,12 +1050,12 @@ class BulkBase(Base):
         if is_bool:
             self.set_no_button = QToolButton(parent)
             self.set_no_button.setIcon(QIcon.ic('list_remove.png'))
-            self.set_no_button.clicked.connect(lambda:self.main_widget.setCurrentIndex(1))
+            self.set_no_button.clicked.connect(lambda: self.main_widget.setCurrentIndex(1))
             self.set_no_button.setToolTip(_('Set {0} to No').format(self.col_metadata['name']))
             l.insertWidget(1, self.set_no_button)
             self.set_yes_button = QToolButton(parent)
             self.set_yes_button.setIcon(QIcon.ic('ok.png'))
-            self.set_yes_button.clicked.connect(lambda:self.main_widget.setCurrentIndex(0))
+            self.set_yes_button.clicked.connect(lambda: self.main_widget.setCurrentIndex(0))
             self.set_yes_button.setToolTip(_('Set {0} to Yes').format(self.col_metadata['name']))
             l.insertWidget(1, self.set_yes_button)
         if add_edit_tags_button[0]:
@@ -1629,12 +1629,12 @@ class BulkText(BulkBase):
 
 
 bulk_widgets = {
-        'bool' : BulkBool,
-        'rating' : BulkRating,
+        'bool': BulkBool,
+        'rating': BulkRating,
         'int': BulkInt,
         'float': BulkFloat,
         'datetime': BulkDateTime,
-        'text' : BulkText,
+        'text': BulkText,
         'series': BulkSeries,
         'enumeration': BulkEnumeration,
 }

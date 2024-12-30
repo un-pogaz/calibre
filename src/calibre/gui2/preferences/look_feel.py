@@ -203,7 +203,7 @@ class IdLinksEditor(Dialog):
         for k, lx in iteritems(msprefs['id_link_rules']):
             for n, t in lx:
                 items.append((k, n, t))
-        items.sort(key=lambda x:sort_key(x[1]))
+        items.sort(key=lambda x: sort_key(x[1]))
         self.table = t = QTableWidget(len(items), 3, self)
         t.setHorizontalHeaderLabels([_('Key'), _('Name'), _('Template')])
         for r, (key, val, template) in enumerate(items):
@@ -511,7 +511,7 @@ class TBHierarchicalFields(DisplayedFields):  # {{{
             ans = [[k, ph.get(k, False)] for k in cats]
             self.changed = True
         else:
-            hier_cats =  self.db.prefs.get('categories_using_hierarchy') or ()
+            hier_cats = self.db.prefs.get('categories_using_hierarchy') or ()
             for key in cats:
                 ans.append([key, key in hier_cats])
         self.beginResetModel()
@@ -545,7 +545,7 @@ class BDVerticalCats(DisplayedFields):  # {{{
             ans = [[k, ph.get(k, False)] for k in cats]
             self.changed = True
         else:
-            vertical_cats =  self.db.prefs.get('book_details_vertical_categories') or ()
+            vertical_cats = self.db.prefs.get('book_details_vertical_categories') or ()
             for key in cats:
                 ans.append([key, key in vertical_cats])
         self.beginResetModel()

@@ -147,7 +147,7 @@ class SearchAndReplaceWidget(Widget, Ui_Form):
             item2.setText(value)
         self.search_replace.setCurrentCell(row+i, 0)
 
-    def sr_currentCellChanged(self, row, column, previousRow, previousColumn) :
+    def sr_currentCellChanged(self, row, column, previousRow, previousColumn):
         if row >= 0:
             self.sr_change.setEnabled(True)
             self.sr_remove.setEnabled(True)

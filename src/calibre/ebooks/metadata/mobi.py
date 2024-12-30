@@ -448,7 +448,7 @@ class MetadataUpdater:
 
         if mi.cover_data[1] or mi.cover:
             try:
-                data =  mi.cover_data[1]
+                data = mi.cover_data[1]
                 if not data:
                     with open(mi.cover, 'rb') as f:
                         data = f.read()

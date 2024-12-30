@@ -1596,7 +1596,7 @@ class BasicNewsRecipe(Recipe):
         if cpath is None:
             pf = open(os.path.join(dir, 'cover.jpg'), 'wb')
             if self.default_cover(pf):
-                cpath =  pf.name
+                cpath = pf.name
         if cpath is not None and os.access(cpath, os.R_OK):
             opf.cover = cpath
             manifest.append(cpath)

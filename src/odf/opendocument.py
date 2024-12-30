@@ -658,7 +658,7 @@ def load(odffile):
 
     # Look in the manifest file to see if which of the four files there are
     manifestpart = z.read('META-INF/manifest.xml')
-    manifest =  manifestlist(manifestpart)
+    manifest = manifestlist(manifestpart)
     __loadxmlparts(z, manifest, doc, '')
     for mentry,mvalue in manifest.items():
         if mentry[:9] == 'Pictures/' and len(mentry) > 9:

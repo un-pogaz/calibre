@@ -120,15 +120,15 @@ class StyleToCSS:
             (FONS,'page-width'): self.c_page_width,
             (FONS,'page-height'): self.c_page_height,
             (FONS,'text-align'): self.c_text_align,
-            (FONS,'text-indent') :self.c_fo,
-            (TABLENS,'border-model') :self.c_border_model,
-            (STYLENS,'column-width') : self.c_width,
+            (FONS,'text-indent'):self.c_fo,
+            (TABLENS,'border-model'):self.c_border_model,
+            (STYLENS,'column-width'): self.c_width,
             (STYLENS,'font-name'): self.c_fn,
             (STYLENS,'horizontal-pos'): self.c_hp,
             (STYLENS,'text-position'): self.c_text_position,
             (STYLENS,'text-line-through-style'): self.c_text_line_through_style,
             (STYLENS,'text-underline-style'): self.c_text_underline_style,
-            (STYLENS,'width') : self.c_width,
+            (STYLENS,'width'): self.c_width,
             # FIXME Should do style:vertical-pos here
         }
 
@@ -383,7 +383,7 @@ class ODF2XHTML(handler.ContentHandler):
         # Tags
         self.generate_css = generate_css
         self.frame_stack = []
-        self.list_number_map = defaultdict(lambda : 1)
+        self.list_number_map = defaultdict(lambda: 1)
         self.list_id_map = {}
         self.list_class_stack = []
         self.elements = {
@@ -704,11 +704,11 @@ class ODF2XHTML(handler.ContentHandler):
         if (SVGNS,'width') in attrs:
             style = style + 'width:' + attrs[(SVGNS,'width')] + ';'
         if (SVGNS,'height') in attrs:
-            style = style + 'height:' +  attrs[(SVGNS,'height')] + ';'
+            style = style + 'height:' + attrs[(SVGNS,'height')] + ';'
         if (SVGNS,'x') in attrs:
-            style = style + 'left:' +  attrs[(SVGNS,'x')] + ';'
+            style = style + 'left:' + attrs[(SVGNS,'x')] + ';'
         if (SVGNS,'y') in attrs:
-            style = style + 'top:' +  attrs[(SVGNS,'y')] + ';'
+            style = style + 'top:' + attrs[(SVGNS,'y')] + ';'
         if self.generate_css:
             self.opentag(htmltag, {'class': name, 'style': style})
         else:
@@ -741,11 +741,11 @@ class ODF2XHTML(handler.ContentHandler):
         if (SVGNS,'width') in attrs:
             style = style + 'width:' + attrs[(SVGNS,'width')] + ';'
         if (SVGNS,'height') in attrs:
-            style = style + 'height:' +  attrs[(SVGNS,'height')] + ';'
+            style = style + 'height:' + attrs[(SVGNS,'height')] + ';'
         if (SVGNS,'x') in attrs:
-            style = style + 'left:' +  attrs[(SVGNS,'x')] + ';'
+            style = style + 'left:' + attrs[(SVGNS,'x')] + ';'
         if (SVGNS,'y') in attrs:
-            style = style + 'top:' +  attrs[(SVGNS,'y')] + ';'
+            style = style + 'top:' + attrs[(SVGNS,'y')] + ';'
         if self.generate_css:
             self.opentag(htmltag, {'class': name, 'style': style})
         else:
@@ -837,7 +837,7 @@ class ODF2XHTML(handler.ContentHandler):
     def s_draw_textbox(self, tag, attrs):
         style = ''
         if (FONS,'min-height') in attrs:
-            style = style + 'min-height:' +  attrs[(FONS,'min-height')] + ';'
+            style = style + 'min-height:' + attrs[(FONS,'min-height')] + ';'
         self.opentag('div')
         # self.opentag('div', {'style': style})
 

@@ -23,12 +23,12 @@ def format_tickaroo_liveblog(soup):
         ntag = soup.new_tag('br')
         tag.insert_before(ntag)
 
-    for tag in soup.findAll(class_ = 'tik4-author__wrapper'):
-        ntag = tag.find(class_ = 'tik4-author__name')
+    for tag in soup.findAll(class_='tik4-author__wrapper'):
+        ntag = tag.find(class_='tik4-author__name')
         if ntag:
             temp = ntag.extract()
             temp['class'] = 'tik4-media-body__title'
-        ntag = tag.find(class_ = 'tik4-author__thumb')
+        ntag = tag.find(class_='tik4-author__thumb')
         if ntag and temp:
             ntag.insert_after(temp)
 
@@ -93,24 +93,24 @@ class FazNet(BasicNewsRecipe):
     # original by Armin Geller
     # overhaul to deal with changes in the faz.net websites
 
-    title                 =             'FAZ.NET'
-    __author__            =             'Unknown'
-    description           =             'Frankfurter Allgemeine Zeitung'
-    publisher             =             'Frankfurter Allgemeine Zeitung GmbH'
-    category              =             'news, politics, Germany'
-    cover_url             =             'https://upload.wikimedia.org/wikipedia/commons/7/72/Frankfurter_Allgemeine_logo.svg'
-    encoding              =             'utf-8'
-    language              =             'de'
-    ignore_duplicate_articles   =       {'title', 'url'}
-    max_articles_per_feed =             30
-    no_stylesheets        =             True
-    remove_javascript     =             True
-    scale_news_images = (10,100)
-    delay                 =      1
+    title                       = 'FAZ.NET'
+    __author__                  = 'Unknown'
+    description                 = 'Frankfurter Allgemeine Zeitung'
+    publisher                   = 'Frankfurter Allgemeine Zeitung GmbH'
+    category                    = 'news, politics, Germany'
+    cover_url                   = 'https://upload.wikimedia.org/wikipedia/commons/7/72/Frankfurter_Allgemeine_logo.svg'
+    encoding                    = 'utf-8'
+    language                    = 'de'
+    ignore_duplicate_articles   = {'title', 'url'}
+    max_articles_per_feed       = 30
+    no_stylesheets              = True
+    remove_javascript           = True
+    scale_news_images           = (10,100)
+    delay                       = 1
 
     test_feed = 'https://www.faz.net/rss/aktuell/feuilleton/kunst-und-architektur/berlinische-galerie-zeigt-edvard-munch-die-ganze-gefuehlsskala-des-lebens-19180631.html?printPagedArticle=true#pageIndex_2'
 
-    extra_css      =  '''
+    extra_css = '''
         .header-title,.scrolly-title {font-size: 1.5em; font-weight:bold; text-align:left;}
         .quote {font-size: 1.5em; font-weight:bold; text-align:center;}
         .author {font-size: 0.7em; font-weight:bold; text-align:center; display:block;
@@ -131,8 +131,8 @@ class FazNet(BasicNewsRecipe):
     keep_only_tags = [dict(name='article', attrs={'class':['article','storytelling']}),
                       dict(name='body'),
                       dict(name='div', attrs={'class':['imageGallery','image_only']}),
-                      dict(name = 'div', attrs ={'class':'tik4-live__container'}),
-                      dict(name = 'script', attrs = {'id':'__NUXT_DATA__'}),
+                      dict(name='div', attrs={'class':'tik4-live__container'}),
+                      dict(name='script', attrs={'id':'__NUXT_DATA__'}),
                       ]
 
     remove_tags = [
@@ -143,7 +143,7 @@ class FazNet(BasicNewsRecipe):
                        'tik4-by','header-detail__image','mm-adbox','upper-toolbar content-container'
                    ]}),
                    # dict(name ='script'),
-                   dict(name = 'style'),
+                   dict(name='style'),
                    dict(name='svg'),
                    dict(name='div', attrs={'data-module':'teaser'}),
 
@@ -224,14 +224,14 @@ class FazNet(BasicNewsRecipe):
             tag.unwrap()
 
         # remove ":""
-        tag = soup.find(class_ ='header-label__content')
+        tag = soup.find(class_='header-label__content')
         if tag:
-            colon=tag.find(class_ ='sr-only')
+            colon=tag.find(class_='sr-only')
             if colon:
                 colon.extract()
 
         # Skip articles behind paywall
-        if soup.find(id = 'faz-paywall'):
+        if soup.find(id='faz-paywall'):
             self.abort_article('Skipping paywalled article')
 
         # Remove F.A.Z. ad

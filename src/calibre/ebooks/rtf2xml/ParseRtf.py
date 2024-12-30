@@ -201,7 +201,7 @@ class ParseRtf:
 
     def __check_dir(self, the_dir):
         '''Check to see if directory exists'''
-        if not the_dir :
+        if not the_dir:
             return
         dir_exists = os.path.isdir(the_dir)
         if not dir_exists:
@@ -495,7 +495,7 @@ class ParseRtf:
         table_info_obj.insert_info()
         self.__bracket_match('table__data_info')
         if self.__form_lists:
-            make_list_obj =  make_lists.MakeLists(
+            make_list_obj = make_lists.MakeLists(
                 in_file=self.__temp_file,
                 bug_handler=RtfInvalidCodeException,
                 copy=self.__copy,
@@ -506,7 +506,7 @@ class ParseRtf:
             make_list_obj.make_lists()
             self.__bracket_match('form_lists_info')
         if self.__headings_to_sections:
-            headings_to_sections_obj =  headings_to_sections.HeadingsToSections(
+            headings_to_sections_obj = headings_to_sections.HeadingsToSections(
                 in_file=self.__temp_file,
                 bug_handler=RtfInvalidCodeException,
                 copy=self.__copy,
@@ -576,7 +576,7 @@ class ParseRtf:
 
     def __bracket_match(self, file_name):
         if self.__run_level > 2:
-            good_br, msg =  self.__check_brack_obj.check_brackets()
+            good_br, msg = self.__check_brack_obj.check_brackets()
             if good_br:
                 pass
                 # sys.stderr.write( msg + ' in ' + file_name + "\n")

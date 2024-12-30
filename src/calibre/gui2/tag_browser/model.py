@@ -1813,10 +1813,10 @@ class TagsModel(QAbstractItemModel):  # {{{
         nodes_seen = set()
         stars = rating_to_stars(3, True)
 
-        node_searches = {TAG_SEARCH_STATES['mark_plus']       : 'true',
-                         TAG_SEARCH_STATES['mark_plusplus']   : '.true',
-                         TAG_SEARCH_STATES['mark_minus']      : 'false',
-                         TAG_SEARCH_STATES['mark_minusminus'] : '.false'}
+        node_searches = {TAG_SEARCH_STATES['mark_plus']      : 'true',
+                         TAG_SEARCH_STATES['mark_plusplus']  : '.true',
+                         TAG_SEARCH_STATES['mark_minus']     : 'false',
+                         TAG_SEARCH_STATES['mark_minusminus']: '.false'}
 
         for node in self.category_nodes:
             if node.tag.state:

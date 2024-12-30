@@ -23,7 +23,7 @@ class DeleteInfo:
     '''Delete unnecessary destination groups'''
 
     def __init__(self,
-            in_file ,
+            in_file,
             bug_handler,
             copy=None,
             run_level=1,
@@ -68,10 +68,10 @@ class DeleteInfo:
                 )
         self.__state = 'default'
         self.__state_dict = {
-            'default'           : self.__default_func,
-            'after_asterisk'    : self.__asterisk_func,
-            'delete'            : self.__delete_func,
-            'list'              : self.__list_func,
+            'default'       : self.__default_func,
+            'after_asterisk': self.__asterisk_func,
+            'delete'        : self.__delete_func,
+            'list'          : self.__list_func,
         }
 
     def __default_func(self,line):
@@ -131,7 +131,7 @@ class DeleteInfo:
                     msg = 'Flag problem\n'
                     raise self.__bug_handler(msg)
                 return True
-        elif self.__token_info in self.__allowable :
+        elif self.__token_info in self.__allowable:
             if self.__ob:
                 self.__write_obj.write(self.__ob)
                 self.__ob = 0

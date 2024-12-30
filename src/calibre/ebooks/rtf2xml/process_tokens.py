@@ -155,7 +155,7 @@ class ProcessTokens:
         'levelindent'        :  ('ls', 'level-inde', self.default_func),
         'levelnfc'           :  ('ls', 'level-type', self.__list_type_func),
         'levelnfcn'          :  ('ls', 'level-type', self.__list_type_func),
-        'listid'             :  ('ls', 'lis-tbl-id',  self.default_func),
+        'listid'             :  ('ls', 'lis-tbl-id', self.default_func),
         'listoverride'       :  ('ls', 'lis-overid', self.default_func),
         # duplicate
         'pnlvl'              : ('ls', 'list-level', self.default_func),
@@ -371,7 +371,7 @@ class ProcessTokens:
             15:     'single byte character',
             16:     'Kanji numbering 3',
             17:     'Kanji numbering 4',
-            18:     'Circle numbering' ,
+            18:     'Circle numbering',
             19:     'double-byte Arabic numbering',
             2046:   'phonetic double-byte Katakana characters',
             2146:   'phonetic double-byte katakana characters',
@@ -780,7 +780,7 @@ class ProcessTokens:
 
     def __check_brackets(self, in_file):
         self.__check_brack_obj = check_brackets.CheckBrackets(file=in_file)
-        good_br =  self.__check_brack_obj.check_brackets()[0]
+        good_br = self.__check_brack_obj.check_brackets()[0]
         if not good_br:
             return 1
 
