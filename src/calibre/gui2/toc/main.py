@@ -74,7 +74,7 @@ class XPathDialog(QDialog):  # {{{
         l.addWidget(la)
         self.widgets = []
         for i in range(5):
-            la = _('Level %s ToC:')%(f'&{i + 1}')
+            la = _('Level %s ToC:')%(f'&{i+1}')
             xp = XPathEdit(self)
             xp.set_msg(la)
             self.widgets.append(xp)

@@ -316,7 +316,7 @@ class RotatingStream:
             return
         self.stream.close()
         for i in range(self.history - 1, 0, -1):
-            src, dest = f'{self.filename}.{i}', f'{self.filename}.{i + 1}'
+            src, dest = f'{self.filename}.{i}', f'{self.filename}.{i+1}'
             self.rename(src, dest)
         self.rename(self.filename, f'{self.filename}.1')
         self.set_output()

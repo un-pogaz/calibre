@@ -321,7 +321,7 @@ def inspect_mobi(mobi_file, ddir):
             fo.write(payload)
 
     for i, container in enumerate(f.containers):
-        with open(os.path.join(ddir, f'container{i + 1}.txt'), 'wb') as cf:
+        with open(os.path.join(ddir, f'container{i+1}.txt'), 'wb') as cf:
             cf.write(str(container).encode('utf-8'))
 
     if f.fdst:

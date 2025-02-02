@@ -66,7 +66,7 @@ class IndirectObjects:
     def write_xref(self, stream):
         self.xref_offset = stream.tell()
         stream.write(b'xref'+EOL)
-        stream.write(f'0 {1 + len(self._offsets)}')
+        stream.write(f'0 {1+len(self._offsets)}')
         stream.write(EOL)
         stream.write(f'{0:010} 65535 f ')
         stream.write(EOL)

@@ -910,7 +910,7 @@ class TextEdit(PlainTextEdit):
             if a == 255:
                 color = f'rgb({r}, {g}, {b})'
             else:
-                color = f'rgba({r}, {g}, {b}, {a / 255:.2g})'
+                color = f'rgba({r}, {g}, {b}, {a/255:.2g})'
         prefix, suffix = {
             'bold': ('<b>', '</b>'),
             'italic': ('<i>', '</i>'),

@@ -104,7 +104,7 @@ class Index(list):
                             for i in range(offset, offset+3*(count+1), 3)]
             else:
                 fmt = {1:'B', 2:'H', 4:'L'}[self.offset_size]
-                fmt = f'>{count + 1}{fmt}'.encode('ascii')
+                fmt = f'>{count+1}{fmt}'.encode('ascii')
                 offsets = unpack_from(fmt, raw, offset)
             offset += self.offset_size * (count+1) - 1
 
@@ -144,7 +144,7 @@ class Charset(list):
             f(raw, offset, strings, num_glyphs, is_CID)
 
     def parse_fmt0(self, raw, offset, strings, num_glyphs, is_CID):
-        fmt = f'>{num_glyphs - 1}H'.encode('ascii')
+        fmt = f'>{num_glyphs-1}H'.encode('ascii')
         ids = unpack_from(fmt, raw, offset)
         if is_CID:
             ids = (f'cid{x:05}' for x in ids)

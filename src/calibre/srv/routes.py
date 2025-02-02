@@ -164,7 +164,7 @@ class Route:
         self.required_names = self.all_names - frozenset(self.defaults)
         argspec = inspect.getfullargspec(self.endpoint)
         if len(self.names) + 2 != len(argspec.args) - len(argspec.defaults or ()):
-            raise route_error(f'Function must take {len(self.names) + 2} non-default arguments')
+            raise route_error(f'Function must take {len(self.names)+2} non-default arguments')
         if argspec.args[2:len(self.names)+2] != self.names:
             raise route_error("Function's argument names do not match the variable names in the route")
         if not frozenset(self.type_checkers).issubset(frozenset(self.names)):

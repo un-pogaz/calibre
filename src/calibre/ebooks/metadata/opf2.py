@@ -801,7 +801,7 @@ class OPF:  # {{{
     def replace_manifest_item(self, item, items):
         items = [self.create_manifest_item(*i) for i in items]
         for i, item2 in enumerate(items):
-            item2.set('id', item.get('id')+f'.{i + 1}')
+            item2.set('id', item.get('id')+f'.{i+1}')
         manifest = item.getparent()
         index = manifest.index(item)
         manifest[index:index+1] = items

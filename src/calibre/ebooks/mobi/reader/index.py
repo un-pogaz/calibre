@@ -103,7 +103,7 @@ class CNCX:  # {{{
                     except:
                         byts = raw[pos:]
                         r = format_bytes(byts)
-                        print(f'CNCX entry at offset {pos + record_offset} has unknown format {r}')
+                        print(f'CNCX entry at offset {pos+record_offset} has unknown format {r}')
                         self.records[pos+record_offset] = r
                         pos = len(raw)
                 pos += consumed+length

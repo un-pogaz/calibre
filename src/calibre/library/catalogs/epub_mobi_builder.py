@@ -1839,7 +1839,7 @@ class CatalogBuilder:
         for i, date in enumerate(self.DATE_RANGE):
             date_range_limit = self.DATE_RANGE[i]
             if i:
-                date_range = f'{self.DATE_RANGE[i - 1]} to {self.DATE_RANGE[i]} days ago'
+                date_range = f'{self.DATE_RANGE[i-1]} to {self.DATE_RANGE[i]} days ago'
             else:
                 date_range = f'Last {self.DATE_RANGE[i]} days'
 
@@ -3372,7 +3372,7 @@ class CatalogBuilder:
         today_time = datetime.datetime(today.year, today.month, today.day)
         for i, date in enumerate(self.DATE_RANGE):
             if i:
-                date_range = f'{self.DATE_RANGE[i - 1]} to {self.DATE_RANGE[i]} days ago'
+                date_range = f'{self.DATE_RANGE[i-1]} to {self.DATE_RANGE[i]} days ago'
             else:
                 date_range = f'Last {self.DATE_RANGE[i]} days'
             date_range_limit = self.DATE_RANGE[i]
@@ -3480,7 +3480,7 @@ class CatalogBuilder:
         today_time = datetime.datetime(today.year, today.month, today.day)
         for i, date in enumerate(self.DATE_RANGE):
             if i:
-                date_range = f'{self.DATE_RANGE[i - 1]} to {self.DATE_RANGE[i]} days ago'
+                date_range = f'{self.DATE_RANGE[i-1]} to {self.DATE_RANGE[i]} days ago'
             else:
                 date_range = f'Last {self.DATE_RANGE[i]} days'
             date_range_limit = self.DATE_RANGE[i]

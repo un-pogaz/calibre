@@ -853,7 +853,7 @@ class SMART_DEVICE_APP(DeviceConfig, DevicePlugin):
                     json_metadata[key]['book'] = self.json_codec.encode_book_metadata(book['book'])
                     json_metadata[key]['last_used'] = book['last_used']
                     result = as_bytes(json.dumps(json_metadata, indent=2, default=to_json))
-                    fd.write(f'{len(result) + 1:007}\n'.encode('ascii'))
+                    fd.write(f'{len(result)+1:007}\n'.encode('ascii'))
                     fd.write(result)
                     fd.write(b'\n')
                     count += 1

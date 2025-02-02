@@ -744,7 +744,7 @@ class StylesManager:
                 if style.outline_level is None:
                     val = f'Para %0{snum}d' % i
                 else:
-                    val = f'Heading {style.outline_level + 1}'
+                    val = f'Heading {style.outline_level+1}'
                     heading_styles.append(style)
                 style.id = style.name = val
             style.seq = i

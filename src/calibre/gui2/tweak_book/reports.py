@@ -1402,7 +1402,7 @@ class ReportsWidget(QWidget):
             self.stack.widget(i)(data)
             if DEBUG:
                 category = self.reports.item(i).data(Qt.ItemDataRole.DisplayRole)
-                print(f'Widget time for {category:12}: {time.time() - st:.2f}s seconds')
+                print(f'Widget time for {category:12}: {time.time()-st:.2f}s seconds')
 
     def save(self):
         save_state('splitter-state', bytearray(self.splitter.saveState()))

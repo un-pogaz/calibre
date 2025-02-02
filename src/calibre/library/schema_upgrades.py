@@ -21,7 +21,7 @@ class SchemaUpgrade:
             if meth is None:
                 break
             else:
-                print(f'Upgrading database to version {uv + 1}...')
+                print(f'Upgrading database to version {uv+1}...')
                 meth()
                 self.user_version = uv+1
 

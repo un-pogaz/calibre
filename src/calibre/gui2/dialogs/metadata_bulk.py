@@ -991,7 +991,7 @@ class MetadataBulkDialog(QDialog, Ui_MetadataBulkDialog):
             self.s_r_src_ident.setVisible(True)
 
         for i in range(self.s_r_number_of_books):
-            w = getattr(self, f'book_{i + 1}_text')
+            w = getattr(self, f'book_{i+1}_text')
             mi = self.db.get_metadata(self.ids[i], index_is_id=True)
             src = self.s_r_sf_itemdata(idx)
             t = self.s_r_get_field(mi, src)
@@ -1061,7 +1061,7 @@ class MetadataBulkDialog(QDialog, Ui_MetadataBulkDialog):
             self.test_result.setText(tt)
         update_status_actions(self.test_result, self.s_r_error is None, tt)
         for i in range(self.s_r_number_of_books):
-            getattr(self, f'book_{i + 1}_result').setText('')
+            getattr(self, f'book_{i+1}_result').setText('')
 
     def s_r_func(self, match):
         rfunc = self.s_r_functions[str(self.replace_func.currentText())]
@@ -1186,7 +1186,7 @@ class MetadataBulkDialog(QDialog, Ui_MetadataBulkDialog):
 
         for i in range(self.s_r_number_of_books):
             mi = self.db.get_metadata(self.ids[i], index_is_id=True)
-            wr = getattr(self, f'book_{i + 1}_result')
+            wr = getattr(self, f'book_{i+1}_result')
             try:
                 result = self.s_r_do_regexp(mi)
                 t = self.s_r_do_destination(mi, result)

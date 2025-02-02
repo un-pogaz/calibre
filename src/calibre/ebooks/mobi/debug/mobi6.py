@@ -365,7 +365,7 @@ class IndexEntry:  # {{{
             if tag.value is not None:
                 ans.append('\t'+str(tag))
         if self.first_child_index != -1:
-            ans.append(f'\tNumber of children: {self.last_child_index - self.first_child_index + 1}')
+            ans.append(f'\tNumber of children: {self.last_child_index-self.first_child_index+1}')
         return '\n'.join(ans)
 
 # }}}
@@ -454,7 +454,7 @@ class CNCX:  # {{{
                     except:
                         byts = raw[pos:]
                         r = format_bytes(byts)
-                        print(f'CNCX entry at offset {pos + record_offset} has unknown format {r}')
+                        print(f'CNCX entry at offset {pos+record_offset} has unknown format {r}')
                         self.records[pos+record_offset] = r
                         pos = len(raw)
                 pos += consumed+length
@@ -650,7 +650,7 @@ class TBSIndexing:  # {{{
                     psi = nsi
                     continue
 
-                ans.append(f'First article in this record of section {psi.index} (relative to its parent section): {ai} [{ai + psi.index} absolute index]')
+                ans.append(f'First article in this record of section {psi.index} (relative to its parent section): {ai} [{ai+psi.index} absolute index]')
 
                 num = extra.get(0b0100, None)
                 if num is None:
@@ -662,7 +662,7 @@ class TBSIndexing:  # {{{
                 offset = extra.get(0b0001, None)
                 if offset is not None:
                     if offset == 0:
-                        ans.append(f'This record is spanned by the article:{ai + psi.index}')
+                        ans.append(f'This record is spanned by the article:{ai+psi.index}')
                     else:
                         ans.append(
                             f'->Offset to start of next section ({psi.index + 1}) from start of record:'

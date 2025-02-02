@@ -332,7 +332,7 @@ class Styles(etree.XSLTExtension):
                 return None
             if a == 0:
                 return f'rgb({r},{g},{b})'
-            return f'rgba({r},{g},{b},{1.0 - a / 255.0:f})'
+            return f'rgba({r},{g},{b},{1.0-a/255.0:f})'
         except:
             return None
 

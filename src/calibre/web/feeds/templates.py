@@ -129,14 +129,14 @@ class FeedTemplate(Template):
             hr.tail = '| '
 
         if f+1 < len(feeds):
-            link = A(_('Next section'), href=f'../feed_{f + 1}/index.html')
+            link = A(_('Next section'), href=f'../feed_{f+1}/index.html')
             link.tail = ' | '
             navbar.append(link)
         link = A(_('Main menu'), href='../index.html')
         link.tail = ' | '
         navbar.append(link)
         if f > 0:
-            link = A(_('Previous section'), href=f'../feed_{f - 1}/index.html')
+            link = A(_('Previous section'), href=f'../feed_{f-1}/index.html')
             link.tail = ' |'
             navbar.append(link)
         if top:
@@ -220,8 +220,8 @@ class NavBarTemplate(Template):
                 navbar.append(BR())
             navbar.append(BR())
         else:
-            next_art = f'feed_{feed + 1}' if art == number_of_articles_in_feed - 1 \
-                    else f'article_{art + 1}'
+            next_art = f'feed_{feed+1}' if art == number_of_articles_in_feed - 1 \
+                    else f'article_{art+1}'
             up = '../..' if art == number_of_articles_in_feed - 1 else '..'
             href = f'{prefix}{up}/{next_art}/index.html'
             navbar.text = '| '
@@ -233,7 +233,7 @@ class NavBarTemplate(Template):
         next(navbar.iterchildren(reversed=True)).tail = ' | '
         navbar.append(A(_('Main menu'), href=href))
         if art > 0 and not bottom:
-            href = f'{prefix}../article_{art - 1}/index.html'
+            href = f'{prefix}../article_{art-1}/index.html'
             next(navbar.iterchildren(reversed=True)).tail = ' | '
             navbar.append(A(_('Previous'), href=href))
         next(navbar.iterchildren(reversed=True)).tail = ' | '
@@ -402,7 +402,7 @@ class TouchscreenNavBarTemplate(Template):
             navbar.append(BR())
         # | Previous
         if art > 0:
-            link = A(attrs('article_link'),_('Previous'),href=f'{prefix}../article_{art - 1}/index.html')
+            link = A(attrs('article_link'),_('Previous'),href=f'{prefix}../article_{art-1}/index.html')
             navbar_tr.append(TD(attrs('article_prev'),link))
         else:
             navbar_tr.append(TD(attrs('article_prev'),''))
@@ -415,8 +415,8 @@ class TouchscreenNavBarTemplate(Template):
         navbar_tr.append(TD(attrs('article_sections_list'),link))
 
         # | Next
-        next_art = f'feed_{feed + 1}' if art == number_of_articles_in_feed - 1 \
-                else f'article_{art + 1}'
+        next_art = f'feed_{feed+1}' if art == number_of_articles_in_feed - 1 \
+                else f'article_{art+1}'
         up = '../..' if art == number_of_articles_in_feed - 1 else '..'
 
         link = A(attrs('article_link'), _('Next'), href=f'{prefix}{up}/{next_art}/index.html')

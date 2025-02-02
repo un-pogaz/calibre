@@ -42,7 +42,7 @@ def ensure_unique_components(data):  # {{{
     for book_ids in itervalues(cmap):
         if len(book_ids) > 1:
             for i, book_id in enumerate(sorted(book_ids)[1:]):
-                suffix = f' ({i + 1})'
+                suffix = f' ({i+1})'
                 components = bid_map[book_id]
                 components[-1] = components[-1] + suffix
 # }}}

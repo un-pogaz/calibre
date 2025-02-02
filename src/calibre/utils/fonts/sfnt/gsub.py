@@ -61,7 +61,7 @@ class LigatureSubstitution(UnknownLookupSubTable):
 
     def read_ligature(self, data):
         lig_glyph, count = data.unpack('HH')
-        components = data.unpack(f'{count - 1}H', single_special=False)
+        components = data.unpack(f'{count-1}H', single_special=False)
         return lig_glyph, components
 
     def all_substitutions(self, glyph_ids):

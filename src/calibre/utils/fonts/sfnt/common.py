@@ -182,7 +182,7 @@ class Coverage:
                     enumerate(self.glyph_ids)}
         else:
             self.ranges = []
-            ranges = data.unpack(f'{3 * count}H', single_special=False)
+            ranges = data.unpack(f'{3*count}H', single_special=False)
             for i in range(count):
                 start, end, start_coverage_index = ranges[i*3:(i+1)*3]
                 self.ranges.append(CoverageRange(start, end, start_coverage_index))

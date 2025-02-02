@@ -213,7 +213,7 @@ def manage_users_cli(path=None, args=()):
         question=_('What do you want to do?'), choices=(), default=None, banner=''):
         prints(banner)
         for i, choice in enumerate(choices):
-            prints(f'{i + 1})', choice)
+            prints(f'{i+1})', choice)
         print()
         while True:
             prompt = question + f' [1-{len(choices)}]:'

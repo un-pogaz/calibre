@@ -658,7 +658,7 @@ class MobiReader:
             mi = MetaInformation(self.book_header.title, [_('Unknown')])
         opf = OPFCreator(os.path.dirname(htmlfile), mi)
         if hasattr(self.book_header.exth, 'cover_offset'):
-            opf.cover = f'images/{self.book_header.exth.cover_offset + 1:05}.jpg'
+            opf.cover = f'images/{self.book_header.exth.cover_offset+1:05}.jpg'
         elif mi.cover is not None:
             opf.cover = mi.cover
         else:

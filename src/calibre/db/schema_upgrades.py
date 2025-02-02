@@ -27,9 +27,9 @@ class SchemaUpgrade:
                 if meth is None:
                     break
                 else:
-                    prints(f'Upgrading database to version {uv + 1}...')
+                    prints(f'Upgrading database to version {uv+1}...')
                     meth()
-                    self.db.execute(f'pragma user_version={uv + 1}')
+                    self.db.execute(f'pragma user_version={uv+1}')
         except:
             self.db.execute('ROLLBACK')
             raise

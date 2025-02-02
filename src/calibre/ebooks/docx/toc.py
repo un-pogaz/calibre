@@ -30,7 +30,7 @@ def from_headings(body, log, namespace, num_levels=3):
     def ensure_id(elem):
         ans = elem.get('id', None)
         if not ans:
-            ans = f'toc_id_{next(idcount) + 1}'
+            ans = f'toc_id_{next(idcount)+1}'
             elem.set('id', ans)
         return ans
 

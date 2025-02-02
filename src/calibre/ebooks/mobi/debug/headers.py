@@ -501,7 +501,7 @@ class MOBIHeader:  # {{{
             ans += '\n\n' + str(self.exth)
             ans += f'\n\nBytes after EXTH ({len(self.bytes_after_exth)} bytes): {format_bytes(self.bytes_after_exth)}'
 
-        ans += f'\nNumber of bytes after full name: {len(self.raw) - (self.fullname_offset + self.fullname_length)}'
+        ans += f'\nNumber of bytes after full name: {len(self.raw)-self.fullname_offset+self.fullname_length}'
 
         ans += f'\nRecord 0 length: {len(self.raw)}'
         return ans
