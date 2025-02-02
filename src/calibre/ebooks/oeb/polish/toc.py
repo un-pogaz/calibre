@@ -622,7 +622,7 @@ def create_ncx(toc, to_href, btitle, lang, uid):
     def process_node(xml_parent, toc_parent):
         for child in toc_parent:
             play_order['c'] += 1
-            point = etree.SubElement(xml_parent, NCX('navPoint'), id=f"num_{play_order['c']}",
+            point = etree.SubElement(xml_parent, NCX('navPoint'), id='num_{}'.format(play_order['c']),
                             playOrder=str(play_order['c']))
             label = etree.SubElement(point, NCX('navLabel'))
             title = child.title

@@ -2826,7 +2826,8 @@ class CatalogBuilder:
         self.update_progress_full_step(_('Descriptions HTML'))
 
         for title_num, title in enumerate(self.books_by_title):
-            self.update_progress_micro_step(f"{_('Description HTML')} {title_num} of {len(self.books_by_title)}",
+            self.update_progress_micro_step('{} {} of {}'.format(
+                                            _('Description HTML'), title_num, len(self.books_by_title)),
                                             float(title_num * 100 / len(self.books_by_title)) / 100)
 
             # Generate the header from user-customizable template
@@ -3394,8 +3395,7 @@ class CatalogBuilder:
             sec_text = books_by_date_range[1]
             content_src = '{}#bda_{}'.format(HTML_file,
                 books_by_date_range[1].replace(' ', ''))
-            navStr = f'{books_by_date_range[2]} titles' if books_by_date_range[2] > 1 else \
-                        f'{books_by_date_range[2]} title'
+            navStr = f'{books_by_date_range[2]} titles' if books_by_date_range[2] > 1 else f'{books_by_date_range[2]} title'
             cm_tags = {'description': books_by_date_range[0], 'author': navStr}
             self.generate_ncx_subsection(navPointTag, sec_id, sec_text, content_src, cm_tags)
 
@@ -3527,8 +3527,7 @@ class CatalogBuilder:
             sec_id = f'bdr_{books_by_day[1].year}-{books_by_day[1].month}-{books_by_day[1].day}ID'
             sec_text = datestr
             content_src = f'{HTML_file}#bdr_{books_by_day[1].year}-{books_by_day[1].month}-{books_by_day[1].day}'
-            navStr = f'{books_by_day[2]} titles' if books_by_day[2] > 1 else \
-                        f'{books_by_day[2]} title'
+            navStr = f'{books_by_day[2]} titles' if books_by_day[2] > 1 else f'{books_by_day[2]} title'
             cm_tags = {'description': books_by_day[0], 'author': navStr}
             self.generate_ncx_subsection(navPointTag, sec_id, sec_text, content_src, cm_tags)
 
@@ -3913,7 +3912,8 @@ class CatalogBuilder:
         image_dir = f'{self.catalog_path}/images'
         for i, title in enumerate(self.books_by_title):
             # Update status
-            self.update_progress_micro_step(f"{_('Thumbnail')} {i} of {len(self.books_by_title)}",
+            self.update_progress_micro_step('{} {} of {}'.format(
+                _('Thumbnail'), i, len(self.books_by_title)),
                  i / float(len(self.books_by_title)))
 
             thumb_file = 'thumbnail_{}.jpg'.format(int(title['id']))
@@ -3933,7 +3933,7 @@ class CatalogBuilder:
                 thumb_generated = False
 
             if not thumb_generated:
-                self.opts.log.warn(f"     using default cover for '{title['title']}' ({title['id']})")
+                self.opts.log.warn("     using default cover for '{}' ({})".format(title['title'], title['id']))
                 # Confirm thumb exists, default is current
                 default_thumb_fp = os.path.join(image_dir, 'thumbnail_default.jpg')
                 cover = os.path.join(self.catalog_path, 'DefaultCover.png')

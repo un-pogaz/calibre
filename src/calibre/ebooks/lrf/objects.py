@@ -601,7 +601,7 @@ class Block(LRFStream, TextCSS):
                 self.attrs[attr] = getattr(self, attr)
 
     def __str__(self):
-        s = f"\n<{self.name} objid=\"{self.id}\" blockstyle=\"{getattr(self, 'style_id', '')}\" "
+        s = '\n<{} objid="{}" blockstyle="{}" '.format(self.name, self.id, getattr(self, 'style_id', ''))
         if hasattr(self, 'textstyle_id'):
             s += f'textstyle="{self.textstyle_id}" '
         for attr in self.attrs:

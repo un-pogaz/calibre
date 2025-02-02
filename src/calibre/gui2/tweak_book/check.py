@@ -197,7 +197,8 @@ class Check(QSplitter):
             ifix = ''
             loc = loc_to_string(err.line, err.col)
             if err.INDIVIDUAL_FIX:
-                ifix = f"<a href=\"fix:error,{self.items.currentRow()}\" title=\"{_('Try to fix only this error')}\">{err.INDIVIDUAL_FIX}</a><br><br>"
+                ifix = '<a href="fix:error,{}" title="{}">{}</a><br><br>'.format(
+                    self.items.currentRow(), _('Try to fix only this error'), err.INDIVIDUAL_FIX)
             open_tt = _('Click to open in editor')
             fix_tt = _('Try to fix all fixable errors automatically. Only works for some types of error.')
             fix_msg = _('Try to correct all fixable errors automatically')

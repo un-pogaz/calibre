@@ -580,7 +580,8 @@ class TBSIndexing:  # {{{
 
     def dump_record(self, r, dat):
         ans = []
-        ans.append(f"\nRecord #{r.idx}: Starts at: {dat['geom'][0]} Ends at: {dat['geom'][1]}")
+        ans.append('\nRecord #{}: Starts at: {} Ends at: {}'.format(
+            r.idx, dat['geom'][0], dat['geom'][1]))
         s, e, c = dat['starts'], dat['ends'], dat['complete']
         ans.append(f'\tContains: {len(s+e+c)} index entries ({len(e)} ends, {len(c)} complete, {len(s)} starts)')
         byts = bytearray(r.trailing_data.get('indexing', b''))

@@ -429,9 +429,9 @@ class Mobi8Reader:
                     pass  # Ignore these records
                 elif typ == b'FONT':
                     font = read_font_record(data)
-                    href = f"fonts/{fname_idx:05}.{font['ext']}"
+                    href = 'fonts/{:05}.{}'.format(fname_idx, font['ext'])
                     if font['err']:
-                        self.log.warn(f"Reading font record {fname_idx} failed: {font['err']}")
+                        self.log.warn('Reading font record {} failed: {}'.format(fname_idx, font['err']))
                         if font['headers']:
                             self.log.debug('Font record headers: {}'.format(font['headers']))
                     with open(href.replace('/', os.sep), 'wb') as f:

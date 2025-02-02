@@ -218,7 +218,8 @@ def manage_users_cli(path=None, args=()):
         while True:
             prompt = question + f' [1-{len(choices)}]:'
             if default is not None:
-                prompt = question + f" [1-{len(choices)} {_('default')}: {default + 1}]"
+                prompt = question + ' [1-{} {}: {}]'.format(
+                    len(choices), _('default'), default + 1)
             reply = get_input(prompt)
             if not reply and default is not None:
                 reply = str(default + 1)

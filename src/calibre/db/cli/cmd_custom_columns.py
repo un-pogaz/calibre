@@ -43,5 +43,5 @@ def main(opts, args, dbctx):
             prints(pformat(data))
             print('\n')
         else:
-            prints(col, f"({data['num']})")
+            prints(col, '({})'.format(data['num']))
     return 0
