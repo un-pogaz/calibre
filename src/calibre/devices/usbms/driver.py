@@ -457,7 +457,7 @@ class USBMS(CLI, Device):
                 if not os.path.exists(prefix):
                     os.makedirs(self.normalize_path(prefix))
                 with open(self.normalize_path(os.path.join(prefix, self.METADATA_CACHE)), 'wb') as f:
-                    json_codec.encode_to_file(f, booklists[listid])
+                    json_codec.encode_to_file(f, booklists[listid], compressed=True)
                     fsync(f)
         write_prefix(self._main_prefix, 0)
         write_prefix(self._card_a_prefix, 1)

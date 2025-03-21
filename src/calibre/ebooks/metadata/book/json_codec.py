@@ -5,6 +5,7 @@ Created on 4 Jun 2010
 '''
 
 import json
+import os
 import traceback
 from datetime import datetime, time
 
@@ -131,10 +132,13 @@ class JsonCodec:
     def __init__(self, field_metadata=None):
         self.field_metadata = field_metadata or FieldMetadata()
 
-    def encode_to_file(self, file_, booklist):
-        data = json.dumps(self.encode_booklist_metadata(booklist), indent=2)
+    def encode_to_file(self, file_, booklist, *, compressed=False):
+        data = json.dumps(self.encode_booklist_metadata(booklist), indent=(None if compressed else 2))
         if not isinstance(data, bytes):
             data = data.encode('utf-8')
+        if compressed:
+            import gzip
+            data = gzip.compress(data)
         file_.write(data)
 
     def encode_booklist_metadata(self, booklist):
@@ -175,7 +179,13 @@ class JsonCodec:
     def decode_from_file(self, file_, booklist, book_class, prefix):
         js = []
         try:
-            js = json.load(file_)
+            magic = file_.read(2)
+            file_.seek(-2, os.SEEK_CUR)
+            if magic == b'\037\213':  # test if is a gzip compresed
+                import gzip
+                js = json.loads(gzip.decompress(file_.read()))
+            else:
+                js = json.load(file_)
             for item in js:
                 entry = self.raw_to_book(item, book_class, prefix)
                 if entry is not None:

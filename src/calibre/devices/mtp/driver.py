@@ -380,7 +380,7 @@ class MTP_DEVICE(BASE):
 
         json_codec = JSONCodec()
         stream = SpooledTemporaryFile(10*(1024**2))
-        json_codec.encode_to_file(stream, bl)
+        json_codec.encode_to_file(stream, bl, compressed=True)
         size = stream.tell()
         stream.seek(0)
         self.put_calibre_file(storage, 'metadata', stream, size)
