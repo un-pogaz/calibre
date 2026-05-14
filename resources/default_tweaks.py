@@ -140,7 +140,14 @@ categories_collapsed_popularity_template = r'{first.count:d} - {last.count:d}'
 # Order is 0 for ascending, 1 for descending.
 # For example, set it to [('authors',0),('title',0)] to sort by
 # title within authors.
+#
+# You can also provide a list of column names to always ignore on startup.
+# This can be usefull to avoid composite colunms know to be particularly
+# time consuming to sort and that can significantly delay the load
+# of the your librarys when calibre try to restore the previous sort state
+# at the startup.
 sort_columns_at_startup = None
+ignore_columns_at_startup = None
 
 #: Control how dates are displayed
 # Format to be used for publication date and the timestamp (date).

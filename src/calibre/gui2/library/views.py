@@ -900,11 +900,11 @@ class BooksView(TableView):  # {{{
             if self.is_library_view:
                 self.pin_view.save_state()
 
-    def cleanup_sort_history(self, sort_history, ignore_column_map=False):
+    def cleanup_sort_history(self, sort_history, ignore_column_map=False, ignore_columns=[]):
         history = []
 
         for col, order in sort_history:
-            if not isinstance(order, bool):
+            if not isinstance(order, bool) or col in ignore_columns:
                 continue
             col = {'date':'timestamp', 'sort':'title'}.get(col, col)
             if ignore_column_map or col in self.column_map:
@@ -912,22 +912,22 @@ class BooksView(TableView):  # {{{
                     history.append([col, order])
         return history
 
-    def apply_sort_history(self, saved_history, max_sort_levels=3):
+    def apply_sort_history(self, saved_history, max_sort_levels=3, ignore_columns=[]):
         if not saved_history:
             return
         if self.is_library_view:
-            for col, order in reversed(self.cleanup_sort_history(
-                    saved_history, ignore_column_map=True)[:max_sort_levels]):
+            for col, order in reversed(self.cleanup_sort_history(saved_history,
+                    ignore_columns=ignore_columns, ignore_column_map=True)[:max_sort_levels]):
                 try:
                     self.sort_by_named_field(col, order)
                 except KeyError:
                     pass
         else:
-            for col, order in reversed(self.cleanup_sort_history(
-                    saved_history)[:max_sort_levels]):
+            for col, order in reversed(self.cleanup_sort_history(saved_history,
+                    ignore_columns=ignore_columns)[:max_sort_levels]):
                 self.sort_by_column_and_order(self.column_map.index(col), order)
 
-    def apply_state(self, state, max_sort_levels=3, save_state=True):
+    def apply_state(self, state, max_sort_levels=3, save_state=True, ignore_history_columns=[]):
         # set save_state=False if you will save the state yourself after calling
         # this method.
         h = self.column_header
@@ -984,7 +984,7 @@ class BooksView(TableView):  # {{{
                 h.resizeSection(cmap[col], sz)
 
         self.apply_sort_history(state.get('sort_history', None),
-                max_sort_levels=max_sort_levels)
+                max_sort_levels=max_sort_levels, ignore_columns=ignore_history_columns)
 
         for col, alignment in state.get('column_alignment', {}).items():
             self._model.change_alignment(col, alignment)
@@ -1071,11 +1071,13 @@ class BooksView(TableView):  # {{{
             old_state['sort_history'] = sh
             max_levels = max(3, len(sh))
 
+        ignore_history_columns = tweaks['ignore_columns_at_startup'] or []
+
         if self.is_library_view:
             self.pin_view.restore_state()
 
         self.column_header.blockSignals(True)
-        self.apply_state(old_state, max_sort_levels=max_levels)
+        self.apply_state(old_state, max_sort_levels=max_levels, ignore_history_columns=ignore_history_columns)
         self.column_header.blockSignals(False)
 
         self.do_row_sizing()
