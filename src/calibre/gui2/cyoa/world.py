@@ -36,7 +36,22 @@ from qt.core import (
 )
 
 from calibre.ai import ImageGenerationOptions, StructuredOutputResult
-from calibre.ai.cyoa import ART_STYLES, CharacterState, GeneratedWorld, PlayerCharacter, character_portrait_prompt, generate_world
+from calibre.ai.cyoa import (
+    ART_STYLES,
+    NARRATION_STYLES,
+    PACES,
+    TONES,
+    ArtStyle,
+    CharacterState,
+    GeneratedWorld,
+    Narration,
+    Pace,
+    PlayerCharacter,
+    StoryStyle,
+    Tone,
+    character_portrait_prompt,
+    generate_world,
+)
 from calibre.customize import AIProviderPlugin
 from calibre.gui2 import error_dialog, question_dialog
 from calibre.gui2.cyoa import data
@@ -50,6 +65,10 @@ class PremadeWorld(NamedTuple):
     title: str
     brief: str
     art_style: str  # the key of the recommended art style from calibre.ai.cyoa.ART_STYLES
+    # The key of the tone from calibre.ai.cyoa.TONES the world reads best in,
+    # empty for the worlds that could be told in any of them, which leaves
+    # the choice to the AI.
+    tone: str = ''
 
 
 # The briefs are prompts sent to the AI and are deliberately not translated,
@@ -63,6 +82,7 @@ PREMADE_WORLDS = (
             ' and a darkness gathers in the north while the great houses squabble over a fractured throne.'
         ),
         'digital-painting',
+        tone='heroic',
     ),
     PremadeWorld(
         _('Space opera'),
@@ -72,6 +92,7 @@ PREMADE_WORLDS = (
             ' and a newly discovered artifact at the galactic rim could change the balance of power forever.'
         ),
         'digital-painting',
+        tone='heroic',
     ),
     PremadeWorld(
         _('Cyberpunk noir'),
@@ -81,6 +102,7 @@ PREMADE_WORLDS = (
             " detectives and rogue programs all chase the same secret buried in the city's oldest network."
         ),
         'anime',
+        tone='grimdark',
     ),
     PremadeWorld(
         _('Post-apocalyptic survival'),
@@ -90,6 +112,7 @@ PREMADE_WORLDS = (
             ' the old highways, and rumors spread of a pre-collapse vault that could restore the world.'
         ),
         'photorealistic',
+        tone='grimdark',
     ),
     PremadeWorld(
         _('Pirate adventure'),
@@ -99,6 +122,7 @@ PREMADE_WORLDS = (
             ' the hoard of a legendary pirate king, and every crew in the islands wants it.'
         ),
         'comic',
+        tone='heroic',
     ),
     PremadeWorld(
         _('Gothic horror'),
@@ -108,6 +132,7 @@ PREMADE_WORLDS = (
             ' that the villagers whisper is cursed, and the house itself seems to be watching.'
         ),
         'noir',
+        tone='grimdark',
     ),
     PremadeWorld(
         _('Murder mystery'),
@@ -135,6 +160,7 @@ PREMADE_WORLDS = (
             ' has spoken of a deed that could earn a mortal a place among the stars.'
         ),
         'digital-painting',
+        tone='heroic',
     ),
     PremadeWorld(
         _('Abbasid Caliphate'),
@@ -154,17 +180,30 @@ PREMADE_WORLDS = (
             ' manners, a scandal is brewing that could topple one of the great families.'
         ),
         'watercolor',
+        tone='romance',
     ),
 )
 
 
-def recommended_art_style(brief: str) -> str:
-    # The recommended art style for a brief when it is one of the pre-made
-    # worlds, the empty string (let the AI decide) otherwise.
+def style_combo(parent: QWidget, styles: Sequence[ArtStyle | Pace | Tone | Narration], tooltip: str) -> QComboBox:
+    # A drop down of one table of styles, with the stable key of each style as
+    # the item data, see calibre.ai.cyoa.style_for_key().
+    c = QComboBox(parent)
+    for style in styles:
+        c.addItem(style.name, style.key)
+    c.setToolTip('<p>' + tooltip)
+    return c
+
+
+def recommended_style(brief: str) -> StoryStyle:
+    # The styles recommended for a brief when it is one of the pre-made
+    # worlds. The pace and the narration are a matter of taste rather than of
+    # the world, so they are never recommended and are left at the defaults,
+    # as are the styles of a world the player described themselves.
     for pw in PREMADE_WORLDS:
         if pw.brief == brief:
-            return pw.art_style
-    return ''
+            return StoryStyle(art_style=pw.art_style, tone=pw.tone)
+    return StoryStyle()
 
 
 BRIEF_ROLE = Qt.ItemDataRole.UserRole
@@ -380,12 +419,29 @@ class WorldEditWidget(QWidget):
 
         h = QHBoxLayout()
         self.art_style_label = asl = QLabel(_('Art style for generated &images:'))
-        self.art_style_combo = asc = QComboBox(wp)
-        for style in ART_STYLES:
-            asc.addItem(style.name, style.key)
-        asc.setToolTip('<p>' + _('The visual style used when generating pictures for this world, such as character portraits'))
-        asl.setBuddy(asc)
-        h.addWidget(asl), h.addWidget(asc), h.addStretch()
+        self.art_style_combo = self.add_style_combo(
+            h, asl, ART_STYLES, _('The visual style used when generating pictures for this world, such as character portraits')
+        )
+        h.addStretch()
+        l.addLayout(h)
+
+        # How the AI is to write the prose of the story. Unlike the art style
+        # these apply to a text only game as well, so they are always shown.
+        h = QHBoxLayout()
+        self.pace_combo = self.add_style_combo(
+            h,
+            QLabel(_('Passage &length:')),
+            PACES,
+            _('How much prose the AI writes for each turn of the story. Short passages make for a faster, pulpier narrative and cost less to generate.'),
+        )
+        self.tone_combo = self.add_style_combo(
+            h,
+            QLabel(_('Story t&one:')),
+            TONES,
+            _('The register the story is told in. Leave it to the AI and it will pick one that suits the world.'),
+        )
+        self.narration_combo = self.add_style_combo(h, QLabel(_('&Narration:')), NARRATION_STYLES, _('The point of view and tense the story is written in'))
+        h.addStretch()
         l.addLayout(h)
 
         h = QHBoxLayout()
@@ -442,7 +498,15 @@ class WorldEditWidget(QWidget):
 
         self.portrait_result_received.connect(self.on_portrait_result, type=Qt.ConnectionType.QueuedConnection)
 
-    def load(self, brief: str, world: GeneratedWorld, art_style: str = '', portraits: Sequence[dict[str, str] | None] = (), world_id: str = '') -> None:
+    def add_style_combo(self, h: QHBoxLayout, la: QLabel, styles: Sequence[ArtStyle | Pace | Tone | Narration], tooltip: str) -> QComboBox:
+        c = style_combo(self, styles, tooltip)
+        la.setBuddy(c)
+        h.addWidget(la), h.addWidget(c)
+        return c
+
+    def load(
+        self, brief: str, world: GeneratedWorld, style: StoryStyle = StoryStyle(), portraits: Sequence[dict[str, str] | None] = (), world_id: str = ''
+    ) -> None:
         self.brief = brief
         self.world_id = world_id
         self.current_char_idx = -1
@@ -451,8 +515,10 @@ class WorldEditWidget(QWidget):
         self.cancel_portrait_generation()
         self.portraits = list(portraits[: len(self.characters)])
         self.portraits.extend([None] * (len(self.characters) - len(self.portraits)))
-        self.portrait_styles = [art_style if p else '' for p in self.portraits]
-        self.art_style_combo.setCurrentIndex(max(0, self.art_style_combo.findData(art_style)))
+        self.portrait_styles = [style.art_style if p else '' for p in self.portraits]
+        for name, key in style._asdict().items():
+            combo = self.style_combos[name]
+            combo.setCurrentIndex(max(0, combo.findData(key)))
         self.art_style_label.setVisible(self.images_enabled)
         self.art_style_combo.setVisible(self.images_enabled)
         self.character_editor.set_portrait_ui_visible(self.images_enabled)
@@ -500,8 +566,23 @@ class WorldEditWidget(QWidget):
     # Character portrait generation {{{
 
     @property
+    def style_combos(self) -> dict[str, QComboBox]:
+        # The drop down that chooses each field of StoryStyle, keyed by the
+        # name of the field.
+        return {'art_style': self.art_style_combo, 'pace': self.pace_combo, 'tone': self.tone_combo, 'narration': self.narration_combo}
+
+    @property
+    def current_style(self) -> StoryStyle:
+        return StoryStyle(
+            art_style=str(self.art_style_combo.currentData() or ''),
+            pace=str(self.pace_combo.currentData() or ''),
+            tone=str(self.tone_combo.currentData() or ''),
+            narration=str(self.narration_combo.currentData() or ''),
+        )
+
+    @property
     def current_art_style(self) -> str:
-        return str(self.art_style_combo.currentData() or '')
+        return self.current_style.art_style
 
     def cancel_portrait_generation(self) -> None:
         # Any in-flight generation keeps running but its result is discarded
@@ -632,7 +713,7 @@ class WorldEditWidget(QWidget):
                     _('A saved world named "{}" already exists. Replace it with this world?').format(w.title),
                 ):
                     return
-        self.world_id = data.add_saved_world(self.brief, w, self.current_art_style, self.portraits, self.world_id)
+        self.world_id = data.add_saved_world(self.brief, w, self.current_style, self.portraits, self.world_id)
         self.show_status(_('World saved. You can select it when creating future adventures.'))
 
     def start_game(self) -> None:
@@ -647,8 +728,8 @@ class WorldEditWidget(QWidget):
 
 class CreateWorldWidget(QWidget):
     result_received = pyqtSignal(int, object)
-    # (GeneratedWorld, index in its characters of the character to play as, brief, art style key, portrait of that character or None)
-    game_start_requested = pyqtSignal(object, int, str, str, object)
+    # (GeneratedWorld, index in its characters of the character to play as, brief, StoryStyle, portrait of that character or None)
+    game_start_requested = pyqtSignal(object, int, str, object, object)
 
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
@@ -797,7 +878,7 @@ class CreateWorldWidget(QWidget):
         self.world_edit.load(
             self.current_brief,
             world,
-            data.art_style_from_saved(entry),
+            data.style_from_saved(entry),
             data.portraits_from_saved(entry, len(world.characters)),
             data.world_id_from_saved(entry),
         )
@@ -865,7 +946,7 @@ class CreateWorldWidget(QWidget):
         if not isinstance(world, GeneratedWorld) or not world.characters:
             error_dialog(self, _('World generation failed'), _('The AI returned an invalid world, try again.'), det_msg=res.raw, show=True)
             return
-        self.world_edit.load(self.current_brief, world, recommended_art_style(self.current_brief))
+        self.world_edit.load(self.current_brief, world, recommended_style(self.current_brief))
         parts = []
         if res.model:
             parts.append(_('Model: {}').format(res.model))
@@ -880,9 +961,9 @@ class CreateWorldWidget(QWidget):
         # of the chosen character is handed to the game, which stores its own
         # copy of it from then on.
         we = self.world_edit
-        we.world_id = data.add_saved_world(we.brief, world, we.current_art_style, we.portraits, we.world_id)
+        we.world_id = data.add_saved_world(we.brief, world, we.current_style, we.portraits, we.world_id)
         portrait = we.portraits[character_index] if -1 < character_index < len(we.portraits) else None
-        self.game_start_requested.emit(world, character_index, we.brief, we.current_art_style, portrait)
+        self.game_start_requested.emit(world, character_index, we.brief, we.current_style, portrait)
 
 
 if __name__ == '__main__':
@@ -891,7 +972,7 @@ if __name__ == '__main__':
     app = Application([])
     w = CreateWorldWidget()
     w.game_start_requested.connect(
-        lambda world, character_index, brief, art_style, portrait: print('start playing:', world.title, 'as', world.characters[character_index].name)
+        lambda world, character_index, brief, style, portrait: print('start playing:', world.title, 'as', world.characters[character_index].name)
     )
     w.resize(900, 600)
     w.show()

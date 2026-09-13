@@ -1320,6 +1320,10 @@ class GameWidget(QWidget):
                     upcoming_events=memory.upcoming_events,
                 )
             )
+        # Takes effect from the next turn: the instructions sent to the AI are
+        # built from the game state every turn, so the prose already written
+        # keeps the style it was written in.
+        state.style = d.updated_style
         # The saved world the game started from is only its template, so it is
         # deliberately left alone: the edited characters and their portraits
         # belong to this game and are stored with it.

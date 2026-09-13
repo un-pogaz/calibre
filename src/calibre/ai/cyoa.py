@@ -18,7 +18,7 @@
 
 import json
 import textwrap
-from collections.abc import Iterable
+from collections.abc import Iterable, Sequence
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import TYPE_CHECKING, Annotated, Any, NamedTuple, Protocol
@@ -264,11 +264,14 @@ class QuickAction(NamedTuple):
 
 class StoryTurn(NamedTuple):
     doc = Doc('One turn of the adventure')
+    # How the passage must read: its length, point of view, tense, tone and
+    # formatting, is stated once, in the instructions, see prose_contract().
+    # Restating any of it here would put it in the JSON schema as well, where
+    # it could drift out of step with the instructions sent alongside it.
     narrative: Annotated[
         str,
         'The next passage of the novel, continuing seamlessly from the prose written so far without repeating any of it,'
-        ' written as immersive long form prose'
-        ' with dialogue from the characters, their expressions and reactions, and scene descriptions where needed',
+        ' written to the contract for the prose given in the instructions',
     ]
     quick_actions: Annotated[
         tuple[QuickAction, ...],
@@ -346,6 +349,20 @@ def initial_summary(world: GeneratedWorld, character: PlayerCharacter) -> StoryS
 MIN_PROSE_CONTEXT_TURNS = 3
 
 
+class StoryStyle(NamedTuple):
+    # The style choices for a game: how its pictures look and how its prose
+    # reads, each the key of an entry in the matching table of styles, see
+    # ART_STYLES, PACES, TONES and NARRATION_STYLES. They are bundled only to
+    # be passed around as one; a game stores them as individual fields, see
+    # GameState. The empty string means the first entry of the table, which is
+    # the default, so a game saved before a style existed keeps the prose it
+    # was written with, see style_for_key().
+    art_style: str = ''
+    pace: str = ''
+    tone: str = ''
+    narration: str = ''
+
+
 @dataclass
 class GameState:
     # The complete state of a game. Everything except the turn log is
@@ -358,8 +375,25 @@ class GameState:
     # character to edit, see the character property.
     character_index: int
     turns: list[TurnRecord] = field(default_factory=list)
-    # The key of the art style from ART_STYLES used for generated scene images.
+    # The style of the game, stored as individual fields so that adding one
+    # neither changes the shape of an already serialized game nor needs a
+    # migration: instantiate() fills in a missing field from its default, see
+    # StoryStyle for what the keys and the empty string mean.
     art_style: str = ''
+    pace: str = ''
+    tone: str = ''
+    narration: str = ''
+
+    @property
+    def style(self) -> StoryStyle:
+        return StoryStyle(art_style=self.art_style, pace=self.pace, tone=self.tone, narration=self.narration)
+
+    @style.setter
+    def style(self, style: StoryStyle) -> None:
+        # Changing the style mid-game affects only the turns played from now
+        # on: every turn's instructions are built from the state as it stands
+        # when the turn is played, see turn_instructions().
+        self.art_style, self.pace, self.tone, self.narration = style
 
     @property
     def character(self) -> PlayerCharacter:
@@ -400,12 +434,14 @@ class GameState:
         return tuple(titles)
 
 
-def start_game(brief: str, world: GeneratedWorld, character_index: int = 0, art_style: str = '') -> GameState:
+def start_game(brief: str, world: GeneratedWorld, character_index: int = 0, style: StoryStyle = StoryStyle()) -> GameState:
     # character_index is the index in world.characters of the character the
     # player chose to play as.
     if not 0 <= character_index < len(world.characters):
         raise ValueError(f'{character_index} is not the index of a character in a world with {len(world.characters)} characters')
-    return GameState(brief=brief, world=world, character_index=character_index, art_style=art_style)
+    ans = GameState(brief=brief, world=world, character_index=character_index)
+    ans.style = style
+    return ans
 
 
 def rewind(state: GameState, num_of_turns: int = 1) -> None:
@@ -583,7 +619,12 @@ def deserialize_game(raw: str) -> GameState:
 # }}}
 
 
-# Art styles for generated images {{{
+# Styles for the generated images and prose {{{
+# Every style is a table of entries with a stable key, a translated name for
+# the UI and the English text added to the prompt for it, and every table has
+# its default as its first entry, which is what an unknown or empty key
+# resolves to, see style_for_key(). Adding an entry to a table is therefore
+# all it takes to offer the player another choice.
 
 
 class ArtStyle(NamedTuple):
@@ -607,18 +648,114 @@ ART_STYLES: tuple[ArtStyle, ...] = (
 )
 
 
-def art_style_for_key(key: str) -> ArtStyle:
-    for s in ART_STYLES:
+class Pace(NamedTuple):
+    key: str
+    name: str
+    # How much room one passage of the story gets, as an instruction to the
+    # AI. Never empty: the length of a passage is always specified, and the
+    # first entry is the length the game was written to before the player
+    # could choose.
+    prompt: str
+
+
+PACES: tuple[Pace, ...] = (
+    Pace(
+        'long',
+        _('Long (about 400-800 words)'),
+        'Write each passage as rich long form fiction of several substantial paragraphs, typically 400-800 words,'
+        ' the way a skilled novelist would: let scenes breathe and unfold rather than summarizing events.',
+    ),
+    Pace(
+        'medium',
+        _('Medium (about 250-450 words)'),
+        'Write each passage as a few brisk paragraphs, typically 250-450 words: room enough for the scene to land,'
+        ' but keep the story moving and leave out what the reader can infer.',
+    ),
+    Pace(
+        'short',
+        _('Short (about 120-250 words)'),
+        'Write each passage as a tight, fast moving scene of two or three lean paragraphs, typically 120-250 words,'
+        ' in the manner of pulp fiction: cut straight to what happens and stop as soon as it has happened.',
+    ),
+)
+
+
+class Tone(NamedTuple):
+    key: str
+    name: str
+    # The register the story is told in. Empty for the default tone, which
+    # leaves the choice to the AI, which then follows the world description.
+    prompt: str
+
+
+TONES: tuple[Tone, ...] = (
+    Tone('default', _('Let the AI decide'), ''),
+    Tone(
+        'grimdark',
+        _('Grimdark'),
+        'Tell the story in a grimdark register: a harsh, morally grey world where every victory costs something,'
+        ' hope is scarce and violence has weight. Do not flinch from bleakness, but do not wallow in it either.',
+    ),
+    Tone(
+        'heroic',
+        _('Heroic'),
+        'Tell the story in a heroic register: courage, loyalty and sacrifice matter, the stakes are grand'
+        ' and the prose has a sweep to it, even when the protagonist loses.',
+    ),
+    Tone(
+        'comedic',
+        _('Comedic'),
+        'Tell the story in a comedic register: wry, quick witted and absurd, with characters whose plans go amusingly wrong.'
+        ' Keep the humor in the situations and the dialogue rather than in asides to the reader.',
+    ),
+    Tone(
+        'cozy',
+        _('Cozy'),
+        'Tell the story in a cozy register: low stakes, warm company, small pleasures and gentle problems solved with kindness.'
+        ' Trouble, when it comes, stays mild and is never cruel.',
+    ),
+    Tone(
+        'romance',
+        _('Romance'),
+        'Tell the story in a romantic register: attraction, longing and the shifting charge between characters drive it,'
+        ' and the emotional stakes of a scene are drawn as clearly as its practical ones.',
+    ),
+)
+
+
+class Narration(NamedTuple):
+    key: str
+    name: str
+    # The point of view and tense, phrased to follow "Write it", so that the
+    # prose contract can state it in one clause, see prose_contract().
+    prompt: str
+
+
+NARRATION_STYLES: tuple[Narration, ...] = (
+    Narration('second-present', _('Second person, present tense'), 'in second person present tense, addressing the reader as "you"'),
+    Narration('third-past', _('Third person, past tense'), 'in third person past tense, referring to the protagonist by name'),
+    Narration('first-past', _('First person, past tense'), "in first person past tense, in the protagonist's own voice"),
+    Narration('third-present', _('Third person, present tense'), 'in third person present tense, referring to the protagonist by name'),
+)
+
+
+# The tables have no common base class, only the same shape, so the lookup is
+# generic over them rather than repeated once per table.
+def style_for_key[StyleT: (ArtStyle, Pace, Tone, Narration)](styles: Sequence[StyleT], key: str) -> StyleT:
+    # The entry of styles with the specified key, falling back to the default,
+    # which is the first entry, for the empty string and for a key from a
+    # newer version of calibre that no longer exists.
+    for s in styles:
         if s.key == key:
             return s
-    return ART_STYLES[0]
+    return styles[0]
 
 
 def character_portrait_prompt(character: PlayerCharacter, style_key: str = '', world_description: str = '') -> str:
     parts = [f'A portrait of {character.name}, a character in an adventure story.', character.description]
     if world_description:
         parts.append(f'The world they inhabit: {world_description}')
-    if style := art_style_for_key(style_key).prompt:
+    if style := style_for_key(ART_STYLES, style_key).prompt:
         parts.append(style)
     parts.append('Do not include any text in the image you generate.')
     return '\n'.join(parts)
@@ -626,7 +763,7 @@ def character_portrait_prompt(character: PlayerCharacter, style_key: str = '', w
 
 def scene_image_prompt(scene_description: str, style_key: str = '') -> str:
     parts = [scene_description]
-    if style := art_style_for_key(style_key).prompt:
+    if style := style_for_key(ART_STYLES, style_key).prompt:
         parts.append(style)
     parts.append('Do not include any text in the image you generate.')
     return '\n'.join(parts)
@@ -637,6 +774,18 @@ def scene_image_prompt(scene_description: str, style_key: str = '') -> str:
 
 # Prompt construction {{{
 # Deliberately not translated as AI models work best with English instructions.
+
+
+def markdown_instructions(what: str) -> str:
+    # The Markdown rules for the text the AI writes. They are the same for
+    # world generation and for the prose of every turn, so they are stated in
+    # one place rather than restated, with small differences, in each.
+    return (
+        f'Format {what} using Markdown: use **bold** for emphasis and important moments,'
+        ' *italics* for atmosphere and inner thoughts, and blank lines to separate paragraphs.'
+        ' Do not use headers or bullet lists.'
+    )
+
 
 WORLD_GENERATION_INSTRUCTIONS = (
     'You are a creative designer of interactive "choose your own adventure" fiction.'
@@ -651,9 +800,7 @@ WORLD_GENERATION_INSTRUCTIONS = (
     ' an image generation AI: cover their appearance, age and distinguishing features without'
     ' relying on the rest of the world description. Describe the kind of clothes the character'
     ' typically wears but not an individual outfit, let the image generation AI choose that.'
-    ' Format all descriptive text fields (world_description, character descriptions, backstories)'
-    ' using Markdown: use **bold** for emphasis, *italics* for atmosphere, and newlines to separate paragraphs.'
-    ' Do not use headers or bullet lists in these fields.'
+    ' ' + markdown_instructions('all descriptive text fields (world_description, character descriptions, backstories)')
 )
 
 
@@ -688,6 +835,29 @@ def quick_action_instructions() -> str:
     return '\n'.join(parts)
 
 
+def prose_contract(style: StoryStyle) -> str:
+    # How the prose of every passage must read: how much room it gets, its
+    # point of view and tense, the register it is told in and how it is
+    # formatted. The player chooses the first three, see StoryStyle. This is
+    # the only place any of it is stated: the annotations of StoryTurn, which
+    # become the JSON schema sent with these instructions, deliberately defer
+    # to it rather than restating it, see StoryTurn.narrative.
+    parts = [
+        style_for_key(PACES, style.pace).prompt,
+        f'Write it {style_for_key(NARRATION_STYLES, style.narration).prompt}, and keep to that throughout.',
+    ]
+    if tone := style_for_key(TONES, style.tone).prompt:
+        parts.append(tone)
+    parts.append(
+        'Bring the characters to life with spoken dialogue, quoting their words directly in their own distinct voices,'
+        ' and show their expressions, gestures, body language and emotional reactions as they speak and act.'
+        ' When the story enters a new location or the mood shifts, ground the scene with sensory detail:'
+        ' sights, sounds, smells and atmosphere.'
+    )
+    parts.append(markdown_instructions('all narrative and descriptive text'))
+    return ' '.join(parts)
+
+
 def turn_instructions(state: GameState) -> str:
     w, c = state.world, state.character
     parts = [
@@ -700,24 +870,15 @@ def turn_instructions(state: GameState) -> str:
             ' as if it were the next paragraphs of the same chapter.'
             ' Never repeat, summarize or rephrase prose that has already been written: the reader has just read it.'
             " Have the characters react to the protagonist's actions and the world in realistic and consistent ways."
-            ' Write each passage as rich long form fiction of several substantial paragraphs, typically 400-800 words,'
-            ' the way a skilled novelist would: let scenes breathe and unfold rather than summarizing events.'
-            ' Bring the characters to life with spoken dialogue, quoting their words directly in their own distinct voices,'
-            ' and show their expressions, gestures, body language and emotional reactions as they speak and act.'
-            ' When the story enters a new location or the mood shifts, ground the scene with vivid sensory detail:'
-            ' sights, sounds, smells and atmosphere.'
-            ' Format all narrative and descriptive text using Markdown:'
-            ' use **bold** for emphasis and important moments, *italics* for atmosphere and inner thoughts,'
-            ' and blank lines to separate paragraphs. Do not use headers or bullet lists in narrative text.'
         ),
+        prose_contract(state.style),
         'Rules for the fields of your response:',
         (
-            '- narrative: the next passage of the novel, in second person present tense, addressing the reader as "you".'
+            '- narrative: the next passage of the novel, written to the contract for the prose given above.'
             " It must pick up exactly where the chapter's prose left off, without repeating or recapping anything already written."
-            ' Write it as compelling long form prose: multiple paragraphs weaving together action, dialogue from the characters,'
-            ' their expressions and reactions, and scene description where needed, never a terse summary of events.'
+            ' Weave together action, dialogue from the characters, their expressions and reactions, and scene description'
+            ' where needed, never a terse summary of events.'
             ' End at a point where the reader must decide what the protagonist does next.'
-            ' Use Markdown formatting as instructed above.'
         ),
         quick_action_instructions(),
         (
@@ -1326,27 +1487,59 @@ def find_tests() -> TestSuite:  # {{{
             self.ae(w.characters, make_world().characters)
 
         def test_ai_cyoa_art_styles(self) -> None:
-            keys = [s.key for s in ART_STYLES]
-            self.ae(len(keys), len(set(keys)), 'art style keys must be unique')
-            self.assertTrue(all(s.key and s.name for s in ART_STYLES), 'art styles must have a key and a human readable name')
+            for table in (ART_STYLES, PACES, TONES, NARRATION_STYLES):
+                keys = [s.key for s in table]
+                self.ae(len(keys), len(set(keys)), f'the style keys of {keys} must be unique')
+                self.assertTrue(all(s.key and s.name for s in table), 'every style must have a key and a human readable name')
+                self.assertIs(style_for_key(table, ''), table[0], 'an unset style must resolve to the default, which is the first entry')
+                self.assertIs(style_for_key(table, 'no-such-style'), table[0], 'an unknown style must resolve to the default')
             self.assertFalse(ART_STYLES[0].prompt, 'the default art style must not add anything to image prompts')
-            self.assertIs(art_style_for_key(''), ART_STYLES[0])
-            self.assertIs(art_style_for_key('no-such-style'), ART_STYLES[0])
-            self.ae(art_style_for_key('anime').key, 'anime')
+            self.assertFalse(TONES[0].prompt, 'the default tone must not add anything to the instructions')
+            self.assertTrue(all(p.prompt for p in PACES), 'the length of a passage must always be specified')
+            self.assertTrue(all(n.prompt for n in NARRATION_STYLES), 'the point of view and tense must always be specified')
+            self.ae(style_for_key(ART_STYLES, 'anime').key, 'anime')
             w = make_world()
             c = w.characters[0]
             prompt = character_portrait_prompt(c, 'anime', w.world_description)
             self.assertIn(c.name, prompt)
             self.assertIn(c.description, prompt)
             self.assertIn(w.world_description, prompt)
-            self.assertIn(art_style_for_key('anime').prompt, prompt)
+            self.assertIn(style_for_key(ART_STYLES, 'anime').prompt, prompt)
             self.ae(character_portrait_prompt(c), character_portrait_prompt(c, 'no-such-style'))
             self.assertNotIn(w.world_description, character_portrait_prompt(c))
             self.assertIn('image generation', WORLD_GENERATION_INSTRUCTIONS, 'character descriptions must be requested to be usable as image prompts')
             prompt = scene_image_prompt('A misty street.', 'anime')
             self.assertIn('A misty street.', prompt)
-            self.assertIn(art_style_for_key('anime').prompt, prompt)
-            self.assertNotIn(art_style_for_key('anime').prompt, scene_image_prompt('A misty street.'))
+            self.assertIn(style_for_key(ART_STYLES, 'anime').prompt, prompt)
+            self.assertNotIn(style_for_key(ART_STYLES, 'anime').prompt, scene_image_prompt('A misty street.'))
+
+        def test_ai_cyoa_prose_contract(self) -> None:
+            # The prose contract is stated once, in the instructions, and is
+            # built from the style the player chose, see prose_contract().
+            def instructions(**kw: str) -> str:
+                return turn_instructions(start_game('a foggy city', make_world(), style=StoryStyle(**kw)))
+
+            default = instructions()
+            self.assertIn(PACES[0].prompt, default, 'an unset pace must give the longest passages')
+            self.assertIn(NARRATION_STYLES[0].prompt, default, 'an unset narration must give second person present tense')
+            for t in TONES[1:]:
+                self.assertNotIn(t.prompt, default, 'an unset tone must not impose a register on the story')
+
+            pulpy = instructions(pace='short', tone='comedic', narration='third-past')
+            self.assertIn(style_for_key(PACES, 'short').prompt, pulpy)
+            self.assertIn(style_for_key(TONES, 'comedic').prompt, pulpy)
+            self.assertIn(style_for_key(NARRATION_STYLES, 'third-past').prompt, pulpy)
+            self.assertNotIn(PACES[0].prompt, pulpy, 'the instructions must not ask for two different lengths at once')
+            self.assertNotIn(NARRATION_STYLES[0].prompt, pulpy, 'the instructions must not ask for two different points of view at once')
+            self.ae(pulpy.count('120-250'), 1, 'the length of a passage must be stated exactly once')
+            self.ae(default.count('400-800'), 1, 'the length of a passage must be stated exactly once')
+
+            # The annotations of StoryTurn become the JSON schema sent with
+            # the instructions, so they must not restate any of the contract,
+            # which they would then be able to contradict.
+            narrative_doc = next(f.spec.description for f in spec_for_class(StoryTurn).fields if f.name == 'narrative')
+            for phrase in ('400-800', '120-250', 'second person', 'third person', 'long form', 'Markdown'):
+                self.assertNotIn(phrase, narrative_doc, f'the response schema must not restate the prose contract: {phrase!r}')
 
         def test_ai_cyoa_turn_flow_and_chapters(self) -> None:
             state = start_game('a foggy city', make_world())
@@ -1695,7 +1888,8 @@ def find_tests() -> TestSuite:  # {{{
             self.ae(state.current_summary, initial_summary(state.world, state.character))
 
         def test_ai_cyoa_serialization(self) -> None:
-            state = start_game('a foggy city', make_world(), art_style='anime')
+            style = StoryStyle(art_style='anime', pace='short', tone='comedic', narration='third-past')
+            state = start_game('a foggy city', make_world(), style=style)
             fake = FakePlugin([
                 ok(make_turn('You awaken.', 'awoke')),
                 ok(make_turn('You escape.', 'escaped', starts_new_chapter=True, chapter_title='Freedom')),
@@ -1705,7 +1899,17 @@ def find_tests() -> TestSuite:  # {{{
             restored = deserialize_game(serialize_game(state))
             self.ae(state, restored)
             self.ae(restored.current_chapter, 1)
-            self.ae(restored.art_style, 'anime')
+            self.ae(restored.style, style)
+
+            # The style fields were added after games were already being
+            # saved, so a game saved without them must load with the styles
+            # the game had before the player could choose them
+            without_style = json.loads(serialize_game(state))
+            for f in StoryStyle._fields:
+                del without_style['game'][f]
+            old = deserialize_game(json.dumps(without_style))
+            self.ae(old.style, StoryStyle())
+            self.ae(turn_instructions(old), turn_instructions(start_game('a foggy city', make_world())))
             self.assertRaises(ValueError, deserialize_game, json.dumps({'version': GAME_SERIALIZATION_VERSION + 1, 'game': {}}))
             self.assertRaises(ValueError, deserialize_game, json.dumps({'version': 0, 'game': {}}))
             self.assertRaises(ValueError, deserialize_game, json.dumps({'game': {}}))
@@ -1729,7 +1933,8 @@ def find_tests() -> TestSuite:  # {{{
             )
 
         def test_ai_cyoa_serialization_migration(self) -> None:
-            state = start_game('a foggy city', make_world(), art_style='anime')
+            style = StoryStyle(art_style='anime', pace='short', tone='comedic', narration='third-past')
+            state = start_game('a foggy city', make_world(), style=style)
             fake = FakePlugin([
                 ok(make_turn('You awaken.', 'awoke')),
                 ok(make_turn('You escape.', 'escaped', starts_new_chapter=True, chapter_title='Freedom')),
@@ -1799,7 +2004,7 @@ def find_tests() -> TestSuite:  # {{{
             self.ae(restored.character_index, 0)
             self.ae(restored.character, state.character)
             self.ae(restored.world, state.world)
-            self.ae(restored.art_style, 'anime')
+            self.ae(restored.style, style)
             self.ae(restored.current_chapter, 1)
             self.ae(len(restored.turns), len(state.turns))
             self.ae([(t.instructions, t.prompt) for t in restored.turns], [('', '')] * len(state.turns), 'migration must drop the recorded prompts')

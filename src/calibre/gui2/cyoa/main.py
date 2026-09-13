@@ -9,7 +9,7 @@
 
 from qt.core import QFont, QIcon, QSize, QStackedWidget
 
-from calibre.ai.cyoa import PROTAGONIST_ID, GeneratedWorld, start_game
+from calibre.ai.cyoa import PROTAGONIST_ID, GeneratedWorld, StoryStyle, start_game
 from calibre.constants import CYOA_APP_UID, islinux
 from calibre.gui2 import Application, error_dialog, gprefs
 from calibre.gui2.cyoa import data
@@ -60,10 +60,10 @@ class CYOAMainWindow(MainWindow):
         self.world.reset()
         self.stack.setCurrentWidget(self.world)
 
-    def start_new_game(self, world: GeneratedWorld, character_index: int, brief: str, art_style: str, portrait: dict[str, str] | None) -> None:
+    def start_new_game(self, world: GeneratedWorld, character_index: int, brief: str, style: StoryStyle, portrait: dict[str, str] | None) -> None:
         # The portrait of the chosen character comes from the world it was
         # generated in, but from now on the game owns its own copy of it.
-        state = start_game(brief, world, character_index, art_style)
+        state = start_game(brief, world, character_index, style)
         portraits = {PROTAGONIST_ID: portrait} if portrait else {}
         game_id = data.new_game_id()
         data.save_game(game_id, state, portraits=portraits)

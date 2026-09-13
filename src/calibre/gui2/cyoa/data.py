@@ -27,7 +27,7 @@ from time import time
 from typing import TYPE_CHECKING, Any, Literal, NamedTuple
 
 from calibre.ai import AICapabilities
-from calibre.ai.cyoa import PROTAGONIST_ID, GameState, GeneratedWorld, as_jsonable, character_id_for_name, deserialize_game, serialize_game
+from calibre.ai.cyoa import PROTAGONIST_ID, GameState, GeneratedWorld, StoryStyle, as_jsonable, character_id_for_name, deserialize_game, serialize_game
 from calibre.ai.prefs import override_prefs_for_providers, plugins_for_purpose, update_prefs_for_provider
 from calibre.ai.structured import instantiate, spec_for_class
 from calibre.constants import config_dir
@@ -495,7 +495,9 @@ def saved_world_index_with_title(title: str) -> int:
     return -1
 
 
-def add_saved_world(brief: str, world: GeneratedWorld, art_style: str = '', portraits: Sequence[dict[str, str] | None] = (), world_id: str = '') -> str:
+def add_saved_world(
+    brief: str, world: GeneratedWorld, style: StoryStyle = StoryStyle(), portraits: Sequence[dict[str, str] | None] = (), world_id: str = ''
+) -> str:
     # Save the world, updating the entry with the specified id, or the first
     # entry with the same title when no id is given. Returns the id of the
     # saved entry, which keeps identifying it however the world is renamed.
@@ -510,20 +512,18 @@ def add_saved_world(brief: str, world: GeneratedWorld, art_style: str = '', port
     worlds = p['worlds']
     idx = saved_world_index_with_id(world_id) if world_id else saved_world_index_with_title(world.title)
     existing = worlds[idx] if idx > -1 else {}
-    if (
-        world_id_from_saved(existing)
-        and existing.get('world') == jw
-        and (existing.get('art_style') or '') == art_style
-        and (existing.get('portraits') or []) == pl
-    ):
+    if world_id_from_saved(existing) and existing.get('world') == jw and style_from_saved(existing) == style and (existing.get('portraits') or []) == pl:
         return world_id_from_saved(existing)  # nothing has changed
+    # The fields of the style are stored individually, at the top level, so
+    # that a world saved before one of them existed still loads, with that
+    # field unset, see style_from_saved().
     entry: dict[str, Any] = {
         'id': world_id_from_saved(existing) or uuid4(),
         'brief': brief,
         'created': existing.get('created') or time(),
         'world': jw,
-        'art_style': art_style,
         'portraits': pl,
+        **style._asdict(),
     }
     if idx > -1:
         worlds[idx] = entry
@@ -539,8 +539,15 @@ def world_from_saved(entry: dict[str, Any]) -> GeneratedWorld:
     return ans
 
 
-def art_style_from_saved(entry: dict[str, Any]) -> str:
-    return str(entry.get('art_style') or '')
+def style_from_saved(entry: dict[str, Any]) -> StoryStyle:
+    # The styles the world was saved with, with any that the version of
+    # calibre that saved it did not have left unset, which means the default.
+    return StoryStyle(
+        art_style=str(entry.get('art_style') or ''),
+        pace=str(entry.get('pace') or ''),
+        tone=str(entry.get('tone') or ''),
+        narration=str(entry.get('narration') or ''),
+    )
 
 
 def portraits_from_saved(entry: dict[str, Any], num_characters: int) -> list[dict[str, str] | None]:
@@ -684,18 +691,21 @@ def find_tests() -> TestSuite:  # {{{
                     add_saved_world('sunny brief', other)
                     self.ae(len(saved_worlds()), 2, 'a world with a different title must not replace existing worlds')
                     entry = saved_worlds()[saved_world_index_with_title('Sun City')]
-                    self.ae(art_style_from_saved(entry), '')
+                    self.ae(style_from_saved(entry), StoryStyle(), 'a world saved without styles must load with the defaults')
                     self.ae(portraits_from_saved(entry, 1), [None])
                     portrait = {'mime': 'image/webp', 'data': 'abcd'}
-                    add_saved_world('sunny brief', other, 'anime', [portrait])
+                    style = StoryStyle(art_style='anime', pace='short', tone='comedic', narration='third-past')
+                    add_saved_world('sunny brief', other, style, [portrait])
                     self.ae(len(saved_worlds()), 2, 'adding portraits must update the existing saved world, not create a new one')
                     entry = saved_worlds()[saved_world_index_with_title('Sun City')]
-                    self.ae(art_style_from_saved(entry), 'anime')
+                    self.ae(style_from_saved(entry), style)
+                    del entry['pace']
+                    self.ae(style_from_saved(entry).pace, '', 'a world saved before a style existed must load with that style unset')
                     self.ae(portraits_from_saved(entry, 1), [portrait])
                     self.ae(portraits_from_saved(entry, 2), [portrait, None], 'missing portraits must be padded with None')
                     self.ae(portraits_from_saved(entry, 0), [], 'extra portraits must be discarded')
                     created = entry['created']
-                    wid = add_saved_world('sunny brief', other, 'anime', [portrait])
+                    wid = add_saved_world('sunny brief', other, style, [portrait])
                     entry = saved_worlds()[saved_world_index_with_title('Sun City')]
                     self.ae(entry['created'], created, 'saving an identical world must not change it')
 
@@ -706,7 +716,7 @@ def find_tests() -> TestSuite:  # {{{
                     self.ae(saved_world_index_with_id('no-such-id'), -1)
                     self.ae(saved_world_index_with_id(''), -1)
                     renamed = other._replace(title='Storm City')
-                    self.ae(add_saved_world('sunny brief', renamed, 'anime', [portrait], world_id=wid), wid)
+                    self.ae(add_saved_world('sunny brief', renamed, style, [portrait], world_id=wid), wid)
                     self.ae(len(saved_worlds()), 2, 'renaming a saved world must not create a second entry')
                     entry = saved_worlds()[saved_world_index_with_id(wid)]
                     self.ae(world_from_saved(entry).title, 'Storm City')
@@ -749,7 +759,7 @@ def find_tests() -> TestSuite:  # {{{
                     player_portrait = {'mime': 'image/webp', 'data': 'player'}
                     npc_portrait = {'mime': 'image/webp', 'data': 'npc'}
                     # Version 1 kept the portraits of the playable characters in the saved world
-                    add_saved_world('brief', world, 'anime', [None, player_portrait])
+                    add_saved_world('brief', world, StoryStyle(art_style='anime'), [None, player_portrait])
                     gid = new_game_id(tdir)
                     save_game(gid, state, base=tdir)
                     with open(game_file(gid, tdir), 'rb') as f:
@@ -782,13 +792,15 @@ def find_tests() -> TestSuite:  # {{{
                     self.ae(load_game(gid, base=tdir)[2], {'marlo': npc_portrait})
 
         def test_cyoa_premade_world_art_styles(self) -> None:
-            from calibre.ai.cyoa import art_style_for_key
-            from calibre.gui2.cyoa.world import PREMADE_WORLDS, recommended_art_style
+            from calibre.ai.cyoa import ART_STYLES, TONES, style_for_key
+            from calibre.gui2.cyoa.world import PREMADE_WORLDS, recommended_style
 
             for pw in PREMADE_WORLDS:
-                self.ae(art_style_for_key(pw.art_style).key, pw.art_style, f'the recommended art style for {pw.title!r} must be a valid art style key')
-                self.ae(recommended_art_style(pw.brief), pw.art_style)
-            self.ae(recommended_art_style('not a pre-made brief'), '', 'a custom brief must not have a recommended art style')
+                self.ae(style_for_key(ART_STYLES, pw.art_style).key, pw.art_style, f'the art style recommended for {pw.title!r} must be a valid key')
+                if pw.tone:
+                    self.ae(style_for_key(TONES, pw.tone).key, pw.tone, f'the tone recommended for {pw.title!r} must be a valid tone key')
+                self.ae(recommended_style(pw.brief), StoryStyle(art_style=pw.art_style, tone=pw.tone))
+            self.ae(recommended_style('not a pre-made brief'), StoryStyle(), 'a custom brief must not have recommended styles')
 
         def test_cyoa_text_display_settings(self) -> None:
             with tempfile.TemporaryDirectory() as tdir:

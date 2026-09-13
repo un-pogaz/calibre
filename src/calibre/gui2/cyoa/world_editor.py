@@ -6,13 +6,40 @@ from collections.abc import Sequence
 from itertools import count
 from threading import Thread
 
-from qt.core import QGridLayout, QHBoxLayout, QIcon, QLabel, QListWidget, QPlainTextEdit, QSize, Qt, QTabWidget, QVBoxLayout, QWidget, pyqtSignal, sip
+from qt.core import (
+    QFormLayout,
+    QGridLayout,
+    QHBoxLayout,
+    QIcon,
+    QLabel,
+    QListWidget,
+    QPlainTextEdit,
+    QSize,
+    Qt,
+    QTabWidget,
+    QVBoxLayout,
+    QWidget,
+    pyqtSignal,
+    sip,
+)
 
-from calibre.ai.cyoa import MAX_MAJOR_EVENTS, PROTAGONIST_ID, CharacterState, GameState, PlayerCharacter, StorySummary, clean_text_list
+from calibre.ai.cyoa import (
+    MAX_MAJOR_EVENTS,
+    NARRATION_STYLES,
+    PACES,
+    PROTAGONIST_ID,
+    TONES,
+    CharacterState,
+    GameState,
+    PlayerCharacter,
+    StoryStyle,
+    StorySummary,
+    clean_text_list,
+)
 from calibre.customize import AIProviderPlugin
 from calibre.gui2 import error_dialog
 from calibre.gui2.cyoa import data
-from calibre.gui2.cyoa.world import CharacterEditor, MarkdownEdit, PortraitResult, generate_portrait
+from calibre.gui2.cyoa.world import CharacterEditor, MarkdownEdit, PortraitResult, generate_portrait, style_combo
 from calibre.gui2.widgets2 import Dialog
 from calibre.utils.localization import _
 
@@ -28,6 +55,47 @@ class LineListEdit(QPlainTextEdit):
     @property
     def items(self) -> tuple[str, ...]:
         return clean_text_list(self.toPlainText().splitlines())
+
+
+class StoryStyleEditor(QWidget):
+    # Changes how the AI writes the prose of the story from here on: how much
+    # room each passage gets, the register it is told in and its point of view
+    # and tense. The art style of the pictures is deliberately not here: it
+    # belongs to the world, whose portraits have already been drawn with it,
+    # and is chosen when the world is created.
+
+    def __init__(self, parent: QWidget | None = None) -> None:
+        super().__init__(parent)
+        # Everything not editable here is kept as it was, see the style property.
+        self.current_style = StoryStyle()
+        l = QFormLayout(self)
+        l.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.ExpandingFieldsGrow)
+        la = QLabel(_('These control how the AI writes the story from the next turn onwards. The prose it has already written is left exactly as it is.'))
+        la.setWordWrap(True)
+        l.addRow(la)
+        self.pace_combo = pc = style_combo(
+            self,
+            PACES,
+            _('How much prose the AI writes for each turn of the story. Short passages make for a faster, pulpier narrative and cost less to generate.'),
+        )
+        l.addRow(_('Passage &length:'), pc)
+        self.tone_combo = tc = style_combo(self, TONES, _('The register the story is told in. Leave it to the AI and it will pick one that suits the world.'))
+        l.addRow(_('Story t&one:'), tc)
+        self.narration_combo = nc = style_combo(self, NARRATION_STYLES, _('The point of view and tense the story is written in'))
+        l.addRow(_('&Narration:'), nc)
+
+    def load(self, style: StoryStyle) -> None:
+        self.current_style = style
+        for combo, key in ((self.pace_combo, style.pace), (self.tone_combo, style.tone), (self.narration_combo, style.narration)):
+            combo.setCurrentIndex(max(0, combo.findData(key)))
+
+    @property
+    def style(self) -> StoryStyle:
+        return self.current_style._replace(
+            pace=str(self.pace_combo.currentData() or ''),
+            tone=str(self.tone_combo.currentData() or ''),
+            narration=str(self.narration_combo.currentData() or ''),
+        )
 
 
 class StoryMemoryEditor(QWidget):
@@ -134,15 +202,16 @@ class StoryMemoryEditor(QWidget):
 
 
 class EditWorldDialog(Dialog):
-    # Edits the world of the game in progress, on two tabs. The characters
+    # Edits the world of the game in progress, on three tabs. The characters
     # tab lists the character the player plays followed by the named
     # characters the AI introduced during play, taken from the story summary,
     # and allows editing their descriptions, backstories and, for the story
     # characters, relationships and current state, as well as (re-)generating
-    # their portraits. The story memory tab edits the rest of the summary.
+    # their portraits. The story memory tab edits the rest of the summary and
+    # the storytelling tab changes how the AI writes the prose from here on.
     # The edits are applied to the game state by the caller after the dialog
-    # is accepted, via the player_character, npcs, portraits and
-    # story_memory attributes.
+    # is accepted, via the player_character, npcs, portraits, story_memory and
+    # updated_style attributes.
 
     portrait_result_received = pyqtSignal(int, int, object)  # (call_number, list row, PortraitResult)
 
@@ -158,6 +227,7 @@ class EditWorldDialog(Dialog):
         # under PROTAGONIST_ID. They all belong to this game alone and are
         # supplied and stored in the game file by the caller.
         self.portraits: dict[str, dict[str, str]] = dict(portraits or {})
+        self.story_style = state.style
         self.art_style = state.art_style
         self.world_description = state.world.world_description
         # The summary of the last played turn, which is the memory the next
@@ -187,6 +257,9 @@ class EditWorldDialog(Dialog):
         self.memory_editor = me = StoryMemoryEditor(self)
         me.load(self.summary)
         t.addTab(me, QIcon.ic('notes.png'), _('Story &memory'))
+        self.style_editor = se = StoryStyleEditor(self)
+        se.load(self.story_style)
+        t.addTab(se, QIcon.ic('format-text-color.png'), _('&Storytelling'))
         if not self.can_edit_story_memory:
             idx = t.indexOf(me)
             t.setTabEnabled(idx, False)
@@ -344,6 +417,14 @@ class EditWorldDialog(Dialog):
         # the player may have switched to another character without a
         # portrait while this one was being generated
         self.maybe_generate_portrait()
+
+    @property
+    def updated_style(self) -> StoryStyle:
+        # The style of the game with the choices made on the storytelling tab
+        # applied. It takes effect from the next turn: the instructions sent
+        # to the AI are built from the game state every turn, so nothing else
+        # has to be re-done, see calibre.ai.cyoa.turn_instructions().
+        return self.style_editor.style
 
     @property
     def story_memory(self) -> StorySummary | None:
