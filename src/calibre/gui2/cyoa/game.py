@@ -480,11 +480,11 @@ class GameWidget(QWidget):
         if tn:
             self.scroll_to_turn(tn)
 
-    def refresh_ui(self) -> None:
+    def refresh_ui(self, scroll_to_last: bool = True) -> None:
         self.render_story()
         # There is nothing to read until the opening turn has been written
         self.read_action.setEnabled(self.state is not None and bool(self.state.turns))
-        if self.state is not None and self.state.turns:
+        if scroll_to_last and self.state is not None and self.state.turns:
             self.scroll_to_turn(len(self.state.turns))
         self.update_window_title()
         self.update_status()
@@ -1040,10 +1040,31 @@ class GameWidget(QWidget):
         self.session_cost += res.cost
         self.streamed_narrative = ''
         self.narrative_render_timer.stop()
+        # Before render_story() clears the document, decide whether to scroll
+        # to the start of the new turn. Skip the scroll if the user has already
+        # reached or passed the turn start (so the completion doesn't yank them
+        # back), and save the scroll fraction to restore afterwards.
+        sv = self.story_view
+        scroll_to_last_turn = True
+        saved_scroll_fraction = 1.0
+        if self.streaming_block_start >= 0:
+            vsb = sv.verticalScrollBar()
+            vp = sv.viewport()
+            if vsb is not None and vp is not None and vp.height() > 0:
+                c = sv.textCursor()
+                c.setPosition(self.streaming_block_start)
+                if sv.cursorRect(c).top() < vp.height():
+                    scroll_to_last_turn = False
+                    if vsb.maximum() > 0:
+                        saved_scroll_fraction = vsb.value() / vsb.maximum()
         self.prompt_edit.clear()
         self.prompt_edit.setFocus(Qt.FocusReason.OtherFocusReason)
         self.autosave()
-        self.refresh_ui()
+        self.refresh_ui(scroll_to_last_turn)
+        if not scroll_to_last_turn:
+            vsb = sv.verticalScrollBar()
+            if vsb is not None and vsb.maximum() > 0:
+                vsb.setValue(round(saved_scroll_fraction * vsb.maximum()))
         if self.images_enabled:
             self.request_image(len(snapshot.turns))
         self._notify_turn_ready()
