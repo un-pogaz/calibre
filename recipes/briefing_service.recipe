@@ -23,10 +23,7 @@ SECTIONS = (
 class BriefingService(BasicNewsRecipe):
     title = 'Briefing Service'
     __author__ = 'Jordan Shelley'
-    description = (
-        'Hourly LLM-ranked news briefings: AI, frontier labs, markets, '
-        'US sports, European football, US and world news'
-    )
+    description = 'Hourly LLM-ranked news briefings: AI, frontier labs, markets, US sports, European football, US and world news'
     publisher = 'Briefing Service'
     category = 'news, ai, finance, sports'
     language = 'en'
