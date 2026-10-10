@@ -15,7 +15,7 @@ from contextlib import closing
 from typing import cast
 from urllib.parse import urlparse, urlsplit
 
-from calibre import __appname__, as_unicode, browser, force_unicode, iswindows, preferred_encoding, random_user_agent, strftime
+from calibre import __appname__, as_unicode, browser, common_prefix_index, force_unicode, iswindows, preferred_encoding, random_user_agent, strftime
 from calibre.ebooks.BeautifulSoup import BeautifulSoup, CData, NavigableString, Tag
 from calibre.ebooks.metadata import MetaInformation
 from calibre.ebooks.metadata.opf2 import OPFCreator
@@ -1734,8 +1734,7 @@ class BasicNewsRecipe(Recipe):
                             article_toc_entry.add_item(arelpath, entry['anchor'], entry['title'] or _('Unknown section'), play_order=po)
                     last = os.path.join(self.output_dir, (f'{adir}index.html').replace('/', os.sep))
                     for sp in a.sub_pages:
-                        # length of the character-wise common prefix of opf_path and sp
-                        plen = next((i for i, (x, y) in enumerate(zip(opf_path, sp)) if x != y), min(len(opf_path), len(sp)))
+                        plen = common_prefix_index((opf_path, sp))
                         relp = sp[plen:]
                         entries.append(relp.replace(os.sep, '/'))
                         last = sp

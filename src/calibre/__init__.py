@@ -180,6 +180,16 @@ def sanitize_file_name(name, substitute='_'):
 sanitize_file_name2 = sanitize_file_name_unicode = sanitize_file_name
 
 
+def common_prefix_index(strings):
+    "Index of the character-wise common prefix in the given list"
+    return next((i for i, s in enumerate(zip(*strings)) if len(set(s)) != 1), min(map(len, strings)))
+
+
+def common_prefix(strings):
+    "Common prefix inside the given list"
+    return strings[0][: common_prefix_index(strings)]
+
+
 class CommandLineError(Exception):
     pass
 
